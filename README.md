@@ -6,7 +6,7 @@
 ## 🛠️ SETUP 🛠️
 
 1. Import the project on a Python IDE (PyCharm recommended).
-2. Run command on the terminal window: ``` pip install -r requirements.txt ```.
+2. Run command on the terminal window: ``` pip install . ```.
 3. Create a new virtual environment or select your preferred python interpreter.
 
 ## 📋 UPDATE TEST SET 📋
