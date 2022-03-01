@@ -21,3 +21,5 @@ src/rouge/__pycache__/*
 src/FEQA/bart_qg/checkpoints/*.pt
 venv/*
 .idea/*
+build/*
+*.egg*
