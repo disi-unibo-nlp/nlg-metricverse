@@ -1,0 +1,40 @@
+{
+  "type": "src",
+  "text": "aD",
+  "self": {
+    "NER": {
+      "answers": [
+        "aD"
+      ],
+      "QG_hash=ThomasNLG/t5-qg_squad1-en": {
+        "questions": [
+          "What is the name of the earliest dynasty?"
+        ]
+      }
+    },
+    "NOUN": {
+      "answers": [
+        "aD"
+      ],
+      "QG_hash=ThomasNLG/t5-qg_squad1-en": {
+        "questions": [
+          "What is the name of the earliest dynasty?"
+        ]
+      }
+    }
+  },
+  "asked": {
+    "What is the name of the symbiotic relationship between the symbiotic": {
+      "QA_hash=ThomasNLG/t5-qa_squad2neg-en": {
+        "answer": "unanswerable",
+        "answerability": 0.19116514921188354,
+        "ground_truth": {
+          "adsj": {
+            "bertscore": 0.7391476631164551,
+            "f1": 0
+          }
+        }
+      }
+    }
+  }
+}

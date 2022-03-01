@@ -1,0 +1,11 @@
+pytorch_transformers
+scipy
+spacy
+torch
+numpy
+tqdm
+apex
+protobuf
+scikit_learn
+google-cloud-translate
+wandb

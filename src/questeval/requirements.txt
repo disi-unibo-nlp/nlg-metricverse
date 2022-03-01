@@ -1,0 +1,7 @@
+pytest
+transformers
+sentencepiece
+datasets
+Unidecode
+spacy
+matplotlib
