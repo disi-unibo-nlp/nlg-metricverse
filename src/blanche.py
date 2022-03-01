@@ -602,7 +602,6 @@ class Blanche:
         self.load(m_name)
         file_name = m_name + "/" + m_name + "_" + self.metrics["id"]
         import BARTScore.bart_score as bt
-        import numpy as np
         if self.test_set["check"]:  # use test set if exists
             references = utils.load_preds(self.test_set["references"])
             candidates = utils.load_preds(self.test_set["predictions"])
