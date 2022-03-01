@@ -1,9 +1,0 @@
-Cython
-numpy
-benepar==0.1.2
-torch
-fairseq==0.9.0
-nltk
-spacy
-tensorflow==1.15
-transformers
