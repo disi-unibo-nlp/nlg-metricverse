@@ -4,7 +4,7 @@
 
 1. Import the project on a Python IDE (PyCharm recommended).
 2. Run command on the terminal window: ``` pip install -r requirements.txt ```.
-3. Create a new environment or select your preferred python interpreter.
+3. Create a new virtaul environment or select your preferred python interpreter.
 
 ## 📋 UPDATE TEST SET 📋
 1. Create '_src/data_' directory.
