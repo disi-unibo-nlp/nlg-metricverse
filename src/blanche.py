@@ -1,69 +1,75 @@
-import subprocess
-from sklearn import metrics
-import wget
 import os
-import gdown
-from collections import defaultdict
-import nltk
-import zipfile
+import subprocess
 import sys
-import utils
-import numpy as np
+import zipfile
+from collections import defaultdict
 
-#file metrics import
+import gdown
+import nltk
+import numpy as np
+import wget
+
+import utils
+# file metrics import
 #
 from vars import *
-class Blanche():
+
+
+class Blanche:
     def __init__(self):
-        self.metrics = ["bleu","rouge", "FEQA", "factCC", "meteor", "bleurt", "bert_score","questeval", "nubia_score","BARTScore"]
-        self.dep_solved={}
-        self.test_set ={"id":"","references":"","predictions":"", "check": False} #path to test set
+        self.metrics = ["bleu", "rouge", "FEQA", "factCC", "meteor", "bleurt", "bert_score", "questeval", "nubia_score",
+                        "BARTScore"]
+        self.dep_solved = {}
+        self.test_set = {"id": "", "references": "", "predictions": "", "check": False}  # path to test set
         self.init_dep_solved()
-    def update_test_set(self,id, labels, predictions):
+
+    def update_test_set(self, id_test_set, labels, predictions):
         if not os.path.exists(labels) and os.path.exists(predictions):
             print("One or both paths don't exist!")
             return False
-        self.test_set["id"] = id
+        self.test_set["id"] = id_test_set
         self.test_set["references"] = PATH_D + "/" + labels
         self.test_set["predictions"] = PATH_D + "/" + predictions
         self.test_set["check"] = True
-   
+
         print("Test set updated!")
         return True
+
     def init_dep_solved(self):
-        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze']) #get all python packages 
-        installed_packages = [r.decode().split('==')[0] for r in reqs.split()] 
+        reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])  # get all python packages
+        installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
         print(installed_packages)
         for metric in self.metrics:
             print(metric)
-            self.dep_solved.update({metric:[]}) #set for all metrics python dependencies that must be installed for use it
+            self.dep_solved.update({metric: []})
+            # set for all metrics python dependencies that must be installed for use it
             pth = metric + "/" + PATH_DEP
-            dep_list=[]
+            dep_list = []
             if os.path.exists(pth):
-                filed=open(pth,"r")
-                content=filed.read()
-                dep_list=content.split("\n")
+                filed = open(pth, "r")
+                content = filed.read()
+                dep_list = content.split("\n")
                 filed.close()
             removed_index = []
             if dep_list:
-                for i in range(0,len(dep_list)):
+                for i in range(0, len(dep_list)):
                     if dep_list[i] in installed_packages:
                         # if metric == "rouge":
                         #     print(dep)
-                        removed_index.append(i) #filter list of dependency if already installed
-                filtered_list = [j for i, j in enumerate(dep_list) if i not in removed_index] 
-                
-                self.dep_solved[metric] = filtered_list #save the dependencies that must be installed
+                        removed_index.append(i)  # filter list of dependency if already installed
+                filtered_list = [j for i, j in enumerate(dep_list) if i not in removed_index]
 
-    def load(self,metric):
+                self.dep_solved[metric] = filtered_list  # save the dependencies that must be installed
+
+    def load(self, metric):
         dependencies = self.dep_solved[metric]
-        if dependencies : #if there's any dependencies when we load a metrics, install it!
+        if dependencies:  # if there's any dependencies when we load a metrics, install it!
             for dep in dependencies:
-                script="pip install " + dep
+                script = "pip install " + dep
                 os.system(script)
             self.dep_solved[metric] = []
-        #now we must handle the download of models and other
-        folder=metric + "/"
+        # now we must handle the download of models and other
+        folder = metric + "/"
         """
         Parameters
         ----------
@@ -75,36 +81,39 @@ class Blanche():
             benepar.download('benepar_en2')
             nltk.download('stopwords')
             os.system("python -m spacy download en_core_web_sm")
-            path_m="FEQA/bart_qg/checkpoints/checkpoint_best.pt"
-            path_pt="FEQA/qa_models/squad1.0/pytorch_model.bin"
+            path_m = "FEQA/bart_qg/checkpoints/checkpoint_best.pt"
+            path_pt = "FEQA/qa_models/squad1.0/pytorch_model.bin"
             if not os.path.isfile(path_m):
                 print("Downloading models for generate questions...")
-                url="https://drive.google.com/u/0/uc?export=download&confirm=Beop&id=1GFnimonLFgGal1LT6KRgMJZLbxmNJvxF"
-                self.download_and_extract(url,path_m,unpackable=False, from_drive=True)
+                url = \
+                    "https://drive.google.com/u/0/uc?export=download&confirm=Beop&id=1GFnimonLFgGal1LT6KRgMJZLbxmNJvxF"
+                self.download_and_extract(url, path_m, unpackable=False, from_drive=True, folder=None)
             if not os.path.isfile(path_pt):
                 print("Downloading models for generate answers...")
-                url="https://drive.google.com/u/0/uc?export=download&confirm=8hcD&id=1pWMsSTTwcoX0l75bzNFjvSC7firawp9M"
-                self.download_and_extract(url,path_pt,unpackable=False, from_drive=True)
+                url = \
+                    "https://drive.google.com/u/0/uc?export=download&confirm=8hcD&id=1pWMsSTTwcoX0l75bzNFjvSC7firawp9M"
+                self.download_and_extract(url, path_pt, unpackable=False, from_drive=True, folder=None)
         if metric == "factCC":
-            path="factCC/factcc-checkpoint.tar.gz"
+            path = "factCC/factcc-checkpoint.tar.gz"
             if not os.path.isdir(FACTCC_CHECKPOINT):
                 print("Downloading model for factual evaluation...")
-                url="https://storage.googleapis.com/sfr-factcc-data-research/factcc-checkpoint.tar.gz"
-                self.download_and_extract(url,path,folder=folder)
-        if metric=="meteor":
+                url = "https://storage.googleapis.com/sfr-factcc-data-research/factcc-checkpoint.tar.gz"
+                self.download_and_extract(url, path, folder=folder)
+        if metric == "meteor":
             NLTK_VERSION = nltk.__version__
             nltk.download('wordnet')
             if NLTK_VERSION >= "3.6.4":
                 nltk.download("punkt")
-        if metric=="bleurt":
+        if metric == "bleurt":
             if not os.path.isdir(BLEURT_MODEL_PATH):
-                url="https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip"
-                path="bleurt/BLEURT-20.zip"
+                url = "https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip"
+                path = "bleurt/BLEURT-20.zip"
                 print("init download BLEURT model")
                 folder = metric + "/"
-                self.download_and_extract(url=url,storage_path=path,folder=folder)
- 
-    def download_and_extract(self,url,storage_path,folder,unpackable=True,from_drive=False):
+                self.download_and_extract(url=url, storage_path=path, folder=folder)
+
+    @staticmethod
+    def download_and_extract(url, storage_path, folder, unpackable=True, from_drive=False):
         """
         Parameters
         ---------
@@ -116,35 +125,34 @@ class Blanche():
         """
         import tarfile
         filename, file_extension = os.path.splitext(storage_path)
-        
+
         if from_drive:
-            gdown.download(url,storage_path,quiet=False)
+            gdown.download(url, storage_path, quiet=False)
         else:
-            wget.download(url,out=storage_path)
+            wget.download(url, out=storage_path)
         if unpackable:
             print("\nExtracting compressed model...")
             if file_extension == '.zip':
-                with zipfile.ZipFile(storage_path,'r') as zip_ref:
+                with zipfile.ZipFile(storage_path, 'r') as zip_ref:
                     zip_ref.extractall(folder)
-            else: 
-                t_model=tarfile.open(storage_path)
+            else:
+                t_model = tarfile.open(storage_path)
                 t_model.extractall(folder)
                 t_model.close()
             os.remove(storage_path)
 
-
-
+    @staticmethod
     def check_dependencies(r_file):
         import subprocess
         reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])
         installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-        filed=open(r_file,"r")
-        content=filed.read()
-        dep_list=content.split("\n")
+        filed = open(r_file, "r")
+        content = filed.read()
+        dep_list = content.split("\n")
         filed.close()
         for dep in dep_list:
-            if not dep in installed_packages:
-                script="pip install " + dep
+            if dep not in installed_packages:
+                script = "pip install " + dep
                 os.system(script)
         print("Dependencies installed!")
 
@@ -167,50 +175,59 @@ class Blanche():
         description:
         Bleu is a metric born in 2002 to evaluate translation generate texts.
         It's an n-gram overlap algorithm between candidate phrase and set of references.
-        Scores are calculated by counting each n-gram which occur both in candidate and references translations,then divides by the total number of words in
-        the candidate translation.
+        Scores are calculated by counting each n-gram which occur both in candidate and references translations,then 
+        divides by the total number of words in the candidate translation.
         This type of computation is called precision.
         Bleu adopts a modified precision to prevent the high score given to the over-generation of "reasonable" words.
         It's calculated for individual translated segments—generally sentences—by.
-        To extends this precison score to all corpus Bleu adds the n-gram counts for all the candidate sentences and divide by the number of candidate n-grams in the test corpus.
+        To extends this precison score to all corpus Bleu adds the n-gram counts for all the candidate sentences and
+        divide by the number of candidate n-grams in the test corpus.
     
         task: summarization
         
         relavants aspects captured: adequancy and fluency
 
         """
-    def run_bleu(self,references=[], candidates=[]):
-        m_name= self.metrics[0]
+
+    @staticmethod
+    def run_bleu(self, references=None, candidates=None):
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[0]
         self.load(m_name)
         import bleu.bleu_metric as bm
-        ref_tokens=[]
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
+        ref_tokens = []
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
         for ref in references:
             ref_tokens.append([ref.split()])
-        pred_tokens=[]
+        pred_tokens = []
         for pred in candidates:
             pred_tokens.append(pred.split())
-    # prefect match   
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
-        score_list=[]
-        with open(file_name,"a") as f:
-            for r,p in zip(ref_tokens,pred_tokens):
-                results=bm.compute_bleu(reference_corpus=r,translation_corpus=p)
+        # prefect match
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
+        score_list = []
+        with open(file_name, "a") as f:
+            for r, p in zip(ref_tokens, pred_tokens):
+                results = bm.compute_bleu(reference_corpus=r, translation_corpus=p)
                 (bleu, precisions, bp, ratio, translation_length, reference_length) = results
                 score_list.append(bleu)
                 f.write(str(bleu) + "\n")
         return np.mean(score_list)
-    def test_bleu():
-        refs=utils.load_preds("egv_bart_targets.txt")
-        cands=utils.load_preds("egv_bart_preds.txt")
-        from nltk.translate.bleu_score import sentence_bleu
-        with open("bleu/results_barte.txt","a") as f:
-            for r,c in zip(refs,cands):
-                f.write(str(sentence_bleu([r.split()],c.split(),weights=(1, 0, 0, 0))) + '\n')
 
-    # return sentence_bleu("data/targets_egv_paper.txt","data/preds_egv_paper.txt")
+    @staticmethod
+    def test_bleu():
+        refs = utils.load_preds("egv_bart_targets.txt")
+        cands = utils.load_preds("egv_bart_preds.txt")
+        from nltk.translate.bleu_score import sentence_bleu
+        with open("bleu/results_barte.txt", "a") as f:
+            for r, c in zip(refs, cands):
+                f.write(str(sentence_bleu([r.split()], c.split(), weights=(1, 0, 0, 0))) + '\n')
+
+        return sentence_bleu("data/targets_egv_paper.txt", "data/preds_egv_paper.txt")
         # 
         #
         #     for cand,ref in zip(cands,refs):
@@ -234,11 +251,12 @@ class Blanche():
         }
 
         description:
-        Rouge-N(N stands for n-gram length) is a n-gram overlap metric recall based which counts the maximum number of n-gram co-occuring 
-        in candidate summary and a set of reference summaries.
+        Rouge-N(N stands for n-gram length) is a n-gram overlap metric recall based which counts the maximum number of 
+        n-gram co-occuring in candidate summary and a set of reference summaries.
         Unlike Bleu, the score is calculated dividing all co-occurence by number of reference n-gram.
-        ROUGE-L(Longest Common Subsequence): LCS-based Fmeasure to estimate the similarity between two summaries (X,Y), where precision and recall are determined by dividing the longest
-        subsequence in common LCS(X,Y) with length of candidate summary(precision) and reference summary(recall).
+        ROUGE-L(Longest Common Subsequence): LCS-based Fmeasure to estimate the similarity between two summaries (X,Y),
+        where precision and recall are determined by dividing the longest subsequence in common LCS(X,Y) with length of
+        candidate summary(precision) and reference summary(recall).
 
         task: summarization
         relavants aspects captured: adequancy and fluency
@@ -247,10 +265,12 @@ class Blanche():
         Licensed under the Apache License, Version 2.0 (the "License");
         you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
         
         """
-    def run_rouge(self, references=[], candidates=[], rouge_types=["rouge1","rouge2","rougeL"], stemmer_enable=False, use_aggregator=True):
+
+    def run_rouge(self, references=None, candidates=None, rouge_types=None, stemmer_enable=False,
+                  use_aggregator=True):
         """
         Parameters
         ----------
@@ -260,31 +280,39 @@ class Blanche():
         stemmer_enable: Bool indicating whether Porter stemmer should be used to strip word suffixes
         use_aggregator: return aggregate scores if True
         """
-        m_name=self.metrics[1]
-        self.load(m_name) 
+        if rouge_types is None:
+            rouge_types = ["rouge1", "rouge2", "rougeL"]
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[1]
+        self.load(m_name)
         import rouge.rouge_scorer as rg
         import rouge.scoring
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
         rouge_types = rouge_types
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
-         
-        scorer=rg.RougeScorer(rouge_types=rouge_types,use_stemmer=stemmer_enable)
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
+
+        aggregator = None
+        scores = None
+        scorer = rg.RougeScorer(rouge_types=rouge_types, use_stemmer=stemmer_enable)
         if use_aggregator:
             aggregator = rouge.scoring.BootstrapAggregator()
         else:
-            scores=[]
+            scores = []
         for ref, pred in zip(references, candidates):
             score = scorer.score(ref, pred)
-            
+
             # with open("rouge/barteL.txt","a") as f:
             #     f.write(str(score["rougeL"].fmeasure) + "\n")
-           
+
             if use_aggregator:
                 aggregator.add_scores(score)
             else:
-                scores.append(score)            
+                scores.append(score)
         if use_aggregator:
             result = aggregator.aggregate()
             print(result)
@@ -294,17 +322,17 @@ class Blanche():
                 result[key] = list(score[key] for score in scores)
         if use_aggregator:
             for rouge_type in rouge_types:
-                score=result[rouge_type].mid.fmeasure
-                with open(file_name,"a") as f:
-                    f.write("[" + rouge_type + "] = " + str(score) + "\n")         
+                score = result[rouge_type].mid.fmeasure
+                with open(file_name, "a") as f:
+                    f.write("[" + rouge_type + "] = " + str(score) + "\n")
         return result
-
 
         """ 
         FEQA metric
         citation:
         @inproceedings{durmus-etal-2020-feqa,
-        title = "{FEQA}: A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization",
+        title = "{FEQA}:
+            A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization",
         author = "Durmus, Esin  and He, He  and Diab, Mona",
         booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
         month = jul,
@@ -314,10 +342,22 @@ class Blanche():
         url = "https://www.aclweb.org/anthology/2020.acl-main.454",
         doi = "10.18653/v1/2020.acl-main.454",
         pages = "5055--5070",
-        abstract = "Neural abstractive summarization models are prone to generate content inconsistent with the source document, i.e. unfaithful. Existing automatic metrics do not capture such mistakes effectively. We tackle the problem of evaluating faithfulness of a generated summary given its source document. We first collected human annotations of faithfulness for outputs from numerous models on two datasets. We find that current models exhibit a trade-off between abstractiveness and faithfulness: outputs with less word overlap with the source document are more likely to be unfaithful. Next, we propose an automatic question answering (QA) based metric for faithfulness, FEQA, which leverages recent advances in reading comprehension. Given question-answer pairs generated from the summary, a QA model extracts answers from the document; non-matched answers indicate unfaithful information in the summary. Among metrics based on word overlap, embedding similarity, and learned language understanding models, our QA-based metric has significantly higher correlation with human faithfulness scores, especially on highly abstractive summaries.",
+        abstract = "Neural abstractive summarization models are prone to generate content inconsistent with the source
+        document, i.e. unfaithful. Existing automatic metrics do not capture such mistakes effectively.
+        We tackle the problem of evaluating faithfulness of a generated summary given its source document.
+        We first collected human annotations of faithfulness for outputs from numerous models on two datasets.
+        We find that current models exhibit a trade-off between abstractiveness and faithfulness:
+        outputs with less word overlap with the source document are more likely to be unfaithful.
+        Next, we propose an automatic question answering (QA) based metric for faithfulness, FEQA, which leverages
+        recent advances in reading comprehension. Given question-answer pairs generated from the summary, a QA model
+        extracts answers from the document; non-matched answers indicate unfaithful information in the summary.
+        Among metrics based on word overlap, embedding similarity, and learned language understanding models, our
+        QA-based metric has significantly higher correlation with human faithfulness scores, especially on highly
+        abstractive summaries.",
         }
         description:
-        Given question-answer pairs generated from the summary, a QA model extracts answers from the document; non-matched answers indicate unfaithful information in the summary.
+        Given question-answer pairs generated from the summary, a QA model extracts answers from the document;
+        non-matched answers indicate unfaithful information in the summary.
         BART model, fine-tuned on mask gold answers, is used to generate question from the summary sentences
         BERT-base instead fine-tuned on SQuAD-1.1 and SQuAD-2.0, generates answers from previous questions.
         The score is an F1 between genereted answers from the summary and those from the source text.
@@ -326,8 +366,9 @@ class Blanche():
         relevants aspects captured: faithfulness, factuality
 
         """
-    def run_feqa(self,references,candidates):
-        
+
+    def run_feqa(self, references, candidates):
+
         """ 
         Parameters
         ----------
@@ -336,16 +377,16 @@ class Blanche():
 
 
         """
-        m_name=self.metrics[2]
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
+        m_name = self.metrics[2]
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
         self.load(self.metrics[2])
-        
+
         from FEQA.feqa import FEQA
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
         scorer = FEQA(use_gpu=False)
-        score=scorer.compute_score(references, candidates, aggregate=False)
+        score = scorer.compute_score(references, candidates, aggregate=False)
         with open(file_name, "a") as f:
             for s in score:
                 f.write(str(s) + "\n")
@@ -361,31 +402,33 @@ class Blanche():
         }
         description:
         FactCC is one of the new metric model-based for factual evaluation of generated text.
-        The authors propose using an artificial, weaklysupervised dataset for the task at hand which is made up of semantically and non-semantically altered claims for training BERT model.
+        The authors propose using an artificial, weaklysupervised dataset for the task at hand which is made up of
+        semantically and non-semantically altered claims for training BERT model.
         This type of perturbations help the model to distinguish non-factual claims.
-        The source document and claim sentence were fed as input to the model and the two-way classification (CONSISTENT/INCONSISTENT) was done using a single-layer classifier based on the [CLS] token.
+        The source document and claim sentence were fed as input to the model and the two-way classification
+        (CONSISTENT/INCONSISTENT) was done using a single-layer classifier based on the [CLS] token.
         
         relevants aspects captured: factuality
         """
-    def run_factCC(self,list):
+
+    def run_factCC(self, data_path):
         """
         Parameters
         ----------
         data_path: path of json file containing id,text,claim for data evaluation
 
         """
-    # load("factCC")
+        # load("factCC")
         self.load(self.metrics[3])
-        utils.jsonl_dumper('factcc',list) #create jsonl for factCC script
-        MODEL_NAME="bert-base-uncased"
-        TASK_NAME="factcc_annotated"
-        script="python3 factCC/modeling/run.py --task_name " + TASK_NAME + " --do_eval --eval_all_checkpoints \
+        utils.jsonl_dumper('factcc', data_path)  # create jsonl for factCC script
+        MODEL_NAME = "bert-base-uncased"
+        TASK_NAME = "factcc_annotated"
+        script = "python3 factCC/modeling/run.py --task_name " + TASK_NAME + " --do_eval --eval_all_checkpoints \
                 --do_lower_case --overwrite_cache --max_seq_length 512 --per_gpu_train_batch_size 12 \
-                --model_type bert --model_name_or_path " + MODEL_NAME + " --data_dir factCC/ --output_dir " + FACTCC_CHECKPOINT
-    # print(script)
+                --model_type bert --model_name_or_path " + MODEL_NAME + " --data_dir factCC/ --output_dir " +\
+                 FACTCC_CHECKPOINT
+        # print(script)
         os.system(script)
-
-
 
         """
         Meteor metric
@@ -393,21 +436,26 @@ class Blanche():
         @inproceedings{banerjee2005meteor,
         title={METEOR: An automatic metric for MT evaluation with improved correlation with human judgments},
         author={Banerjee, Satanjeev and Lavie, Alon},
-        booktitle={Proceedings of the acl workshop on intrinsic and extrinsic evaluation measures for machine translation and/or summarization},
+        booktitle={Proceedings of the acl workshop on intrinsic and extrinsic evaluation measures for machine
+        translation and/or summarization},
         pages={65--72},
         year={2005}
         }
         description:
         Meteor was designed to explicitly address the weakness weaknesses of BLEU.
-        It computes a score based on explicit word-to-word matches between the translation and a reference translation, in case of more references the best score is reported.
+        It computes a score based on explicit word-to-word matches between the translation and a reference translation,
+        in case of more references the best score is reported.
         Meteor defines an alignment between unigram,an unigram can only mapped with one unigram in the other string.
-        IN the first phase a module lists all possible alignment between two string, then there are three type of module to map unigram.
-        Exact module, exact match between unigram, porter stem  maps two unigrams if they are the same after they are stemmed using the Porter stemmer, wordnet synonymy maps two
+        IN the first phase a module lists all possible alignment between two string, then there are three type of
+        module to map unigram.
+        Exact module, exact match between unigram, porter stem  maps two unigrams if they are the same after they are
+        stemmed using the Porter stemmer, wordnet synonymy maps two
         unigrams if they are synonyms of each other.
         Precision: is computed as the ratio of the number of unigrams in the system translation that are mapped
         Recall: is computed as the ratio of the number of unigrams in the system translation that are mapped
         Fmean: 10PR/(R+9PR)
-        All the unigrams in the system translation that are mapped to unigrams in the reference translation are grouped into the fewest possible number of chunks, unigram in each chunk must be adiacent.
+        All the unigrams in the system translation that are mapped to unigrams in the reference translation are grouped
+        into the fewest possible number of chunks, unigram in each chunk must be adiacent.
         The longer the n-grams, the fewer the chunks.
         Meteor computes a penalty as follow: 0.5*(#chunks/#unig_matches)^3
         Score = Fmean * (1 - Penalty)
@@ -417,14 +465,16 @@ class Blanche():
         you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
         
-        http://www.apache.org/licenses/LICENSE-2.0
+        https://www.apache.org/licenses/LICENSE-2.0
 
         """
 
-    def run_meteor(self,references=[],candidates=[],alpha=0.9,beta=3,gamma=0.5,method=1):
+    def run_meteor(self, references=None, candidates=None, alpha=0.9, beta=3, gamma=0.5):
         """
         Parameters
         ----------
+        references: ...
+        candidates: ...
         alpha: Parameter for controlling relative weights of precision and recall. default: 0.9
         beta: Parameter for controlling shape of penalty as a function of fragmentation. default 3
         gamma: Relative weight assigned to fragmentation penalty. default 0.5
@@ -433,19 +483,20 @@ class Blanche():
         ------
         Arithmetic mean of scores computed
         """
-        m_name=self.metrics[4]
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[4]
         self.load(m_name)
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
-        import numpy as np
-        from nltk.translate import meteor_score  
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
+        from nltk.translate import meteor_score
         NLTK_VERSION = nltk.__version__
-        if NLTK_VERSION >= "3.6.4":    
-            from nltk import word_tokenize  
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])   
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
         if NLTK_VERSION >= "3.6.4":
-            scores=[]
+            from nltk import word_tokenize
             scores = [
                 meteor_score.single_meteor_score(
                     word_tokenize(ref), word_tokenize(pred), alpha=alpha, beta=beta, gamma=gamma
@@ -457,7 +508,7 @@ class Blanche():
                 meteor_score.single_meteor_score(ref, pred, alpha=alpha, beta=beta, gamma=gamma)
                 for ref, pred in zip(references, candidates)
             ]
-        with open(file_name,"a") as f:
+        with open(file_name, "a") as f:
             for element in scores:
                 f.write(str(element) + "\n")
         return {"meteor": np.mean(scores)}
@@ -474,35 +525,37 @@ class Blanche():
         }
         
         description:
-        BLEURT is a text-generation metric based on BERT which is pre-trained on artificial dataset made up of random perturbated Wikipedia sentences augmented with a diverse set of lexical and semantic-level supervision signals.
+        BLEURT is a text-generation metric based on BERT which is pre-trained on artificial dataset made up of random
+        perturbated Wikipedia sentences augmented with a diverse set of lexical and semantic-level supervision signals.
         Then BERT is fine-tuned on WMT Metric Shared Task.
 
         task: summarization, machine translation
         """
-        
-    def run_bleurt(self,references=[],candidates=[],f_preds="preds.txt",h_labels="labels.txt",metric="bleurt-20"):
+
+    def run_bleurt(self, references=None, candidates=None):
         """
         Parameters
         ----------
         references: list of sources text for candidate
         candidates: list of texts to evaluate
-        metric: specify which type of model is used for evaluation
-
         """
-        m_name=self.metrics[5]
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[5]
         self.load(self.metrics[5])
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
-        #checkpoint="bleurt/checkpoint/bleurt-base-128.zip"
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
+        # checkpoint="bleurt/checkpoint/bleurt-base-128.zip"
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
         import bleurt.score as bs
-        import numpy as np
         scorer = bs.BleurtScorer(BLEURT_MODEL_PATH)
-        #i=0
-        all_scores=[]
+        # i=0
+        all_scores = []
         with open(file_name, "a") as f:
-            for i in range(0,len(references)):
+            for i in range(0, len(references)):
                 scores = scorer.score(references=[references[i]], candidates=[candidates[i]])
                 all_scores.append(scores)
                 f.write(str(scores) + "\n")
@@ -523,32 +576,41 @@ class Blanche():
         }
         task: summarization, machine translation
         description:
-        BARTScore argue for a formulation of evaluation of generated text as a text generation problem, directly evaluating text through the lens of its probability of being generated
+        BARTScore argue for a formulation of evaluation of generated text as a text generation problem, directly
+        evaluating text through the lens of its probability of being generated
         from or generating other textual inputs and outputs.
         This metric uses a pre-trained seq2seq model BART.
-        There are no extra parameters beyond those used in pre-training itself, and it is an unsupervised metric that doesn’t require human judgments to train.
-        BARTSCORE can better support evaluation of generated text from different perspectives (informativeness, coherence, factuality) by adjusting the input and the output of the text generation problem.
-        BARTSCORE can be further enhanced by (i) providing textual prompts that bring the evaluation task closer to the pre-training task, orpdating the underlying model by fine-tuning BART based on downstream generation task.
+        There are no extra parameters beyond those used in pre-training itself, and it is an unsupervised metric that
+        doesn’t require human judgments to train.
+        BARTSCORE can better support evaluation of generated text from different perspectives (informativeness,
+        coherence, factuality) by adjusting the input and the output of the text generation problem.
+        BARTSCORE can be further enhanced by (i) providing textual prompts that bring the evaluation task closer to the
+        pre-training task, orpdating the underlying model by fine-tuning BART based on downstream generation task.
         Faithfulness (s → h): from source document to hypothesis p(h|s, θ)
         Precision (r → h): from reference text to system-generated text p(h|r, θ)
         Recall (h → r): from system-generated text to reference text p(r|h, θ)
         F score (r ↔ h): Consider both directions and use the arithmetic average of Precision and Recall ones
 
         """
-    def run_BARTScore(self,references=[],candidates=[], device='cpu'):
-        m_name=self.metrics[9]
+
+    def run_BARTScore(self, references=None, candidates=None, device='cpu'):
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[9]
         self.load(m_name)
-        file_name=m_name + "/" + m_name + "_" + self.metrics["id"]
+        file_name = m_name + "/" + m_name + "_" + self.metrics["id"]
         import BARTScore.bart_score as bt
         import numpy as np
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
-        bart_scorer= bt.BARTScorer(device=device, checkpoint='facebook/bart-large-cnn')
-        score_list=[]
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
+        bart_scorer = bt.BARTScorer(device=device, checkpoint='facebook/bart-large-cnn')
+        score_list = []
         with open(file_name, "a") as f:
             for ref, cand in zip(references, candidates):
-                score=np.mean(bart_scorer.score(ref, cand))
+                score = np.mean(bart_scorer.score(ref, cand))
                 score_list.append(score)
                 f.write(str(score) + "\n")
         return np.mean(score_list)
@@ -563,56 +625,70 @@ class Blanche():
         primaryClass={cs.CL}
         }
         description:
-        Given a reference sentence x = <hx1, . . . , xki> and a candidate sentence xˆ = <hxˆ1, . . . , xˆli>, BERTScore uses a contextual embeddings to represent the tokens, and compute matching using cosine similarity
+        Given a reference sentence x = <hx1, . . . , xki> and a candidate sentence xˆ = <hxˆ1, . . . , xˆli>, BERTScore
+        uses a contextual embeddings to represent the tokens, and compute matching using cosine similarity
         The representation for each word piece is computed with a Transformer encoder by BERT model
         FBert: 2 * PBert * RBert / (PBert + RBert) 
         """
 
-    def run_BERTScore(self,references=[],candidates=[]):
-        m_name=self.metrics[6]
+    def run_BERTScore(self, references=None, candidates=None):
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[6]
         self.load(m_name)
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
         import bert_score
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
-        #scorer = BERTScorer(lang="en", rescale_with_baseline=True)
-        P, R, F1 = bert_score.score(candidates,references,lang="en",rescale_with_baseline=True,verbose=True)
-        with open(file_name,"a") as fl:
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
+        # scorer = BERTScorer(lang="en", rescale_with_baseline=True)
+        P, R, F1 = bert_score.score(candidates, references, lang="en", rescale_with_baseline=True, verbose=True)
+        with open(file_name, "a") as fl:
             for f in F1:
                 fl.write(str(f) + "\n")
         return np.mean(F1)
-
 
         """
         QUESTEval metric 
         citation:
         @article{scialom2020QuestEval,
         title={QuestEval: Summarization Asks for Fact-based Evaluation},
-        author={Scialom, Thomas and Dray, Paul-Alexis and Gallinari Patrick and Lamprier Sylvain and Piwowarski Benjamin and Staiano Jacopo and Wang Alex},
+        author={Scialom, Thomas and Dray, Paul-Alexis and Gallinari Patrick and Lamprier Sylvain and Piwowarski
+        Benjamin and Staiano Jacopo and Wang Alex},
         journal={arXiv preprint arXiv:2103.12693},
         year={2021}
         }
         description:
         QUESTEval is a framework for evaluating summarization system composed of QG and QA components.
-        Question Answering: T5 model extracts answer from source document given document and a question to answer QA(r|T, q).
-        It is crucial for the QA model to be able to predict when a question is unanswerable, QA component thus includes the unanswerable token (e).
+        Question Answering: T5 model extracts answer from source document given document and a question to answer
+        QA(r|T, q).
+        It is crucial for the QA model to be able to predict when a question is unanswerable, QA component thus
+        includes the unanswerable token (e).
         Question Generation: T5 model fine-tune to likelihood human questions.
-        QUESTEval considers all the named entities and nouns from the source document as answers and qustions are generated via beam search
-        A summary is deemed inconsistent with respect to its source text if, given a question, the answer differs when conditioned on summary or document.
-        An answer could be expresses in some way, but F1 score consider only overlap from predicted answer and the corrisponding ground truth
-        So QUESTEval uses QA confident of answerability (1- QA(e)) in this way the answerability is misured indipendently of the way the answer is expressed.
-        Query weighter distinguish important question from anecdotal ones: W(q, D) denotes the probability that question is important for the document, given a source document
+        QUESTEval considers all the named entities and nouns from the source document as answers and qustions are
+        generated via beam search
+        A summary is deemed inconsistent with respect to its source text if, given a question, the answer differs when
+        conditioned on summary or document.
+        An answer could be expresses in some way, but F1 score consider only overlap from predicted answer and the
+        corrisponding ground truth
+        So QUESTEval uses QA confident of answerability (1- QA(e)) in this way the answerability is misured
+        indipendently of the way the answer is expressed.
+        Query weighter distinguish important question from anecdotal ones: W(q, D) denotes the probability that
+        question is important for the document, given a source document
         D, each question q ∈ QG(D) is labeled as important if the corresponding human summary contains the answer.
     
-        Precision: F1 for each answer generate from document and gold answer divided by number of pair question-answer set genereted by summary
+        Precision: F1 for each answer generate from document and gold answer divided by number of pair question-answer
+        set genereted by summary
         Recall: (W(q, D)(1 − QA(e|S, q)))/W(q, D) for each pairs answer-question in source document
         Score: 2*Prec*Rec/(Prec + Rec)
 
         relevants aspects captured: factuality, text relevance
         """
-    def run_questeval(self,references=[],candidates=[],sources=[],
-                        f_preds="preds.txt",f_labels="labels.txt",task='text2text',do_weighter=False,no_cuda=True):
+
+    def run_questeval(self, references=None, candidates=None, sources=None, task='text2text', do_weighter=False,
+                      no_cuda=True):
         """
         Parameters
         ----------
@@ -624,24 +700,29 @@ class Blanche():
         do_weighter: weight for summarization task
 
         """
-        m_name=self.metrics[7]
+        if sources is None:
+            sources = []
+        if candidates is None:
+            candidates = []
+        if references is None:
+            references = []
+        m_name = self.metrics[7]
         self.load(m_name)
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
-        
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
+        file_name = m_name + "/" + m_name + "_" + self.test_set["id"]
+
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
         from questeval.questeval_metric import QuestEval
-        questeval = QuestEval(task=task, do_weighter=do_weighter,no_cuda=no_cuda)
-        score_list=[]
+        questeval = QuestEval(task=task, do_weighter=do_weighter, no_cuda=no_cuda)
+        score_list = []
         with open(file_name, "a") as f:
-            for cand, ref in zip(candidates,references):
-                score = questeval.corpus_questeval(hypothesis=cand,list_references=[ref],sources=sources)
+            for cand, ref in zip(candidates, references):
+                score = questeval.corpus_questeval(hypothesis=cand, list_references=[ref], sources=sources)
                 score_list.append(score)
                 f.write(str(score) + "\n")
         return np.mean(score_list)
 
-    
     # def file_mean(f_name="nubia/scores.txt",method=1):
     #     import numpy as np
     #     import utils
@@ -653,72 +734,62 @@ class Blanche():
 
     #         return np.mean(max_logs)
 
-    def run_nubia(self,references=[], candidates=[]):
-        m_name=self.metrics[8]
-        self.load(m_name)
-        file_name=m_name + "/" + m_name + "_" + self.test_set["id"]
-        #check_dependencies("nubia/requirements.txt")
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
-        assert len(references) == len(candidates)
-        scores=[]
-        import nubia_score as ns
-        nubia = ns.Nubia()
-        for cand,ref in zip(candidates,references):
-            scores.append(nubia.score(ref,cand))
-        with open(file_name, "a") as f:
-            for score in scores:
-                f.write(str(score) + "\n")
-        return scores
     def length(self):
+        candidates = []
         if self.test_set["check"]:
-            candidates=utils.load_preds(self.test_set["predictions"])
-        counter=0
+            candidates = utils.load_preds(self.test_set["predictions"])
+        counter = 0
         for candidate in candidates:
-            counter=counter + len(candidate.split(" "))
+            counter = counter + len(candidate.split(" "))
         return counter / len(candidates)
-    def count_ngrams(self,tokens, n):
+
+    def count_ngrams(self, tokens, n):
         counts = defaultdict(int)
         for ngram in self.ngrams(tokens, n):
             counts[' '.join(ngram)] += 1
         return counts
+
     def repetitiveness(self):
-        if self.test_set["check"]: #use test set if exists
-            candidates=utils.load_preds(self.test_set["predictions"])
+        candidates = None
+        if self.test_set["check"]:  # use test set if exists
+            candidates = utils.load_preds(self.test_set["predictions"])
         from collections import Counter
-        sum=0
+        total_sum = 0
         for candidate in candidates:
-            monograms=candidate.split(" ")
-            n_words=len(monograms)
-            m_counted=Counter(monograms)
+            monograms = candidate.split(" ")
+            n_words = len(monograms)
+            m_counted = Counter(monograms)
             for ngram in m_counted.values():
                 if ngram > 1:
-                    sum = sum + 1 #if a word  that repeats itself is found
-            sum=sum+n_words
-        print(sum / len(candidates))
+                    total_sum = total_sum + 1  # if a word  that repeats itself is found
+            total_sum = total_sum + n_words
+        print(total_sum / len(candidates))
 
     def abstractness(self, n=1):
-        if self.test_set["check"]: #use test set if exists
-            references=utils.load_preds(self.test_set["references"])
-            candidates=utils.load_preds(self.test_set["predictions"])
-        total_match=0
-        n_words=0
-      
-        for reference,candidate in zip(references,candidates):
-            match=0
-            monograms=candidate.split(" ")
-            n_words=n_words + len(monograms) #count all words in test set
+        references = []
+        candidates = []
+        if self.test_set["check"]:  # use test set if exists
+            references = utils.load_preds(self.test_set["references"])
+            candidates = utils.load_preds(self.test_set["predictions"])
+        total_match = 0
+        n_words = 0
+
+        for reference, candidate in zip(references, candidates):
+            match = 0
+            monograms = candidate.split(" ")
+            n_words = n_words + len(monograms)  # count all words in test set
             if n > len(monograms):
                 return "Not possible to create " + str(n) + "-grams, too many few words"
-            for w2 in self.ngrams(monograms,n):
-                substr=" ".join(w2)
+            for w2 in self.ngrams(monograms, n):
+                substr = " ".join(w2)
                 if substr not in reference:
-                    match=match+1
+                    match = match + 1
             # n_words=n_words+1 #counter for total n-gram number
-            total_match=total_match + match
-        return total_match/n_words
-    def ngrams(self,tokens, n): #provides an iterable object of n-gram 
+            total_match = total_match + match
+        return total_match / n_words
+
+    @staticmethod
+    def ngrams(tokens, n):  # provides an iterable object of n-gram
         ngram = []
         for token in tokens:
             if len(ngram) < n:
@@ -744,7 +815,7 @@ class Blanche():
     #         #print(token_c)
     #         token_uc=list(dict.fromkeys(token_c)) #delete duplicates
     #         #print(token_uc)
-            
+
     #         length_c=len(token_c)
     #         penalty=(len(token_c) - len(token_uc)) / length_c
     #         #print(length_c)
@@ -760,8 +831,6 @@ class Blanche():
     #             corpus_score.append(score)
     #     return np.mean(corpus_score)
 
-
-        
     # import sys
     # from collections import defaultdict
 
@@ -801,7 +870,6 @@ class Blanche():
     #     result *= numerator / denominator
 
     # return pow(result, 1.0/max_n)
-    
 
     # def test_ngrams():
     #     s="ciao come stai io bene tu".split()
