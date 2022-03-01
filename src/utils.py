@@ -3,17 +3,6 @@ import os
 from vars import *
 
 
-def jsonl_dumper(arg, jsonl_list):  # make input for factcc
-    if arg == 'factcc': 
-        seq_id = 0
-        with open('factCC/data-dev.jsonl', 'w') as outfile:
-            for item in jsonl_list:
-                data = {'id': str(seq_id), 'text': str(item[0]), 'claim': str(item[1]), 'label': 'INCORRECT'}
-                json.dump(data, outfile)
-                outfile.write('\n')
-                seq_id += 1
-
-
 def load_preds(f_name, method=1):
     PATH_F = os.path.join(PATH_D, f_name)
     with open(PATH_F, encoding="utf8") as f:
