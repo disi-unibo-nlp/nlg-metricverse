@@ -1,5 +1,7 @@
 # nlg-eval 🖥️🧠 ➡️ 📜
 
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue?style=plastic&logo=python)](#python)
+
 ## 🛠️ SETUP 🛠️
 
 1. Import the project on a Python IDE (PyCharm recommended).
