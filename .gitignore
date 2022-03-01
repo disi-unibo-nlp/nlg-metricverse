@@ -20,5 +20,4 @@ src/questeval/__pycache__/*
 src/rouge/__pycache__/*
 src/FEQA/bart_qg/checkpoints/*.pt
 venv/*
-src/blanche_metrics_mavagnano.egg-info/*
 .idea/*
