@@ -18,9 +18,9 @@
 ## ✔️ EXAMPLE OF USE ✔️
 1. Move to the '_src_' directory.
 2. Run Python commands:
-```
->>> import blanche
->>> bl=blanche.Blanche()
->>> bl.update_test_set("t5_small", "preds_t5small_egv_beam.txt", "targets_t5small_egv_beam.txt")
->>> bl.run_rouge()
-```
+   ```
+   >>> import blanche
+   >>> bl=blanche.Blanche()
+   >>> bl.update_test_set("t5_small", "preds_t5small_egv_beam.txt", "targets_t5small_egv_beam.txt")
+   >>> bl.run_rouge()
+   ```
