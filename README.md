@@ -1,6 +1,6 @@
 # nlg-eval 🖥️🧠 ➡️ 📜
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue?style=plastic&logo=python&logoColor=FFFB71)](#python)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue?style=plastic&logo=python&logoColor=FFF800)](#python)
 
 ## 🛠️ SETUP 🛠️
 
