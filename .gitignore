@@ -2,3 +2,4 @@ data/*
 venv/*
 .idea/*
 build/*
+__pycache__/*
