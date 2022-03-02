@@ -1,2 +1,0 @@
-
-#nltk.download('wordnet')

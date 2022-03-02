@@ -1,7 +1,0 @@
-torch
-tqdm
-transformers
-matplotlib
-pandas
-numpy
-packaging
