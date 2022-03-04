@@ -12,7 +12,7 @@ MetricParam = Union[str, Metric, Dict[str, Any]]
 
 class Nlgmetricverse:
     r"""
-    Simple evaluation pipeline for text based metrics. By default it computes BLEU(n),
+    Simple evaluation pipeline for text based metrics. By default, it computes BLEU(n),
     METEOR, ROUGE-L metrics.
     Note:
         If ``predictions`` and ``references`` are given as list of instances, the order is recieved
