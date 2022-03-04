@@ -1,61 +1,85 @@
 import os
-import subprocess
-import sys
-
-from utils import vars
+import re
+from typing import Any, Dict, List, Optional
 
 
-def init_dep_solved():
-    reqs = subprocess.check_output([sys.executable, '-m', 'pip', 'freeze'])  # get all python packages
-    installed_packages = [r.decode().split('==')[0] for r in reqs.split()]
-    print(installed_packages)
-    for metric in vars.METRICS:
-        print(metric)
-        vars.dep_solved.update({metric: []})  # set for all metrics python dependencies that must be installed to use it
-        pth = "metrics/" + metric + "/" + vars.PATH_DEP
-        dep_list = []
-        if os.path.exists(pth):
-            filed = open(pth, "r")
-            content = filed.read()
-            dep_list = content.split("\n")
-            filed.close()
-        removed_index = []
-        if dep_list:
-            for i in range(0, len(dep_list)):
-                if dep_list[i] in installed_packages:
-                    removed_index.append(i)  # filter list of dependency if already installed
-            filtered_list = [j for i, j in enumerate(dep_list) if i not in removed_index]
-            vars.dep_solved[metric] = filtered_list  # save the dependencies that must be installed
+class NestedSingleType:
+    @staticmethod
+    def is_iterable(obj):
+        if isinstance(obj, str) or isinstance(obj, dict):
+            return False
+        try:
+            iter(obj)
+        except TypeError:
+            return False
+        return True
+
+    @staticmethod
+    def join(types: List[str]):
+        nested_types = f"{types.pop(-1)}"
+
+        for _type in types:
+            nested_types = f"{_type}<{nested_types}>"
+        return nested_types.lower()
+
+    @classmethod
+    def get_type(cls, obj, order: Optional[int] = None):
+        _obj = obj
+
+        types = []
+        while cls.is_iterable(_obj):
+            types.append(type(_obj).__name__)
+            _obj = _obj[0]
+        types.append(type(_obj).__name__)
+
+        if order is not None:
+            try:
+                return types[order]
+            except IndexError:
+                return None
+
+        return cls.join(types)
 
 
-def load(metric):
-    dependencies = vars.dep_solved[metric]
-    if dependencies:  # if there's any dependencies when we load a metrics, install it!
-        for dep in dependencies:
-            script = "pip install " + dep
-            os.system(script)
-        vars.dep_solved[metric] = []
+def camel_to_snake(name):
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
 
-def load_preds(f_name, method=1):
-    PATH_F = os.path.join(vars.PATH_D, f_name)
-    with open(PATH_F, encoding="utf8") as f:
-        lines = f.readlines()
-    input_lines = s_format(lines)
-
-    if method == 2:  # filtering list, take only the first input for each prediction (method 2 for test)
-        f_list = []
-        for n in range(0, len(input_lines), 4):
-            f_list.append(input_lines[n])
-        print(len(f_list))
-        return f_list
-    return input_lines
+def bulk_remove_keys(obj: Dict, keys: List[str]) -> Dict:
+    return {k: v for k, v in obj.items() if k not in keys}
 
 
-def s_format(lines=None):
-    if lines is None:
-        lines = []
-    f_lines = []
-    for line in lines:
-        f_lines.append(line.translate({ord(i): None for i in "[,']"}))  # filter input lines
-    return f_lines
+def get_common_keys(d1: Dict, d2: Dict) -> List[str]:
+    set1 = set(d1.keys())
+    set2 = set(d2.keys())
+
+    return list(set1.intersection(set2))
+
+
+def pop_item_from_dict(d: Dict[str, Any], key: str, default: Any = None, must_exists: bool = False):
+    """
+    Pops key from dict d if key exists, returns d otherwise.
+    Args:
+        d: (``Dict``) Dictionary for key to be removed.
+        key: (``str``) Key name to remove from dictionary d.
+        default: (``Any``) Default value to return if key not found.
+        must_exists: (``bool``) Raises an exception if True when given key does not exist.
+    Returns: Popped value for key if found, None otherwise.
+    """
+    if key not in d and must_exists:
+        raise KeyError(f"'{key}' not found in '{d}'.")
+    val = d.pop(key) if key in d else default
+    return val
+
+
+def replace(a: List, obj: object, index=-1):
+    del a[index]
+    a.insert(index, obj)
+    return a
+
+
+def set_env(name: str, value: str):
+    if not isinstance(value, str):
+        raise ValueError(f"Expected type str for 'value', got {type(value)}.")
+    os.environ[name] = value
