@@ -1,7 +1,0 @@
-import nlgmetricverse
-
-mv=nlgmetricverse.Nlgmetricverse()
-
-mv.update_data("test1", "ref1.txt", "cand1.txt")
-
-mv.run("bleu")
