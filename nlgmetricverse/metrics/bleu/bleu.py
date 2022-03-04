@@ -1,105 +1,38 @@
-# Copyright 2017 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ==============================================================================
+from typing import Any, Dict, Optional
 
-"""
-Python implementation of BLEU and smooth-BLEU.
-This module provides a Python implementation of BLEU and smooth-BLEU.
-Smooth BLEU is computed following the method outlined in the paper:
-Chin-Yew Lin, Franz Josef Och. ORANGE: a method for evaluating automatic evaluation metrics for machine translation.
-COLING 2004.
-"""
+from nlgmetricverse.metrics._core import MetricAlias
+from nlgmetricverse.metrics.bleu.bleu_for_language_generation import BleuForLanguageGeneration
 
-import collections
-import math
+__main_class__ = "Bleu"
+
+from nlgmetricverse.utils.common import camel_to_snake
 
 
-def _get_ngrams(segment, max_order):
-    """
-    Extracts all n-grams upto a given maximum order from an input segment.
-    Args:
-        segment: text segment from which n-grams will be extracted.
-        max_order: maximum length in tokens of the n-grams returned by this methods.
-    Returns:
-        The Counter containing all n-grams upto max_order in segment with a count of how many times each n-gram
-            occurred.
-    """
-    ngram_counts = collections.Counter()
-    for order in range(1, max_order + 1):
-        for i in range(0, len(segment) - order + 1):
-            ngram = tuple(segment[i:i + order])
-            ngram_counts[ngram] += 1
-    return ngram_counts
+class Bleu(MetricAlias):
+    _SUBCLASS = BleuForLanguageGeneration
 
+    @classmethod
+    def construct(
+        cls,
+        task: str = None,
+        resulting_name: Optional[str] = None,
+        compute_kwargs: Optional[Dict[str, Any]] = None,
+        **kwargs,
+    ):
+        subclass = cls._get_subclass()
+        resulting_name = resulting_name or cls._get_path(compute_kwargs=compute_kwargs)
+        return subclass._construct(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
 
-def compute_bleu(reference_corpus, translation_corpus, max_order=4, smooth=False):
-    """
-    Computes BLEU score of translated segments against one or more references.
-    Args:
-        reference_corpus: list of lists of references for each translation. Each reference should be tokenized into a
-            list of tokens.
-        translation_corpus: list of translations to score. Each translation should be tokenized into a list of tokens.
-        max_order: Maximum n-gram order to use when computing BLEU score.
-        smooth: Whether or not to apply Lin et al. 2004 smoothing.
-    Returns:
-        3-Tuple with the BLEU score, n-gram precisions, geometric mean of n-gram precisions and brevity penalty.
-    """
-    matches_by_order = [0] * max_order
-    possible_matches_by_order = [0] * max_order
-    reference_length = 0
-    translation_length = 0
-    for (references, translation) in zip(reference_corpus, translation_corpus):
-        reference_length += min(len(r) for r in references)
-        translation_length += len(translation)
+    @classmethod
+    def _get_path(cls, compute_kwargs: Dict[str, Any] = None) -> str:
+        """
+        All metric modules must implement this method as it is used to form MetricOutput properly.
+        Returns: Metric name.
+        """
+        path = camel_to_snake(cls.__name__)
+        if compute_kwargs is None:
+            return path
 
-        merged_ref_ngram_counts = collections.Counter()
-        for reference in references:
-            merged_ref_ngram_counts |= _get_ngrams(reference, max_order)
-        translation_ngram_counts = _get_ngrams(translation, max_order)
-        overlap = translation_ngram_counts & merged_ref_ngram_counts
-        for ngram in overlap:
-            matches_by_order[len(ngram) - 1] += overlap[ngram]
-        for order in range(1, max_order + 1):
-            possible_matches = len(translation) - order + 1
-            if possible_matches > 0:
-                possible_matches_by_order[order - 1] += possible_matches
-
-    precisions = [0] * max_order
-    for i in range(0, max_order):
-        if smooth:
-            precisions[i] = ((matches_by_order[i] + 1.) /
-                             (possible_matches_by_order[i] + 1.))
-        else:
-            if possible_matches_by_order[i] > 0:
-                precisions[i] = (float(matches_by_order[i]) /
-                                 possible_matches_by_order[i])
-            else:
-                precisions[i] = 0.0
-
-    if min(precisions) > 0:
-        p_log_sum = sum((1. / max_order) * math.log(p) for p in precisions)
-        geo_mean = math.exp(p_log_sum)
-    else:
-        geo_mean = 0
-
-    ratio = float(translation_length) / reference_length
-
-    if ratio > 1.0:
-        bp = 1.
-    else:
-        bp = math.exp(1 - 1. / ratio)
-
-    bleu_score = geo_mean * bp
-
-    return bleu_score, precisions, bp, ratio, translation_length, reference_length
+        max_order = compute_kwargs.get("max_order")
+        if max_order is not None:
+            return f"{path}_{max_order}"
