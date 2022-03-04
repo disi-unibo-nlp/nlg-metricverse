@@ -1,8 +1,6 @@
 import io
 import os
-import platform
 import re
-from typing import List
 
 import setuptools
 
