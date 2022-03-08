@@ -1,4 +1,5 @@
 import warnings
+import time
 from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
@@ -149,6 +150,7 @@ class Nlgmetricverse:
 
     def _compute_single_score(self, inputs) -> Mapping[str, float]:
         metric, predictions, references, reduce_fn = inputs
+        start = time.time()
         if isinstance(metric, Metric):
             predictions, references = Collator(predictions), Collator(references)
             score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn)
@@ -156,6 +158,8 @@ class Nlgmetricverse:
             metric.resulting_name = metric.name
             score = metric.compute(predictions=predictions, references=references)
             score = self._score_to_dict(score, name=metric.name)
+        end = time.time()
+        print("time elapsed computing " + metric.name + ": " + str(end-start) + " sec")
         return score
 
     def _prepare_concurrent_inputs(self, predictions, references, reduce_fn):
