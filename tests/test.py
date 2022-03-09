@@ -1,6 +1,5 @@
 from nlgmetricverse import Nlgmetricverse
 
-scorer = Nlgmetricverse()
 '''
 predictions_str = [
     ["the cat is on the mat", "There is cat playing on the mat"],
@@ -21,6 +20,8 @@ with open('references.txt', 'r') as file:
 print("References:")
 print(references_txt)
 print()
+
+scorer = Nlgmetricverse()
 '''
 scores = scorer(predictions=predictions_str, references=references_str)
 '''
