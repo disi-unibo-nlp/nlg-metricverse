@@ -15,3 +15,4 @@ from nlgmetricverse.metrics._core import (
 from nlgmetricverse.metrics.bleu import Bleu
 from nlgmetricverse.metrics.meteor import Meteor
 from nlgmetricverse.metrics.rouge import Rouge
+from nlgmetricverse.metrics.bartscore import Bartscore
