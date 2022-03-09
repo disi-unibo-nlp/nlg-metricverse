@@ -98,7 +98,7 @@ Examples:
 
 
 @datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
-class BleuForLanguageGeneration(MetricForLanguageGeneration):
+class BleuPlanet(MetricForLanguageGeneration):
     def __init__(self, resulting_name: str = None, compute_kwargs: Dict = None, **kwargs):
         self.should_change_resulting_name = resulting_name is None
         self.tokenizer = DefaultTokenizer()

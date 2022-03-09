@@ -1,8 +1,8 @@
 from nlgmetricverse.metrics._core import MetricAlias
-from nlgmetricverse.metrics.rouge.rouge_for_language_generation import RougeForLanguageGeneration
+from nlgmetricverse.metrics.rouge.rouge_planet import RougePlanet
 
 __main_class__ = "Rouge"
 
 
 class Rouge(MetricAlias):
-    _SUBCLASS = RougeForLanguageGeneration
+    _SUBCLASS = RougePlanet
