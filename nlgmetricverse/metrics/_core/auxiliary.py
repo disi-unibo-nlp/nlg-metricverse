@@ -1,3 +1,7 @@
+"""
+Mapper for any metric class and subclass.
+"""
+
 from typing import Any, Dict, Optional, Union
 
 from nlgmetricverse.metrics._core.base import MetricForTask
@@ -26,14 +30,13 @@ class TaskMapper:
     ) -> MetricForTask:
         """
         Common interface for all metrics for specified MetricForTask to be constructed.
-        Args:
-            task: (``str``) Task name for the desired metric to obtain the subclass.
-            resulting_name (Optional ``str``): Resulting name of the computed score returned. If None,
-                `~._get_path()` is used.
-            compute_kwargs (Optional ``Dict[str, Any]``): Arguments to be passed to `compute()` method of metric at
-                computation.
-        Raises: :py:class:`TaskNotAvailable`
-        Returns: Metric for proper task if available.
+
+        :param task: Task name for the desired metric to obtain the subclass.
+        :param resulting_name: Resulting name of the computed score returned. If None,`~._get_path()` is used.
+        :param compute_kwargs: Arguments to be passed to `compute()` method of metric at computation.
+        :param kwargs: Additional arguments used for the metric computation.
+        :raises Exception: :py:class:`TaskNotAvailable`.
+        :return: Metric for proper task if available.
         """
         subclass = cls._get_subclass(task=task)
         path = cls._get_path()
@@ -47,9 +50,9 @@ class TaskMapper:
         """
         All metric modules must implement this method as it is used to call metrics by default. Should raise
         proper exception (``TaskNotAvailable``) if the task is not supported by the metric.
-        Args:
-            task: (``str``) Task name for the desired metric.
-        Returns: Metric for proper task if available, None otherwise.
+
+        :param task: Task name for the desired metric.
+        :return: Metric for proper task if available, None otherwise.
         """
         return cls._TASKS.get(task, None)
 
@@ -78,13 +81,12 @@ class MetricAlias(TaskMapper):
         """
         Common interface for all metrics for specified MetricForTask to be constructed. Do not raise
         :py:class:`TaskNotAvailable` unlike :py:class:`TaskMapper` as it directly uses _SUBCLASS defined.
-        Args:
-            task: (Ignored ``str``) Ignored. Preserved to provide a common interface.
-            resulting_name (Optional ``str``): Resulting name of the computed score returned. If None,
-                `~._get_path()` is used.
-            compute_kwargs (Optional ``Dict[str, Any]``): Arguments to be passed to `compute()` method of metric at
-                computation.
-        Returns: Metric for proper task if available.
+
+        :param task: Ignored. Preserved to provide a common interface.
+        :param resulting_name: Resulting name of the computed score returned. If None, `~._get_path()` is used.
+        :param compute_kwargs: Arguments to be passed to `compute()` method of metric at computation.
+        :param kwargs: Additional arguments used for the metric computation.
+        :return: Metric for proper task if available.
         """
         subclass = cls._get_subclass()
         resulting_name = resulting_name or cls._get_path()
@@ -92,4 +94,11 @@ class MetricAlias(TaskMapper):
 
     @classmethod
     def _get_subclass(cls, *args, **kwargs) -> MetricForTask:
+        """
+        Get metric subclass.
+
+        :param args: Arguments to pass to the subclass
+        :param kwargs: Additional arguments used for the metric computation.
+        :return: Subclass metric for proper task.
+        """
         return cls._SUBCLASS

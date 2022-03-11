@@ -1,3 +1,7 @@
+"""
+Many utils functions for metrics.
+"""
+
 import importlib.util
 import os
 import warnings
@@ -26,6 +30,13 @@ class TaskNotAvailable(KeyError):
 
 
 def requirement_message(path: str, package_name: str) -> str:
+    """
+    Show a message listing the required packages for a specific metric.
+
+    :param path: Metric path.
+    :param package_name: Package name.
+    :return: A message.
+    """
     return (
         f"In order to use metric '{path}', '{package_name}' is required. "
         f"You can install the package by `pip install {package_name}`."
@@ -33,6 +44,15 @@ def requirement_message(path: str, package_name: str) -> str:
 
 
 def download(source: str, destination: str, overwrite: bool = False, warn: bool = False) -> None:
+    """
+    Download a package.
+
+    :param source: Package source.
+    :param destination: Where to install it.
+    :param overwrite: Bool.
+    :param warn: Bool.
+    :return: None.
+    """
     if os.path.exists(destination) and not overwrite:
         if warn:
             warnings.warn(
@@ -46,6 +66,13 @@ def download(source: str, destination: str, overwrite: bool = False, warn: bool 
 
 
 def import_module(module_name: str, filepath: str):
+    """
+    Import a module.
+
+    :param module_name: Module name.
+    :param filepath: File path.
+    :return: Module.
+    """
     spec = importlib.util.spec_from_file_location(module_name, filepath)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -53,6 +80,13 @@ def import_module(module_name: str, filepath: str):
 
 
 def get_token_lengths(sequences: Sequence[Sequence[str]], reduce_fn: Callable = None) -> Union[int, Sequence[int]]:
+    """
+    Get token lengths.
+
+    :param sequences: Sequencs of tokens.
+    :param reduce_fn: Reduce function name.
+    :return: Token lengths.
+    """
     token_lengths = [len(item) for item in sequences]
     if reduce_fn is not None:
         return int(reduce_fn(token_lengths))
@@ -60,11 +94,22 @@ def get_token_lengths(sequences: Sequence[Sequence[str]], reduce_fn: Callable = 
 
 
 def is_reduce_fn(fun: Callable) -> bool:
+    """
+    Check if a function is a reduce function.
+
+    :param fun: Function name.
+    :return: True if function is a reduce function, else 0.
+    """
     result = np.array(fun([1, 2]))
     return result.size == 1
 
 
 def list_metrics():
+    """
+    Get all metrics installed.
+
+    :return: All metrics installed.
+    """
     _internal_metrics_path = METRICS_ROOT
     metric_modules = list(_internal_metrics_path.glob("[!_]*"))
     return [module_name.name.replace(".py", "") for module_name in metric_modules]

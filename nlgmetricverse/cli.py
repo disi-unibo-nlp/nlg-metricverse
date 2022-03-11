@@ -1,3 +1,6 @@
+"""
+Utils CLI functions, for making simple, correct command line applications in Python.
+"""
 import glob
 import json
 import os.path
@@ -13,6 +16,12 @@ from nlgmetricverse.utils.io import json_load, json_save
 
 
 def file_extension(path: str) -> str:
+    """
+    Get file extension.
+
+    :param path: File path.
+    :return: File extension.
+    """
     return ".".join(path.split("/")[-1].split(".")[1:])
 
 
@@ -23,6 +32,16 @@ def from_file(
     config: Optional[str] = "",
     export: Optional[str] = None,
 ):
+    """
+    Evaluate scores from file.
+
+    :param predictions: Predictions.
+    :param references: References.
+    :param reduce_fn: Reduce function name.
+    :param config: Optional configurations for some metrics.
+    :param export: Optional, save scores in file.
+    :return: Any.
+    """
     args = json_load(config) or {}
     predictions = predictions or args.get("predictions")
     references = references or args.get("references")
@@ -50,6 +69,12 @@ def from_file(
 
 
 def read_file(filepath: str) -> Union[List[str], List[List[str]]]:
+    """
+    Get content of a file.
+
+    :param filepath: File path.
+    :return: File content.
+    """
     if file_extension(filepath) == "csv":
         df = pd.read_csv(filepath, header=None)
         content = df.to_numpy().tolist()
@@ -63,6 +88,13 @@ def read_file(filepath: str) -> Union[List[str], List[List[str]]]:
 
 
 def read_folders(predictions_path: str, references_path: str) -> List[Tuple[str, str]]:
+    """
+    Get files from folders.
+
+    :param predictions_path: Predictions path.
+    :param references_path: References path.
+    :return: Read files.
+    """
     glob_predictions_path = os.path.join(predictions_path, "*")
     glob_references_path = os.path.join(references_path, "*")
     prediction_files = {os.path.basename(p): p for p in glob.glob(glob_predictions_path)}
@@ -80,13 +112,24 @@ def read_folders(predictions_path: str, references_path: str) -> List[Tuple[str,
 
 def score_from_file(scorer: Nlgmetricverse, predictions: str, references: str, reduce_fn: Optional[str] = None) -> \
         Dict[str, Any]:
+    """
+    Get score from files.
+
+    :param scorer: Main class application.
+    :param predictions: Predictions.
+    :param references: References.
+    :param reduce_fn: Reduce function name.
+    :return: scores
+    """
     predictions = read_file(predictions)
     references = read_file(references)
     return scorer(predictions=predictions, references=references, reduce_fn=reduce_fn)
 
 
 def app() -> None:
-    """Cli app."""
+    """
+    Cli app.
+    """
     fire.Fire({"version": nlgmetricverse_version, "eval": from_file})
 
 

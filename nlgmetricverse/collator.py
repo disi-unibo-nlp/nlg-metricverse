@@ -1,3 +1,6 @@
+"""
+Utils collator functions.
+"""
 from typing import List, Union
 
 import numpy as np

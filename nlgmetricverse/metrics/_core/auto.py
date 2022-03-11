@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""
+Methods to resolve metrics path and load them.
+"""
+
 import importlib
 import os
 import warnings
@@ -32,22 +36,20 @@ def load_metric(
     use_nlgmetricverse_only: bool = False,
     **kwargs,
 ) -> Metric:
-    """Load a :py:class:`nlgmetricverse.metrics.Metric`. Alias for :py:class:`nlgmetricverse.metrics.AutoMetric.load()`.
-    Args:
-        path (``str``):
-            path to the metric processing script with the metric builder. Can be either:
-                - a local absolute or relative path to processing script or the directory containing the script,
-                    e.g. ``'./metrics/rogue/rouge.py'``
-                - a metric identifier on the HuggingFace datasets repo (list all available metrics with
-                    ``nlgmetricverse.list_metrics()``) e.g. ``'rouge'`` or ``'bleu'``
-        resulting_name (Optional ``str``): Resulting name of the computed score returned.
-        task (Optional ``str``): Task name for the metric. "language-generation" by default.
-        compute_kwargs (Optional ``Dict[str, Any]``): Arguments to be passed to `compute()` method of metric at
-            computation.
-        use_nlgmetricverse_only (``bool``): Whether to use nlgmetricverse metrics only or not. False by default.
-        kwargs (Optional): Additional keyword arguments to be passed to :py:func:`datasets.load_metric`.
-    Returns:
-        `datasets.Metric`
+    """
+    Load a :py:class:`nlgmetricverse.metrics.Metric`. Alias for :py:class:`nlgmetricverse.metrics.AutoMetric.load()`.
+
+    :param path: path to the metric processing script with the metric builder. Can be either:
+                    - a local absolute or relative path to processing script or the directory containing the script,
+                            e.g. ``'./metrics/rogue/rouge.py'``;
+                    - a metric identifier on the HuggingFace datasets repo (list all available metrics with
+                            ``nlgmetricverse.list_metrics()``) e.g. ``'rouge'`` or ``'bleu'``.
+    :param resulting_name: Resulting name of the computed score returned.
+    :param task: Task name for the metric. "language-generation" by default.
+    :param compute_kwargs: Arguments to be passed to `compute()` method of metric at computation.
+    :param use_nlgmetricverse_only: Whether to use nlgmetricverse metrics only or not. False by default.
+    :param kwargs: Additional keyword arguments to be passed to :py:func:`datasets.load_metric`.
+    :return: `datasets.Metric`
     """
     return AutoMetric.load(
         path=path,
@@ -61,7 +63,7 @@ def load_metric(
 
 class AutoMetric:
     """
-    Instantiates the proper metric class from given parameters.
+    Instantiate the proper metric class from given parameters.
     """
 
     def __init__(
@@ -116,6 +118,13 @@ class AutoMetric:
 
     @staticmethod
     def resolve_metric_path(path: str):
+        """
+        Resolve the path to the metric given, that can be local absolute, local relative or a metric identifier on the
+        HuggingFace datasets repo.
+
+        :param path: path to the metric processing script with the metric builder.
+        :return: the resolved path.
+        """
         class ResolvedName(NamedTuple):
             path: str
             resolution: str

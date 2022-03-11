@@ -1,3 +1,6 @@
+"""
+Main application file. Contains Nlgmetricverse main class.
+"""
 import warnings
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -13,8 +16,7 @@ MetricParam = Union[str, Metric, Dict[str, Any]]
 
 class Nlgmetricverse:
     r"""
-    Simple evaluation pipeline for text based metrics. By default, it computes BLEU(n),
-    METEOR, ROUGE-L metrics.
+    Simple evaluation pipeline for text based metrics. By default, it computes BLEU(n), METEOR, ROUGE-L metrics.
     Note:
         If ``predictions`` and ``references`` are given as list of instances, the order is recieved
         as prediction & reference pairs and evaluation is done by prioratizing the order.
@@ -53,7 +55,14 @@ class Nlgmetricverse:
         references: EvaluationInstance = None,
         reduce_fn: Optional[Union[str, Callable]] = None,
     ) -> Dict[str, float]:
-        """Restricts positional arguments to prevent potential inconsistency between predictions and references."""
+        """
+        Restricts positional arguments to prevent potential inconsistency between predictions and references.
+
+        :param predictions: Predictions.
+        :param references: References.
+        :param reduce_fn: Reduce function name.
+        :return: scores
+        """
         if predictions is None or references is None:
             raise TypeError("Both predictions and references have to be passed.")
         if len(predictions) != len(references):
@@ -85,6 +94,13 @@ class Nlgmetricverse:
 
     @staticmethod
     def _remove_empty(predictions: EvaluationInstance, references: EvaluationInstance):
+        """
+        Remove empty predictions and references.
+
+        :param predictions: Predictions.
+        :param references: References.
+        :return: Number of empty elements.
+        """
         n_items = len(predictions)
         n_empty = 0
         for i in reversed(range(n_items)):
@@ -97,12 +113,24 @@ class Nlgmetricverse:
 
     @staticmethod
     def _load_single_metric(metric: Union[str, Metric]) -> List[Metric]:
+        """
+        Load a single metric.
+
+        :param metric: Metric to be loaded.
+        :return: Loaded metric.
+        """
         if isinstance(metric, str):
             metric = load_metric(metric)
         return [metric]
 
     @staticmethod
     def _load_multiple_metrics(metrics: Union[List[str], List[Dict[str, Any]], List[Metric]]) -> List[Metric]:
+        """
+        Load multiple metrics.
+
+        :param metrics: Metrics to be loaded.
+        :return: Loaded metrics.
+        """
         for i, metric_param in enumerate(metrics):
             if isinstance(metric_param, str):
                 path = metric_param
@@ -129,6 +157,12 @@ class Nlgmetricverse:
         return metrics
 
     def _load_metrics(self, metrics: Union[MetricParam, List[MetricParam]]) -> List[Metric]:
+        """
+        Load all metrics.
+
+        :param metrics: All metrics to be loaded.
+        :return: All metrics loaded.
+        """
         if metrics is None:
             metrics = DEFAULT_METRICS
 
@@ -143,12 +177,25 @@ class Nlgmetricverse:
 
     @staticmethod
     def _score_to_dict(score, name: str) -> Dict[str, float]:
+        """
+        Transform score to dict.
+
+        :param score: score
+        :param name: Name of the score.
+        :return: Dict containing score and name.
+        """
         if isinstance(score, dict):
             return score
 
         return {name: score}
 
     def _compute_single_score(self, inputs) -> Mapping[str, float]:
+        """
+        Compute a single score.
+
+        :param inputs: Inputs parameters.
+        :return: score
+        """
         metric, predictions, references, reduce_fn = inputs
         start = time.time()
         if isinstance(metric, Metric):
@@ -163,12 +210,25 @@ class Nlgmetricverse:
         return score
 
     def _prepare_concurrent_inputs(self, predictions, references, reduce_fn):
+        """
+        Prepare concurrent computing.
+
+        :param predictions: Predictions.
+        :param references: References.
+        :param reduce_fn: Reduce function name.
+        :return: Vect of inputs.
+        """
         inputs = []
         for metric in self.metrics:
             inputs.append((metric, predictions, references, reduce_fn))
         return inputs
 
     def _validate_metrics(self):
+        """
+        Validate if metrics are of the same task.
+
+        :return: True if metrics are of the same task.
+        """
         metrics = self.metrics
         if all([isinstance(metric, Metric) for metric in metrics]):
             task = metrics[0].task
@@ -179,18 +239,32 @@ class Nlgmetricverse:
         return True
 
     def add_metric(self, path: str, resulting_name: str = None, compute_kwargs: Dict = None) -> None:
+        """
+        Add new metric to computing.
+
+        :param path: Metric path.
+        :param resulting_name: Metric name.
+        :param compute_kwargs: Additional arguments for correct output.
+        :return: None.
+        """
         metric = load_metric(path, resulting_name=resulting_name, compute_kwargs=compute_kwargs)
         if metric not in self.metrics:
             self.metrics.append(metric)
             self._validate_metrics()
 
     def remove_metric(self, resulting_name: str, error: bool = True) -> None:
+        """
+        Remove metric from computing.
+
+        :param resulting_name: Metric name.
+        :param error: Raise an error if resulting_metric is not found
+        :return: None.
+        """
         for i, metric in enumerate(self.metrics):
             if metric.resulting_name == resulting_name:
                 self.metrics.pop(i)
                 return
         if error:
-            # raise an error if resulting_metric is not found
             raise ValueError(f"Metric with resulting name {resulting_name} does not exists.")
 
     def evaluate(
@@ -200,5 +274,12 @@ class Nlgmetricverse:
         references: Union[List[str], List[List[str]]] = None,
         reduce_fn: Optional[Union[str, Callable]] = None,
     ) -> Dict[str, float]:
-        """Returns __call__() method. For backward compatibility."""
+        """
+        Returns __call__() method. For backward compatibility.
+
+        :param predictions: Predictions.
+        :param references: References.
+        :param reduce_fn: Reduce function name.
+        :return: ___call__() method.
+        """
         return self.__call__(predictions=predictions, references=references, reduce_fn=reduce_fn)
