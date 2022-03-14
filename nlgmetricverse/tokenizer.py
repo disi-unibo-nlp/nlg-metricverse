@@ -14,14 +14,21 @@ class TokenizerWrapper:
     """
     Wraps the tokenizer object to adapt tokenize method such that it returns
     a tuple of nlgmetricverse.Collator object instead of list.
-    Args:
-        tokenizer: Tokenizer object that implements `tokenize` method.
     """
-
     def __init__(self, tokenizer):
+        """
+        :param tokenizer: Tokenizer object that implements `tokenize` method.
+        """
         self.tokenizer = tokenizer
 
     def tokenize(self, predictions: Collator, references: Collator) -> Tuple[Collator, Collator]:
+        """
+        Returns a tuple of nlgmetricverse.Collator object instead of list.
+
+        :param predictions: Predictions.
+        :param references: References.
+        :return: A tuple of nlgmetricverse.Collator.
+        """
         _predictions = []
         _references = []
         for preds in predictions:

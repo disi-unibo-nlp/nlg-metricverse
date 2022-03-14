@@ -29,10 +29,7 @@ from datasets.utils.logging import get_logger
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.metrics._core.utils import import_module, is_reduce_fn
 
-LanguageGenerationInstance = Union[List[str], List[List[str]]]
-SequenceClassificationInstance = Union[List[int], List[List[int]]]
-SequenceLabelingInstance = List[List[str]]
-EvaluationInstance = Union[LanguageGenerationInstance, SequenceClassificationInstance, SequenceLabelingInstance]
+EvaluationInstance = Union[List[str], List[List[str]]]
 MetricOutput = Dict[str, Union[str, int, float]]
 
 logger = get_logger(__name__)
@@ -313,8 +310,8 @@ class MetricForLanguageGeneration(MetricForTask):
     def _compute(
         self,
         *,
-        predictions: LanguageGenerationInstance = None,
-        references: LanguageGenerationInstance = None,
+        predictions: EvaluationInstance = None,
+        references: EvaluationInstance = None,
         **kwargs,
     ) -> MetricOutput:
         """
@@ -343,8 +340,8 @@ class MetricForLanguageGeneration(MetricForTask):
     @abstractmethod
     def _compute_single_pred_single_ref(
         self,
-        predictions: LanguageGenerationInstance,
-        references: LanguageGenerationInstance,
+        predictions: EvaluationInstance,
+        references: EvaluationInstance,
         reduce_fn: Callable = None,
         **kwargs,
     ):
@@ -362,8 +359,8 @@ class MetricForLanguageGeneration(MetricForTask):
     @abstractmethod
     def _compute_single_pred_multi_ref(
         self,
-        predictions: LanguageGenerationInstance,
-        references: LanguageGenerationInstance,
+        predictions: EvaluationInstance,
+        references: EvaluationInstance,
         reduce_fn: Callable = None,
         **kwargs,
     ):
@@ -381,8 +378,8 @@ class MetricForLanguageGeneration(MetricForTask):
     @abstractmethod
     def _compute_multi_pred_multi_ref(
         self,
-        predictions: LanguageGenerationInstance,
-        references: LanguageGenerationInstance,
+        predictions: EvaluationInstance,
+        references: EvaluationInstance,
         reduce_fn: Callable = None,
         **kwargs,
     ):

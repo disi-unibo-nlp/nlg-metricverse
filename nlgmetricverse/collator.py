@@ -1,5 +1,5 @@
 """
-Utils collator functions.
+Utils collator functions, used for sorting strings properly.
 """
 from typing import List, Union
 
@@ -9,6 +9,9 @@ from nlgmetricverse.utils.common import NestedSingleType
 
 
 class Collator(list):
+    """
+
+    """
     def __init__(self, sequence, keep=False):
         sequence = self._construct(sequence, keep=keep)
         super().__init__(sequence)

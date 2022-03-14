@@ -20,7 +20,7 @@ from typing import Callable, Dict, List
 import datasets
 import numpy as np
 
-from nlgmetricverse.metrics import LanguageGenerationInstance
+from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """
@@ -180,8 +180,8 @@ class BartscorePlanet(MetricForLanguageGeneration):
 
     def _compute_single_pred_single_ref(
             self,
-            predictions: LanguageGenerationInstance,
-            references: LanguageGenerationInstance,
+            predictions: EvaluationInstance,
+            references: EvaluationInstance,
             reduce_fn: Callable = None,
             batch_size: int = 4,
             segment_scores: bool = False,
@@ -200,8 +200,8 @@ class BartscorePlanet(MetricForLanguageGeneration):
 
     def _compute_single_pred_multi_ref(
             self,
-            predictions: LanguageGenerationInstance,
-            references: LanguageGenerationInstance,
+            predictions: EvaluationInstance,
+            references: EvaluationInstance,
             reduce_fn: Callable = None,
             batch_size: int = 4,
             segment_scores: bool = False,
@@ -244,8 +244,8 @@ class BartscorePlanet(MetricForLanguageGeneration):
 
     def _compute_multi_pred_multi_ref(
             self,
-            predictions: LanguageGenerationInstance,
-            references: LanguageGenerationInstance,
+            predictions: EvaluationInstance,
+            references: EvaluationInstance,
             reduce_fn: Callable = None,
             batch_size: int = 4,
             segment_scores: bool = False,

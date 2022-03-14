@@ -206,7 +206,7 @@ class Nlgmetricverse:
             score = metric.compute(predictions=predictions, references=references)
             score = self._score_to_dict(score, name=metric.name)
         end = time.time()
-        print("time elapsed computing " + metric.name + ": " + str(end-start) + " sec")
+        print("time elapsed computing " + metric.resulting_name + ": " + str(end-start) + " sec")
         return score
 
     def _prepare_concurrent_inputs(self, predictions, references, reduce_fn):

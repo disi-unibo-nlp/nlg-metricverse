@@ -1,14 +1,9 @@
 from nlgmetricverse.metrics._core import (
     AutoMetric,
     EvaluationInstance,
-    LanguageGenerationInstance,
     Metric,
     MetricForLanguageGeneration,
-    MetricForSequenceClassification,
-    MetricForSequenceLabeling,
     MetricForTask,
-    SequenceClassificationInstance,
-    SequenceLabelingInstance,
     list_metrics,
     load_metric,
 )
