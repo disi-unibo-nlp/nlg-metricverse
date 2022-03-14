@@ -1,6 +1,8 @@
 import io
 import os
+import platform
 import re
+from typing import List
 
 import setuptools
 
@@ -34,8 +36,17 @@ _DEV_REQUIREMENTS = [
     "math_equivalence @ git+https://github.com/hendrycks/math.git",  # for datasets test metric
 ]
 
+_PRISM_REQUIREMENTS = ["fairseq==0.9.0", "validators"]
+
+_METRIC_REQUIREMENTS = [
+    "bert_score==0.3.11",
+    "bleurt @ git+https://github.com/google-research/bleurt.git",
+]
+
 extras = {
-    "dev": _DEV_REQUIREMENTS
+    "prism": _PRISM_REQUIREMENTS,
+    "metrics": _METRIC_REQUIREMENTS,
+    "dev": _DEV_REQUIREMENTS + _METRIC_REQUIREMENTS,
 }
 
 
