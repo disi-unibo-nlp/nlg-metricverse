@@ -58,7 +58,7 @@ class Nlgmetricverse:
             predictions,
             references,
             reduce_fn: Optional[Union[str, Callable]] = None,
-            method: str = "default",
+            method,
     ) -> Dict[str, float]:
         """
         Restricts positional arguments to prevent potential inconsistency between predictions and references.
