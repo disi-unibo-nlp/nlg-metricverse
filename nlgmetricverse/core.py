@@ -7,9 +7,11 @@ from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.data_loader import DataLoader
 from nlgmetricverse.definitions import DEFAULT_METRICS
 from nlgmetricverse.metrics import EvaluationInstance, Metric, load_metric
 from nlgmetricverse.utils.common import pop_item_from_dict, replace, set_env
+from nlgmetricverse import data_loader
 
 MetricParam = Union[str, Metric, Dict[str, Any]]
 
@@ -38,22 +40,25 @@ class Nlgmetricverse:
     """
 
     def __init__(
-        self,
-        metrics: Optional[Union[MetricParam, List[MetricParam]]] = None,
-        run_concurrent=False,
+            self,
+            metrics: Optional[Union[MetricParam, List[MetricParam]]] = None,
+            run_concurrent=False,
     ):
         self.metrics = self._load_metrics(metrics)
         self._concurrent = run_concurrent
+        self.res_predictions: EvaluationInstance = None,
+        self.res_references: EvaluationInstance = None,
 
         # Sanity check
         self._validate_metrics()
 
     def __call__(
-        self,
-        *,
-        predictions: EvaluationInstance = None,
-        references: EvaluationInstance = None,
-        reduce_fn: Optional[Union[str, Callable]] = None,
+            self,
+            *,
+            predictions,
+            references,
+            reduce_fn: Optional[Union[str, Callable]] = None,
+            method: str = "default",
     ) -> Dict[str, float]:
         """
         Restricts positional arguments to prevent potential inconsistency between predictions and references.
@@ -63,14 +68,13 @@ class Nlgmetricverse:
         :param reduce_fn: Reduce function name.
         :return: scores
         """
-        if predictions is None or references is None:
-            raise TypeError("Both predictions and references have to be passed.")
-        if len(predictions) != len(references):
-            raise ValueError("Lengths of predictions and references must be equal.")
 
+        dl = data_loader.DataLoader(predictions, references, method)
+        self.res_predictions = dl.get_predictions()
+        self.res_references = dl.get_references()
         scores = dict()
-        scores["total_items"] = len(references)
-        scores["empty_items"] = self._remove_empty(predictions, references)
+        scores["total_items"] = len(self.res_references)
+        scores["empty_items"] = self._remove_empty(self.res_predictions, self.res_references)
 
         if scores["total_items"] == scores["empty_items"]:
             warnings.warn(
@@ -79,14 +83,14 @@ class Nlgmetricverse:
             return scores
 
         if self._concurrent:
-            inputs_list = self._prepare_concurrent_inputs(predictions, references, reduce_fn)
+            inputs_list = self._prepare_concurrent_inputs(self.res_predictions, self.res_references, reduce_fn)
             set_env("TOKENIZERS_PARALLELISM", "true")
             with ProcessPoolExecutor() as executor:
                 for score in executor.map(self._compute_single_score, inputs_list):
                     scores.update(score)
         else:
             for metric in self.metrics:
-                inputs = (metric, predictions, references, reduce_fn)
+                inputs = (metric, self.res_predictions, self.res_references, reduce_fn)
                 score = self._compute_single_score(inputs)
                 scores.update(score)
 
@@ -206,7 +210,7 @@ class Nlgmetricverse:
             score = metric.compute(predictions=predictions, references=references)
             score = self._score_to_dict(score, name=metric.name)
         end = time.time()
-        print("time elapsed computing " + metric.resulting_name + ": " + str(end-start) + " sec")
+        print("time elapsed computing " + metric.resulting_name + ": " + str(end - start) + " sec")
         return score
 
     def _prepare_concurrent_inputs(self, predictions, references, reduce_fn):
@@ -268,11 +272,11 @@ class Nlgmetricverse:
             raise ValueError(f"Metric with resulting name {resulting_name} does not exists.")
 
     def evaluate(
-        self,
-        *,
-        predictions: Union[List[str], List[List[str]]] = None,
-        references: Union[List[str], List[List[str]]] = None,
-        reduce_fn: Optional[Union[str, Callable]] = None,
+            self,
+            *,
+            predictions: Union[List[str], List[List[str]]] = None,
+            references: Union[List[str], List[List[str]]] = None,
+            reduce_fn: Optional[Union[str, Callable]] = None,
     ) -> Dict[str, float]:
         """
         Returns __call__() method. For backward compatibility.

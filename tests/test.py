@@ -10,12 +10,12 @@ references_str = [
     ["Today is a wonderful day", "The weather outside is wonderful."]
 ]
 '''
-with open("predictions.txt", "r") as file:
+with open("predictions/predictions.txt", "r") as file:
     predictions_txt = file.readlines()
 print("Predictions:")
 print(predictions_txt)
 
-with open('references.txt', 'r') as file:
+with open('references/references.txt', 'r') as file:
     references_txt = file.readlines()
 print("References:")
 print(references_txt)
