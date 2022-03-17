@@ -11,8 +11,8 @@ class DataLoader:
             references,
             method,
     ):
-        self.res_predictions: EvaluationInstance = None
-        self.res_references: EvaluationInstance = None
+        self.res_predictions: EvaluationInstance = []
+        self.res_references: EvaluationInstance = []
         self.dir_predictions = predictions
         self.dir_references = references
         self.execute_method(method)
@@ -36,6 +36,12 @@ class DataLoader:
         elif method == "no_new_line":
             self.no_new_line(self.res_predictions, self.dir_predictions)
             self.no_new_line(self.res_references, self.dir_references)
+        print()
+        print("Predictions: ")
+        print(self.res_predictions)
+        print("References: ")
+        print(self.res_references)
+        print()
         return
 
     @staticmethod

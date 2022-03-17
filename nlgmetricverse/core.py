@@ -55,10 +55,10 @@ class Nlgmetricverse:
     def __call__(
             self,
             *,
-            predictions,
-            references,
+            predictions: str,
+            references: str,
             reduce_fn: Optional[Union[str, Callable]] = None,
-            method,
+            method: str = "no_new_line",
     ) -> Dict[str, float]:
         """
         Restricts positional arguments to prevent potential inconsistency between predictions and references.
