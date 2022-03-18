@@ -19,24 +19,6 @@ MetricParam = Union[str, Metric, Dict[str, Any]]
 class Nlgmetricverse:
     r"""
     Simple evaluation pipeline for text based metrics. By default, it computes BLEU(n), METEOR, ROUGE-L metrics.
-    Note:
-        If ``predictions`` and ``references`` are given as list of instances, the order is recieved
-        as prediction & reference pairs and evaluation is done by prioratizing the order.
-    Examples:
-    .. code-block:: python
-        >>> # Example Evaluation
-        >>> predictions = [
-            ["the cat is on the mat", "there is playing cat on the mat."],
-            ["Look! a wonderful day."]
-        ]
-        >>> references = [
-            ["the cat is playing on the mat.", "The cat plays on the mat."],
-            ["Today is a wonderful day", "The weather outside is wonderful."]
-        ]
-        >>> scorer = Nlgmetricverse()
-        >>> results = scorer(predictions=predictions, references=references)
-        >>> print(results)
-        {'bleu_1': {"score": 0.6111111111111112, ...}, ..., 'meteor': {"score": 0.6470588235294118, ...}}
     """
 
     def __init__(
@@ -66,6 +48,7 @@ class Nlgmetricverse:
         :param predictions: Predictions.
         :param references: References.
         :param reduce_fn: Reduce function name.
+        :param method: Method to analyse inputs. Can be "no_new_line" or "read_lines"
         :return: scores
         """
 
