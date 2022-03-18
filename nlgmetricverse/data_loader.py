@@ -71,6 +71,9 @@ class DataLoader:
     def read_lines(input_var, input_dir):
         """
         One element for each line.
+
+        :param input_var: Var containing computes results.
+        :param input_dir: Path to dir containing inputs.
         """
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
@@ -82,6 +85,9 @@ class DataLoader:
     def no_new_line(input_var, input_dir):
         """
         Multiline elements.
+
+        :param input_var: Var containing computes results.
+        :param input_dir: Path to dir containing inputs.
         """
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
