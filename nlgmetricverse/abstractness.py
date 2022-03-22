@@ -2,6 +2,15 @@ from nlgmetricverse import data_loader
 
 
 def abstractness(predictions, references, method, n=1):
+    """
+    Count abstractness of the text.
+
+    :param predictions: Predictions.
+    :param references: References.
+    :param method: Method to analyse inputs. Can be "no_new_line" or "read_lines".
+    :param n: Length of monograms, 1 by default.
+    :return: (float) abstractness.
+    """
     dl = data_loader.DataLoader(predictions=predictions, references=references, method=method)
     res_predictions = dl.get_predictions()
     res_references = dl.get_references()
@@ -24,7 +33,14 @@ def abstractness(predictions, references, method, n=1):
     return total_match / n_words
 
 
-def ngrams(tokens, n):  # provides an iterable object of n-gram
+def ngrams(tokens, n):
+    """
+    Provides an iterable object of n-gram.
+
+    :param tokens: Monograms.
+    :param n: Length of the iterable object.
+    :return: Iterable object of n-gram.
+    """
     ngram = []
     for token in tokens:
         if len(ngram) < n:

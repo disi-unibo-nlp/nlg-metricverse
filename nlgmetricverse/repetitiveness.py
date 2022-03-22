@@ -8,7 +8,7 @@ def repetitiveness(predictions, references):
 
     :param predictions: Predictions.
     :param references: References.
-    :return: (int) count.
+    :return: (int) repetitiveness.
     """
     dl = data_loader.DataLoader(predictions=predictions, references=references)
     res_predictions = dl.get_predictions()
