@@ -2,16 +2,15 @@ from collections import Counter
 from nlgmetricverse import data_loader
 
 
-def repetitiveness(predictions, references, method):
+def repetitiveness(predictions, references):
     """
     Count how many words are repeated in predictions.
 
     :param predictions: Predictions.
     :param references: References.
-    :param method: Necessary for data_loader but doesn't affect the count.
     :return: (int) count.
     """
-    dl = data_loader.DataLoader(predictions=predictions, references=references, method=method)
+    dl = data_loader.DataLoader(predictions=predictions, references=references)
     res_predictions = dl.get_predictions()
     counter = 0
     for candidate in res_predictions:

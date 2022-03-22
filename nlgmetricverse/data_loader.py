@@ -12,7 +12,7 @@ class DataLoader:
             self,
             predictions,
             references,
-            method,
+            method = "no_new_line",
     ):
         """
         :param predictions: Dir containing predictions.

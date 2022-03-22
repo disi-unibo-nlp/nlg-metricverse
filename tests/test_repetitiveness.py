@@ -6,6 +6,6 @@ from nlgmetricverse.repetitiveness import repetitiveness
 predictions = os.getcwd() + "/predictions"
 references = os.getcwd() + "/references"
 
-rep = repetitiveness(predictions=predictions, references=references, method="no_new_line")
+rep = repetitiveness(predictions=predictions, references=references)
 print("\nRepetitiveness:")
 print(rep)
