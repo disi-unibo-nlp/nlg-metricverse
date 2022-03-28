@@ -47,7 +47,7 @@ def download(source: str, destination: str, overwrite: bool = False, warn: bool 
     """
     Download a package.
 
-    :param source: Package source.
+    :param source: Package sources.
     :param destination: Where to install it.
     :param overwrite: Bool.
     :param warn: Bool.

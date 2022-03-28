@@ -67,7 +67,7 @@ information.
 """
 
 _KWARGS_DESCRIPTION = """
-BERTScore Metrics with the hashcode from a source against one or more references.
+BERTScore Metrics with the hashcode from a sources against one or more references.
 Args:
     predictions (list of str): Prediction/candidate sentences.
     references (list of str or list of list of str): Reference sentences.
