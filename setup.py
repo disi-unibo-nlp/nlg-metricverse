@@ -39,6 +39,7 @@ _PRISM_REQUIREMENTS = ["fairseq==0.9.0", "validators"]
 _METRIC_REQUIREMENTS = [
     "bert_score==0.3.11",
     "bleurt @ git+https://github.com/google-research/bleurt.git",
+    "unbabel-comet @ git+https://github.com/Unbabel/COMET.git@c772b679e20725e6cc79b2107d50594f9ea7a4ae",
 ]
 
 extras = {
