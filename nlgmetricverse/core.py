@@ -41,6 +41,7 @@ class Nlgmetricverse:
             references: str,
             reduce_fn: Optional[Union[str, Callable]] = None,
             method: str = "no_new_line",
+            **kwargs
     ) -> Dict[str, float]:
         """
         Restricts positional arguments to prevent potential inconsistency between predictions and references.
@@ -66,14 +67,14 @@ class Nlgmetricverse:
             return scores
 
         if self._concurrent:
-            inputs_list = self._prepare_concurrent_inputs(self.res_predictions, self.res_references, reduce_fn)
+            inputs_list = self._prepare_concurrent_inputs(self.res_predictions, self.res_references, reduce_fn, kwargs)
             set_env("TOKENIZERS_PARALLELISM", "true")
             with ProcessPoolExecutor() as executor:
                 for score in executor.map(self._compute_single_score, inputs_list):
                     scores.update(score)
         else:
             for metric in self.metrics:
-                inputs = (metric, self.res_predictions, self.res_references, reduce_fn)
+                inputs = (metric, self.res_predictions, self.res_references, reduce_fn, kwargs)
                 score = self._compute_single_score(inputs)
                 scores.update(score)
 
@@ -183,20 +184,20 @@ class Nlgmetricverse:
         :param inputs: Inputs parameters.
         :return: score
         """
-        metric, predictions, references, reduce_fn = inputs
+        metric, predictions, references, reduce_fn, kwargs = inputs
         start = time.time()
         if isinstance(metric, Metric):
             predictions, references = Collator(predictions), Collator(references)
-            score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn)
+            score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn, **kwargs)
         else:
             metric.resulting_name = metric.name
-            score = metric.compute(predictions=predictions, references=references)
+            score = metric.compute(predictions=predictions, references=references, **kwargs)
             score = self._score_to_dict(score, name=metric.name)
         end = time.time()
         print("time elapsed computing " + metric.resulting_name + ": " + str(end - start) + " sec")
         return score
 
-    def _prepare_concurrent_inputs(self, predictions, references, reduce_fn):
+    def _prepare_concurrent_inputs(self, predictions, references, reduce_fn, kwargs):
         """
         Prepare concurrent computing.
 
@@ -207,7 +208,7 @@ class Nlgmetricverse:
         """
         inputs = []
         for metric in self.metrics:
-            inputs.append((metric, predictions, references, reduce_fn))
+            inputs.append((metric, predictions, references, reduce_fn, kwargs))
         return inputs
 
     def _validate_metrics(self):

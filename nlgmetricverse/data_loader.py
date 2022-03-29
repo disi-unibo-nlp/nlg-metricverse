@@ -78,7 +78,7 @@ class DataLoader:
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
             with open(f, 'r') as file:
-                input_var += file.readlines()
+                input_var.append(file.read().splitlines())
         return
 
     @staticmethod
@@ -92,5 +92,5 @@ class DataLoader:
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
             with open(f, 'r') as file:
-                input_var += [file.read().replace('\n', ' ')]
+                input_var.append(file.read().replace('\n', ' '))
         return
