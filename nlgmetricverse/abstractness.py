@@ -15,9 +15,22 @@ def abstractness(predictions, references, method, n=1):
     res_predictions = dl.get_predictions()
     res_references = dl.get_references()
 
+    if isinstance(res_predictions[0], list):
+        predList = []
+        refList = []
+        for pred in res_predictions:
+            predList += pred
+        for ref in res_references:
+            refList += ref
+        result = compute_abstractness(refList, predList, n)
+    else:
+        result = compute_abstractness(res_references, res_predictions, n)
+    return result
+
+
+def compute_abstractness(res_references, res_predictions, n):
     total_match = 0
     n_words = 0
-
     for reference, candidate in zip(res_references, res_predictions):
         match = 0
         monograms = candidate.split(" ")
@@ -51,3 +64,4 @@ def ngrams(tokens, n):
             ngram.append(token)
     if len(ngram) == n:
         yield ngram
+

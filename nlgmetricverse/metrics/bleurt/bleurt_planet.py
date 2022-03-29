@@ -12,9 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" BLEURT metric. The part of this file is adapted from BLEURT implementation
+"""
+BLEURT metric. The part of this file is adapted from BLEURT implementation
 of datasets package. See
-https://github.com/huggingface/datasets/blob/master/metrics/bleurt/bleurt.py """
+https://github.com/huggingface/datasets/blob/master/metrics/bleurt/bleurt.py
+"""
 
 import os
 from typing import Callable
@@ -22,7 +24,7 @@ from typing import Callable
 import datasets
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
-from nlgmetricverse.metrics._core.utils import PackagePlaceholder
+from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import bleurt` placeholder
 bleurt = PackagePlaceholder(version="1.2.2")
@@ -57,12 +59,16 @@ Args:
 Returns:
     'scores': List of scores.
 Examples:
-    >>> predictions = ["hello there", "general kenobi"]
-    >>> references = ["hello there", "general kenobi"]
-    >>> bleurt = nlgmetricverse.load_metric("bleurt")
+    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> references = [
+        ["the cat is playing on the mat.", "The cat plays on the mat."], 
+        ["Today is a wonderful day", "The weather outside is wonderful."]
+    ]
+    >>> bleurt = nlgmetricverse.load_metric("bleurt", config_name="bleurt-tiny-128")
     >>> results = bleurt.compute(predictions=predictions, references=references)
-    >>> print([round(v, 2) for v in results["scores"]])
-    [1.03, 1.04]
+    >>> print(results)
+    {'bleurt': {'score': 0.25963682122528553, 'scores': [0.47344309091567993, 0.04583055153489113],
+    'checkpoint': 'bleurt-tiny-128'}}
 """
 
 _LICENSE = """Copyright 2021 Google.
@@ -105,19 +111,16 @@ class BleurtPlanet(MetricForLanguageGeneration):
         )
 
     def _download_and_prepare(self, dl_manager):
-        """
-
-        :param dl_manager:
-        :return:
-        """
         global bleurt
         try:
             from bleurt import score
         except ModuleNotFoundError:
             raise ModuleNotFoundError(
-                f"In order to use metric BLEURT, 'bleurt' is required. "
-                f"You can install the package by: "
-                f"`bleurt @ pip install git+https://github.com/google-research/bleurt.git`."
+                requirement_message(
+                    path="bleurt",
+                    package_name="bleurt",
+                    package_source="git+https://github.com/devrimcavusoglu/bleurt.git",
+                )
             )
 
         # check that config name specifies a valid BLEURT model
@@ -137,7 +140,7 @@ class BleurtPlanet(MetricForLanguageGeneration):
 
         else:
             raise KeyError(
-                f"{self.config_name} model not found. You should supply the name of a model checkpoint for bleurt in: "
+                f"{self.config_name} model not found. You should supply the name of a model checkpoint for bleurt in "
                 f"{CHECKPOINT_URLS.keys()}"
             )
 
@@ -188,3 +191,13 @@ class BleurtPlanet(MetricForLanguageGeneration):
             scores.append(reduced_score)
 
         return {"score": sum(scores) / len(scores), "scores": scores, "checkpoint": self.config_name}
+
+
+if __name__ == "__main__":
+    import json
+
+    predictions = [["hello there", "general kenobi"]]
+    references = [["hello there", "general kenobi"]]
+    bleurt = BleurtPlanet()
+    results = bleurt.compute(predictions=predictions, references=references)
+    print(json.dumps(results, indent=2))

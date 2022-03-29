@@ -4,5 +4,5 @@ DEFAULT_METRICS = [
     {"path": "bleu", "compute_kwargs": {"max_order": 3}},
     {"path": "bleu", "compute_kwargs": {"max_order": 4}},
     {"path": "meteor"},
-    {"path": "rouge"},
+    {"path": "rouge"}
 ]
