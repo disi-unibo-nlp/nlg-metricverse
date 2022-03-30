@@ -23,7 +23,7 @@ from typing import Callable, Union
 import datasets
 
 from nlgmetricverse.metrics import EvaluationInstance
-from nlgmetricverse.metrics._core import MetricForLanguageGeneration
+from nlgmetricverse.metrics._core import MetricForCrossLingualEvaluation
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import comet` placeholder
@@ -57,7 +57,7 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-Crosslingual Optimized Metric for Evaluation of Translation (COMET) is an open-sources framework used to train 
+Crosslingual Optimized Metric for Evaluation of Translation (COMET) is an open-source framework used to train 
 Machine Translation metrics that achieve high levels of correlation with different types of human judgments 
 (HTER, DA's or MQM). With the release of the framework the authors also released fully trained models that were used 
 to compete in the WMT20 Metrics Shared Task achieving SOTA in that years competition. See the [README.md] file at 
@@ -78,20 +78,20 @@ Returns:
     `scores`: List of scores.
 Examples:
     >>> comet_metric = nlgmetricverse.load_metric('comet', config_name="wmt21-cometinho-da")
-    >>> sources = ["Die Katze spielt auf der Matte.", "Heute ist ein wunderbarer Tag."]
+    >>> source = ["Die Katze spielt auf der Matte.", "Heute ist ein wunderbarer Tag."]
     >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> results = comet_metric.compute(sources=sources, predictions=hypothesis, references=reference)
+    >>> results = comet_metric.compute(sources=source, predictions=hypothesis, references=reference)
     >>> print(results)
     {'comet': {'scores': [0.6338749527931213, 0.4925243854522705], 'samples': 0.5631996691226959}}
 """
 
 
 @datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
-class CometPlanet(MetricForLanguageGeneration):
+class CometPlanet(MetricForCrossLingualEvaluation):
     def _download_and_prepare(self, dl_manager):
         global comet
         try:

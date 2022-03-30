@@ -4,6 +4,7 @@ from nlgmetricverse.metrics._core.base import (
     EvaluationInstance,
     Metric,
     MetricForLanguageGeneration,
+    MetricForCrossLingualEvaluation,
     MetricForTask,
     MetricOutput,
 )
