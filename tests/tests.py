@@ -74,6 +74,21 @@ class TestMetrics(unittest.TestCase):
         }
         self.assertEqual(scores, result, "Should be result")
 
+    def test_chrf(self):
+        scorer = Nlgmetricverse(metrics=["chrf"])
+        scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
+        result = {
+            'chrf': {
+                'score': 0.29778203723986857,
+                'char_order': 6,
+                'word_order': 0,
+                'beta': 2
+            },
+            'empty_items': 0,
+            'total_items': 2
+        }
+        self.assertEqual(scores, result, "Should be result")
+
     def test_comet(self):
         import nlgmetricverse
         comet_metric = nlgmetricverse.load_metric('comet', config_name="wmt21-cometinho-da")
