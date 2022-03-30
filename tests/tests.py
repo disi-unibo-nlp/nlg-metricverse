@@ -189,6 +189,24 @@ class TestMetrics(unittest.TestCase):
         }
         self.assertEqual(scores, result, "Should be result")
 
+    def test_wer(self):
+        scorer = Nlgmetricverse(metrics=["wer"])
+        scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
+        result = {
+            "wer": {
+                "score": 1.0,
+                "overall": {
+                    "substitutions": 2.8333333333333335,
+                    "deletions": 0.5,
+                    "insertions": 0.16666666666666666,
+                    "hits": 2.6666666666666665
+                }
+            },
+            'empty_items': 0,
+            'total_items': 2
+        }
+        self.assertEqual(scores, result, "Should be result")
+
     def test_abstractness(self):
         from nlgmetricverse.abstractness import abstractness
         scores = abstractness(predictions=self.predictions, references=self.references, method="read_lines")

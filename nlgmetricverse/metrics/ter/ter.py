@@ -9,6 +9,6 @@ __main_class__ = "TER"
 
 class TER(MetricAlias):
     """
-    TER metric superclass.
+    TER metric super class.
     """
     _SUBCLASS = TERPlanet
