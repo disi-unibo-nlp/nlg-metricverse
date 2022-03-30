@@ -162,7 +162,8 @@ class BertscorePlanet(MetricForLanguageGeneration):
             scorer = functools.partial(scorer, use_fast_tokenizer=use_fast_tokenizer)
         elif use_fast_tokenizer:
             raise ImportWarning(
-                "To use a fast tokenizer, the module `bert-score>=0.3.10` is required, and the current version of `bert-score` doesn't match this condition.\n"
+                "To use a fast tokenizer, the module `bert-score>=0.3.10` is required, and the current version of "
+                "`bert-score` doesn't match this condition.\n"
                 'You can install it with `pip install "bert-score>=0.3.10"`.'
             )
 
@@ -309,7 +310,8 @@ class BertscorePlanet(MetricForLanguageGeneration):
         # Average reduced scores
         return self._reduce_multi_pred_scores(scores, reduce_fn=np.mean, hashcode=hashcode)
 
-    def _reduce_multi_pred_scores(self, results: List[Dict], reduce_fn, **kwargs) -> Dict:
+    @staticmethod
+    def _reduce_multi_pred_scores(results: List[Dict], reduce_fn, **kwargs) -> Dict:
         df = pd.DataFrame(results)
         if "hashcode" in df:
             df.drop("hashcode", axis=1, inplace=True)

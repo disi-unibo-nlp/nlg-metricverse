@@ -80,7 +80,7 @@ Returns:
     'ref_len': reference length,
     'adjusted_precision': adjusted precisions with corrections for multiple predictions cases.
 Examples:
-    >>> sacrebleu = jury.load_metric("sacrebleu")
+    >>> sacrebleu = nlgmetricverse.load_metric("sacrebleu")
     >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 

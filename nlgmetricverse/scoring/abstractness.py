@@ -51,7 +51,7 @@ def ngrams(tokens, n):
     Provides an iterable object of n-gram.
 
     :param tokens: Monograms.
-    :param n: Length of the iterable object.
+    :param n: Length of the gram.
     :return: Iterable object of n-gram.
     """
     ngram = []

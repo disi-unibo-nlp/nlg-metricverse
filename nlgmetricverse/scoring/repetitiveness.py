@@ -23,9 +23,9 @@ def repetitiveness(predictions, references, method):
     return result
 
 
-def compute_repetitiveness(prediction):
+def compute_repetitiveness(predictions):
     counter = 0
-    for candidate in prediction:
+    for candidate in predictions:
         monograms = candidate.split(" ")
         n_words = len(monograms)
         m_counted = Counter(monograms)
@@ -33,4 +33,4 @@ def compute_repetitiveness(prediction):
             if ngram > 1:
                 counter = counter + 1  # if a word  that repeats itself is found
         counter = counter + n_words
-    return counter / len(prediction)
+    return counter / len(predictions)
