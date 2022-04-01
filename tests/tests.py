@@ -167,31 +167,31 @@ class TestMetrics(unittest.TestCase):
             "sacrebleu": {
                 "score": 0.32377227131456443,
                 "counts": [
-                  11,
-                  6,
-                  3,
-                  0
+                    11,
+                    6,
+                    3,
+                    0
                 ],
                 "totals": [
-                  13,
-                  11,
-                  9,
-                  7
+                    13,
+                    11,
+                    9,
+                    7
                 ],
                 "precisions": [
-                  0.8461538461538461,
-                  0.5454545454545454,
-                  0.33333333333333337,
-                  0.07142857142857144
+                    0.8461538461538461,
+                    0.5454545454545454,
+                    0.33333333333333337,
+                    0.07142857142857144
                 ],
                 "bp": 1.0,
                 "sys_len": 11,
                 "ref_len": 12,
                 "adjusted_precisions": [
-                  0.8461538461538461,
-                  0.5454545454545454,
-                  0.33333333333333337,
-                  0.07142857142857144
+                    0.8461538461538461,
+                    0.5454545454545454,
+                    0.33333333333333337,
+                    0.07142857142857144
                 ]
             },
             'empty_items': 0,
@@ -237,17 +237,23 @@ class TestMetrics(unittest.TestCase):
         result = 0.29411764705882354
         self.assertEqual(scores, result, "Should be 0.29411764705882354")
 
+    def test_average_unique_ngram(self):
+        from nlgmetricverse.scoring.average_unique_ngram import average_unique_ngram
+        scores = average_unique_ngram(predictions=self.predictions, references=self.references, method="read_lines")
+        result = 16 / 17
+        self.assertEqual(scores, result, "Should be 16/17")
+
+    def test_readability(self):
+        from nlgmetricverse.scoring.readability import readability
+        scores = readability(predictions=self.predictions, references=self.references, method="read_lines")
+        result = 89.9254807692308
+        self.assertEqual(scores, result, "Should be 89.9254807692308")
+
     def test_repetitiveness(self):
         from nlgmetricverse.scoring.repetitiveness import repetitiveness
         scores = repetitiveness(predictions=self.predictions, references=self.references, method="read_lines")
         result = 6.0
         self.assertEqual(scores, result, "Should be 6.0")
-
-    def test_average_unique_ngram(self):
-        from nlgmetricverse.scoring.average_unique_ngram import average_unique_ngram
-        scores = average_unique_ngram(predictions=self.predictions, references=self.references, method="read_lines")
-        result = 16/17
-        self.assertEqual(scores, result, "Should be 16/17")
 
 
 if __name__ == '__main__':

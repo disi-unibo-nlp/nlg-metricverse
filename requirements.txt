@@ -7,3 +7,4 @@ rouge-score==0.0.4
 setuptools==59.5.0
 requests>=2.27.1
 click==8.0.4
+syllables>=1.0.3
