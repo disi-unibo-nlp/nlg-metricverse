@@ -125,8 +125,8 @@ class TestMetrics(unittest.TestCase):
         scorer = Nlgmetricverse(metrics=["moverscore"])
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
         result = {
-            'meteor': {
-                'score': 0.727184593644221
+            'moverscore': {
+                'score': 0.577410325381642
             },
             'empty_items': 0,
             'total_items': 2

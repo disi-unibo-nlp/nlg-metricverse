@@ -66,12 +66,26 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             version=2
     ):
-        if version == 2:
-            import moverscore_v2 as mv2
-            scores = self.corpus_score(predictions, references, version=2)
+        if isinstance(predictions[0], List):
+            res = []
+            score = None
+            for prediction, reference in zip(predictions, references):
+                newRef = [reference]
+                newPred = prediction
+                while len(reference) != len(prediction):
+                    newItem = ''
+                    newPred.append(newItem)
+                if version == 2:
+                    score = self.corpus_score(newPred, newRef, version=2)
+                else:
+                    score = self.corpus_score(newPred, newRef, version=1)
+                res += score
+            scores = np.mean(score)
         else:
-            import moverscore as mv
-            scores = self.corpus_score(predictions, references, version=1)
+            if version == 2:
+                scores = self.corpus_score(predictions, references, version=2)
+            else:
+                scores = self.corpus_score(predictions, references, version=1)
         return {"score": scores}
 
     def _compute_single_pred_multi_ref(
@@ -81,12 +95,26 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             version=2
     ):
-        if version == 2:
-            import moverscore_v2 as mv2
-            scores = self.corpus_score(predictions, references, version=2)
+        if isinstance(predictions[0], List):
+            res = []
+            score = None
+            for prediction, reference in zip(predictions, references):
+                newRef = [reference]
+                newPred = prediction
+                while len(reference) != len(prediction):
+                    newItem = ''
+                    newPred.append(newItem)
+                if version == 2:
+                    score = self.corpus_score(newPred, newRef, version=2)
+                else:
+                    score = self.corpus_score(newPred, newRef, version=1)
+                res += score
+            scores = np.mean(score)
         else:
-            import moverscore as mv
-            scores = self.corpus_score(predictions, references, version=1)
+            if version == 2:
+                scores = self.corpus_score(predictions, references, version=2)
+            else:
+                scores = self.corpus_score(predictions, references, version=1)
         return {"score": scores}
 
     def _compute_multi_pred_multi_ref(
@@ -97,18 +125,25 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             version=2
     ):
         if isinstance(predictions[0], List):
-            newPred = []
-            for prediction in predictions:
-                newPred += prediction
-            predictions = newPred
-        if version == 2:
-            import moverscore_v2 as mv2
-            print(predictions)
-            print(references)
-            scores = self.corpus_score(predictions, references, version=2)
+            res = []
+            score = None
+            for prediction, reference in zip(predictions, references):
+                newRef = [reference]
+                newPred = prediction
+                while len(reference) != len(prediction):
+                    newItem = ''
+                    newPred.append(newItem)
+                if version == 2:
+                    score = self.corpus_score(newPred, newRef, version=2)
+                else:
+                    score = self.corpus_score(newPred, newRef, version=1)
+                res += score
+            scores = np.mean(score)
         else:
-            import moverscore as mv
-            scores = self.corpus_score(predictions, references, version=1)
+            if version == 2:
+                scores = self.corpus_score(predictions, references, version=2)
+            else:
+                scores = self.corpus_score(predictions, references, version=1)
         return {"score": scores}
 
     def corpus_score(
