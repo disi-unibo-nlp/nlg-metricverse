@@ -121,6 +121,18 @@ class TestMetrics(unittest.TestCase):
         }
         self.assertEqual(scores, result, "Should be result")
 
+    def test_moverscore(self):
+        scorer = Nlgmetricverse(metrics=["moverscore"])
+        scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
+        result = {
+            'meteor': {
+                'score': 0.727184593644221
+            },
+            'empty_items': 0,
+            'total_items': 2
+        }
+        self.assertEqual(scores, result, "Should be result")
+
     def test_rouge(self):
         scorer = Nlgmetricverse(metrics=["rouge"])
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")

@@ -14,7 +14,7 @@ from nlgmetricverse.metrics.bleurt import Bleurt
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.comet import Comet
 from nlgmetricverse.metrics.meteor import Meteor
-
+from nlgmetricverse.metrics.moverscore import Moverscore
 from nlgmetricverse.metrics.rouge import Rouge
 from nlgmetricverse.metrics.sacrebleu import Sacrebleu
 from nlgmetricverse.metrics.ter import TER
