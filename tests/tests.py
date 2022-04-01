@@ -133,6 +133,18 @@ class TestMetrics(unittest.TestCase):
         }
         self.assertEqual(scores, result, "Should be result")
 
+    def test_nist(self):
+        scorer = Nlgmetricverse(metrics=["nist"])
+        scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
+        result = {
+            'nist': {
+                'score': 0.2114030192883093
+            },
+            'empty_items': 0,
+            'total_items': 2
+        }
+        self.assertEqual(scores, result, "Should be result")
+
     def test_rouge(self):
         scorer = Nlgmetricverse(metrics=["rouge"])
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
