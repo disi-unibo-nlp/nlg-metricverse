@@ -21,6 +21,15 @@ as much.
 """
 
 _KWARGS_DESCRIPTION = """
+Computes NIST score.
+Args:
+    predictions: list of predictions to score. Each prediction
+        should be a string with tokens separated by spaces.
+    references: list of reference for each prediction. Each
+        reference should be a string with tokens separated by spaces.
+    n: length of n-grams. default: 5.
+Returns:
+    'score': nist score.
 """
 
 

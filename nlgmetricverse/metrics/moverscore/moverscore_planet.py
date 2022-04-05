@@ -27,7 +27,16 @@ summarization and image captioning.
 """
 
 _KWARGS_DESCRIPTION = """
-
+Computes MoverScore.
+Args:
+    predictions: list of predictions to score. Each prediction
+        should be a string with tokens separated by spaces.
+    references: list of reference for each prediction. Each
+        reference should be a string with tokens separated by spaces.
+    version: which version to compute scoring. Choose between "1" or "2". Second one is more recent and faster.
+        default: 2.
+Returns:
+    'score': mover score.
 """
 
 
