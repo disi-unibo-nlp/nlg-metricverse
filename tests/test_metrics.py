@@ -14,7 +14,7 @@ class TestMetrics(unittest.TestCase):
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
         result = {
             'bartscore': {
-                'score': -1.8933048248291016,
+                'score': -2.201132595539093,
                 'model_checkpoint': 'bartscore-large-cnn',
                 'model_weights': None,
                 'segment_scores': False
@@ -29,10 +29,10 @@ class TestMetrics(unittest.TestCase):
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
         result = {
             'bertscore': {
-                'score': 0.9473767280578613,
-                'precision': 0.9467201232910156,
-                'recall': 0.9480388164520264,
-                'f1': 0.9473767280578613,
+                'score': 0.9473764300346375,
+                'precision': 0.946719765663147,
+                'recall': 0.9480385184288025,
+                'f1': 0.9473764300346375,
                 'hashcode': 'roberta-large_L17_no-idf_version=0.3.11(hug_trans=4.10.3)'
             },
             'empty_items': 0,
@@ -230,30 +230,6 @@ class TestMetrics(unittest.TestCase):
             'total_items': 2
         }
         self.assertEqual(scores, result, "Should be result")
-
-    def test_abstractness(self):
-        from nlgmetricverse.scoring.abstractness import abstractness
-        scores = abstractness(predictions=self.predictions, references=self.references, method="read_lines")
-        result = 0.29411764705882354
-        self.assertEqual(scores, result, "Should be 0.29411764705882354")
-
-    def test_average_unique_ngram(self):
-        from nlgmetricverse.scoring.average_unique_ngram import average_unique_ngram
-        scores = average_unique_ngram(predictions=self.predictions, references=self.references, method="read_lines")
-        result = 16 / 17
-        self.assertEqual(scores, result, "Should be 16/17")
-
-    def test_readability(self):
-        from nlgmetricverse.scoring.readability import readability
-        scores = readability(predictions=self.predictions, references=self.references, method="read_lines")
-        result = 89.9254807692308
-        self.assertEqual(scores, result, "Should be 89.9254807692308")
-
-    def test_repetitiveness(self):
-        from nlgmetricverse.scoring.repetitiveness import repetitiveness
-        scores = repetitiveness(predictions=self.predictions, references=self.references, method="read_lines")
-        result = 6.0
-        self.assertEqual(scores, result, "Should be 6.0")
 
 
 if __name__ == '__main__':
