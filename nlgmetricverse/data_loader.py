@@ -59,12 +59,6 @@ class DataLoader:
         elif method == "no_new_line":
             self.no_new_line(self.res_predictions, self.dir_predictions)
             self.no_new_line(self.res_references, self.dir_references)
-        print()
-        print("Predictions: ")
-        print(self.res_predictions)
-        print("References: ")
-        print(self.res_references)
-        print()
         return
 
     @staticmethod
