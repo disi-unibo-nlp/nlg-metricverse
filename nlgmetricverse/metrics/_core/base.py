@@ -13,9 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Metrics base class. The part of this file is adapted from HuggingFace's
+Metrics base class. A part of this file is adapted from HuggingFace's
 datasets package implementation of Accuracy metric. See
 https://github.com/huggingface/datasets/blob/master/src/datasets/metric.py
+
+Note 1: metric computation is properly done within the ``evaluate`` method,
+using the proper mode (1:1, 1:N, N:N) according to the structure of
+predictions and references (passed as ``Collator``).
 """
 
 from abc import ABC, abstractmethod
@@ -38,6 +42,29 @@ logger = get_logger(__name__)
 class Metric(datasets.Metric, ABC):
     """
     Base metric class and common API for all metrics.
+    
+    :param task (``str``): Task for the metric to be used. Tasks differ in inputs of predictions or references.
+    :param resulting_name (Optional ``[str]``): Optional resulting name. By default, it uses `metric.name`
+           if not given. This is meant to prevent clashes for output dict of `evaluate`
+           such as when bleu-1, and bleu-2 are used together.
+    :param compute_kwargs (Optional ``Dict[str, Any]``): These are the parameters to be passed to compute function of the
+           metric. It is meant to ease the support of computation from a nlgmetricverse configuration file, etc.
+    :param config_name (Optional ``str``): This is used to define a hash specific to a metrics computation script and
+           prevents the metric's data to be overridden when the metric loading script is modified.
+    :param keep_in_memory (``bool``): keep all predictions and references in memory. Not possible in distributed settings.
+    :param cache_dir (Optional ``str``): Path to a directory in which temporary prediction/references data will be stored.
+           The data directory should be located on a shared file-system in distributed setups.
+    :param num_process (``int``): specify the total number of nodes in a distributed settings.
+           This is useful to compute metrics in distributed setups (in particular non-additive metrics like F1).
+    :param process_id (``int``): specify the id of the current process in a distributed setup (between 0 and num_process-1)
+           This is useful to compute metrics in distributed setups (in particular non-additive metrics like F1).
+    :param seed (Optional ``int``): If specified, this will temporarily set numpy's random seed when
+           :func:`datasets.Metric.compute` is run.
+    :param experiment_id (Optional ``str``): A specific experiment id. This is used if several distributed evaluations
+           share the same file system. This is useful to compute metrics in distributed setups (in particular
+           non-additive metrics like F1).
+    :param max_concurrent_cache_files (``int``): Max number of concurrent metrics cache files (default 10000).
+    :param timeout (``Union[int, float]``): Timeout in second for distributed setting synchronization.
     """
 
     def __init__(
@@ -293,10 +320,10 @@ class MetricForLanguageGeneration(MetricForTask):
 
     def _validate_compute_kwargs(self, compute_kwargs: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Validate the computed kwargs.
+        Validate kwargs.
 
-        :param compute_kwargs: Additional arguments for correct output.
-        :return: Computed additional arguments.
+        :param compute_kwargs: Arguments to check.
+        :return: Computed kwargs.
         """
         if compute_kwargs is None:
             compute_kwargs = {}
@@ -343,7 +370,7 @@ class MetricForLanguageGeneration(MetricForTask):
         **kwargs,
     ):
         """
-        Computes the metric score(s) for single prediction and single reference case.
+        Compute the metric score(s) for single prediction and single reference case.
 
         :param predictions: Predictions.
         :param references: References.
@@ -381,127 +408,12 @@ class MetricForLanguageGeneration(MetricForTask):
         **kwargs,
     ):
         """
-        Computes the metric score(s) for multiple prediction and multiple references case.
+        Compute the metric score(s) for multiple prediction and multiple references case.
 
         :param predictions: Predictions.
         :param references: References.
         :param reduce_fn: Reduce function name.
         :param kwargs: Additional arguments used for the metric computation.
         :return: score
-        """
-        pass
-
-
-class MetricForCrossLingualEvaluation(MetricForTask):
-    """
-    Base metric class for cross-lingual evaluation. Metrics fall in this category require
-    input as a triplet of (sources, predictions/translations, references).
-    """
-
-    _task = "cross-lingual-evaluation"
-
-    @property
-    def _default_features(self):
-        return datasets.Features(
-            {
-                "predictions": datasets.Sequence(datasets.Value("string", id="sequence")),
-                "references": datasets.Sequence(datasets.Value("string", id="sequence")),
-            }
-        )
-
-    def _validate_compute_kwargs(self, compute_kwargs: Dict[str, Any]) -> Dict[str, Any]:
-        if compute_kwargs is None:
-            compute_kwargs = {}
-        if "reduce_fn" not in compute_kwargs:
-            compute_kwargs.update({"reduce_fn": "max"})
-        return compute_kwargs
-
-    def _compute(
-        self,
-        *,
-        sources: EvaluationInstance = None,
-        predictions: EvaluationInstance = None,
-        references: EvaluationInstance = None,
-        **kwargs,
-    ) -> MetricOutput:
-        assert (
-            len(sources) == len(predictions) == len(references)
-        ), "Sources, predictions and references length does not match."
-        reduce_fn = kwargs.get("reduce_fn")
-        reduce_fn = self.compute_kwargs["reduce_fn"] if reduce_fn is None else reduce_fn
-        if isinstance(reduce_fn, str):
-            reduce_fn = getattr(numpy, reduce_fn)
-        elif reduce_fn is not None and not callable(reduce_fn):
-            raise TypeError(f"'reduce_fn' Expected str or callable, got {type(reduce_fn)}")
-        if reduce_fn is not None and not is_reduce_fn(reduce_fn):
-            raise ValueError("'reduce_fn' must be an aggregation function.")
-        eval_params = {**self.compute_kwargs, **kwargs}
-        eval_params.pop("reduce_fn")
-        predictions, references = Collator(predictions), Collator(references)
-        result = self.evaluate(
-            sources=sources, predictions=predictions, references=references, reduce_fn=reduce_fn, **eval_params
-        )
-        return {self.resulting_name: result}
-
-    @abstractmethod
-    def _compute_single_pred_single_ref(
-        self,
-        sources: EvaluationInstance,
-        predictions: EvaluationInstance,
-        references: EvaluationInstance,
-        reduce_fn: Callable = None,
-        **kwargs,
-    ):
-        """
-        Computes the metric score(s) for single prediction and single reference case.
-        Args:
-            sources: (``List[str]``) Sources
-            predictions: (``List[str]``) Predictions
-            references: (``List[str]``) References
-            reduce_fn: (``Callable``) Reduce function name.
-            **kwargs: Additional arguments used for the metric computation.
-        Returns: score
-        """
-        pass
-
-    @abstractmethod
-    def _compute_single_pred_multi_ref(
-        self,
-        sources: EvaluationInstance,
-        predictions: EvaluationInstance,
-        references: EvaluationInstance,
-        reduce_fn: Callable = None,
-        **kwargs,
-    ):
-        """
-        Computes the metric score(s) for single prediction and multiple references case.
-        Args:
-            sources: (``List[str]``) Sources
-            predictions: (``List[str]``) Predictions
-            references: (``List[List[str]]``) References
-            reduce_fn: (``Callable``) Reduce function name.
-            **kwargs: Additional arguments used for the metric computation.
-        Returns: score
-        """
-        pass
-
-    @abstractmethod
-    def _compute_multi_pred_multi_ref(
-        self,
-        sources: EvaluationInstance,
-        predictions: EvaluationInstance,
-        references: EvaluationInstance,
-        reduce_fn: Callable = None,
-        **kwargs,
-    ):
-        """
-        Computes the metric score(s) for single prediction and multiple references case.
-        Args:
-            sources: (``List[str]``) Sources
-            predictions: (``List[List[str]]``) Predictions
-            references: (``List[List[str]]``) References
-            reduce_fn: (``Callable``) Reduce function name.
-            **kwargs: Additional arguments used for the metric computation.
-        Returns: score
         """
         pass

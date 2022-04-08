@@ -1,5 +1,6 @@
 """
-Main application file. Contains Nlgmetricverse main class.
+Main library file.
+It contains the Nlgmetricverse main class.
 """
 import warnings
 import time
@@ -18,7 +19,7 @@ MetricParam = Union[str, Metric, Dict[str, Any]]
 
 class Nlgmetricverse:
     r"""
-    Simple evaluation pipeline for text based metrics. By default, it computes BLEU(n), METEOR, ROUGE-L metrics.
+    Simple evaluation pipeline for text-based metrics. By default, it computes BLEU(n), METEOR, ROUGE-L metrics.
     """
 
     def __init__(
@@ -44,12 +45,12 @@ class Nlgmetricverse:
             **kwargs
     ) -> Dict[str, float]:
         """
-        Restricts positional arguments to prevent potential inconsistency between predictions and references.
+        Restrict positional arguments to prevent potential inconsistency between predictions and references.
 
         :param predictions: Predictions.
         :param references: References.
         :param reduce_fn: Reduce function name.
-        :param method: Method to analyse inputs. Can be "no_new_line" or "read_lines"
+        :param method: Method to parse inputs. Can be "no_new_line" or "read_lines".
         :return: scores
         """
 
@@ -263,7 +264,7 @@ class Nlgmetricverse:
             reduce_fn: Optional[Union[str, Callable]] = None,
     ) -> Dict[str, float]:
         """
-        Returns __call__() method. For backward compatibility.
+        Return __call__() method. For backward compatibility.
 
         :param predictions: Predictions.
         :param references: References.
