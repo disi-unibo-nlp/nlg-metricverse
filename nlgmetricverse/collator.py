@@ -1,5 +1,7 @@
 """
-Utils collator functions, used for sorting strings properly.
+Custom iterable data structure.
+Among its main uses, it allows the user to work more smoothly with arrays of strings
+like NLG predictions and references.
 """
 from typing import List, Union
 
@@ -10,7 +12,8 @@ from nlgmetricverse.utils.common import NestedSingleType
 
 class Collator(list):
     """
-
+    Class inherited from list, with extended functionalities.
+    It supports reshaping and several data loading modes, including an automatic conversion from string and (nested) lists.
     """
     def __init__(self, sequence, keep=False):
         sequence = self._construct(sequence, keep=keep)
