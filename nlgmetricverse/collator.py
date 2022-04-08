@@ -1,7 +1,7 @@
 """
 Custom iterable data structure.
 Among its main uses, it allows the user to work more smoothly with arrays of strings
-like NLG predictions and references.
+like NLG predictions and references (with 1:1, 1:N, and N:N scenarios, where N means non-collapsable).
 """
 from typing import List, Union
 
