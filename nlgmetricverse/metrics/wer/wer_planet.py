@@ -71,7 +71,7 @@ performance of the ASR system with a WER of 0 being a perfect score. So, the ran
 0 is best. The lack of a finite upper bound derives from the fact that the normalizing constant is given by the true
 sequences, and the predicted sequences can differ from them in any conceivable way in principle.
 
-DIMENSION ENCODED
+DIMENSIONS ENCODED
 This method says that our desired notion of closeness or accuracy can be operationalized in terms of the low-level
 operations of insertion, deletion, and substitution. The guiding intuition is very much like that of F scores.
 
