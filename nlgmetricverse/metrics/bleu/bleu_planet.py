@@ -56,17 +56,18 @@ they are applied in other generation tasks as well. Quality is considered to be 
 machine's output and that of a human: "the closer a machine translation is to a professional human translation, the 
 better it is" – this is the central idea behind BLEU. BLEU was one of the first metrics to claim a high correlation 
 with human judgements of quality, and remains one of the most popular automated and inexpensive metrics.
-For BLEU scoring, we require a dataset Y consisting of instances (a, B) where a is a candidate (a model prediction)
-and B is a set of gold texts. The metric has two main components.
+For BLEU scoring, we require a dataset $Y$ consisting of instances $(a, B)$ where $a$ is a candidate (a model
+prediction) and $B$ is a set of gold texts. The metric has two main components.
 - Modified n-gram precision. A direct application of precision would divide the number of correct n-grams in the
   candidate (n-grams that appear in any translation) by the total number of n-grams in the candidate. This has a
   degenerate solution in which the predicted output contains only one n-gram. BLEU's modified version substitutes
   the actual count for each n-gram s in the candidate by the maximum number of times s appears in any gold text.
-- Brevity penalty (BP). To avoid favoring outputs that are too short, a penalty is applied. Let r be the sum of all
-  minimal absolute length differences between candidates and referents in the dataset Y, and let c be the sum of the
-  lengths of all the candidates. Then: BP(Y) = 1 if c > r, exp(1 - r/c) otherwise.
+- Brevity penalty (BP). To avoid favoring outputs that are too short, a penalty is applied. Let $r$ be the sum of all
+  minimal absolute length differences between candidates and referents in the dataset $Y$, and let $c$ be the sum of
+  the lengths of all the candidates. Then:
+  $BP(Y) = \begin{cases} 1 & \textrm{ if } c > r \\ \exp(1 - \frac{r}{c}) & \textrm{otherwise}\end{cases}$
 The BLEU score itself is typically a combination of modified n-gram precision for various n (usually up to 4):
-BLEU(Y) = BP(Y) * exp(sum_{n=1}^N w_n * log(modified-precision(Y,n))
+$BLEU(Y) = BP(Y) \cdot \exp\left(\sum_{n=1}^{N} w_{n} \cdot \log\left(modified-precision(Y, n\right)\right)$
 where Y is the dataset, and w_n is a weight for each n-gram level (usually set to 1/n).
 Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good 
 quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the 
