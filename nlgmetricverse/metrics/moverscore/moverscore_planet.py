@@ -21,9 +21,39 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-MoverScore (Zhao et.al, 2019) is a monolingual measure of evaluating the similarity between a sentence pair written in 
-the same language. It achieves much higher correlation with human judgments than BLEU on machine translation, 
-summarization and image captioning.
+MoverScore (Zhao et.al, 2019) is an automated evaluation metric assigning a single holistic score to any
+system-generated text (neural or non-neural) by comparing it against human references for semantic content
+matching. It is a monolingual measure evluating meaning similarities between pairs of sentences written in
+the same language. It combines contextualized representations coming from language models (trained to capture
+distant semantic dependencies) with the Word Mover's distance (WMD). So, MoverScore generalizes WMD by working
+on n-grams. Specifically, it computes the minimum cost of transforming (transportation distance) the generated
+text to the reference text, taking into account Euclidean distance between vector representations of n-gram as
+well as their document frequencies. According to the authors, MoverScore can be seen as a generalization of
+BertScore. Both of them use contextualized representations, but they have a different focus. BertScore aligns
+each hypothesis word with a single reference word (1:1), while MoverScore makes a soft alignment (1:N).
+MoverScore demonstrates strong generalization capability across multiple tasks, achieving much higher correlation
+with human judgments than BLEU on machine translation, summarization and image captioning.
+
+BOUNDS
+Intuitively, the metric assigns a perfect score to the system text if it conveys the same meaning as the
+reference text. Any deviation from the reference content can then lead to a reduced score, e.g., the
+system text contains more (or less) content than the reference, or the system produces ill-formed text
+that fails to deliver the intended meaning. In general, higher scores refer to better performance.
+
+WEAKNESSES
+The paradigm of reference-based measures is useful for targeted generation tasks such as translation and
+summarization where matching a set of references is paramount. It is, however, unsuitable for open-ended
+generation where there typically are several plausible continuations for each context and creative
+generations are desirable.
+
+PROPERTY
+IDF-weighted n-gram soft-alignment via ELMo/BERT contextualized embeddings
+
+CATEGORY
+unsupervised; embedding-based
+
+TASKS
+MT, SUM, D2T, IC
 """
 
 _KWARGS_DESCRIPTION = """
@@ -33,8 +63,10 @@ Args:
         should be a string with tokens separated by spaces.
     references: list of reference for each prediction. Each
         reference should be a string with tokens separated by spaces.
-    version: which version to compute scoring. Choose between "1" or "2". Second one is more recent and faster.
-        default: 2.
+    version: which version to compute scoring.
+        Choose between "1" or "2".
+        Second one is more recent and faster.
+        Default: 2.
 Returns:
     'score': mover score.
 """

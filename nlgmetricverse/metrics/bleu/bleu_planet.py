@@ -93,6 +93,15 @@ WEAKNESSES
   correlation.
 - Liu et al. 2016 (https://www.aclweb.org/anthology/D16-1230) specifically argue against BLEU as a metric for
   assessing dialogue systems, based on a lack of correlation with human judgments about dialogue coherence.
+  
+PROPERTY
+n-gram precision
+
+CATEGORY
+unsupervised; n-gram overlap
+
+TASKS
+MT, IC, DG, QG, RG
 """
 
 _KWARGS_DESCRIPTION = """

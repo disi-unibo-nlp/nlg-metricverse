@@ -83,6 +83,15 @@ whereas passivizing a sentence (Kim won the race → The race was won by Kim) wi
 but incur a large WER penalty.
 See also Liu et al. 2016 (https://www.aclweb.org/anthology/D16-1230) for similar arguments in the context of
 dialogue generation.
+
+PROPERTY
+% of insert, delete, replace
+
+CATEGORY
+unsupervised; n-gram overlap
+
+TASKS
+MT, SR
 """
 
 _KWARGS_DESCRIPTION = """
