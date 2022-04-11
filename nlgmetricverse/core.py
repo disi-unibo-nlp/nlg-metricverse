@@ -53,10 +53,13 @@ class Nlgmetricverse:
         :param method: Method to parse inputs. Can be "no_new_line" or "read_lines".
         :return: scores
         """
-
-        dl = data_loader.DataLoader(predictions, references, method)
-        self.res_predictions = dl.get_predictions()
-        self.res_references = dl.get_references()
+        if isinstance(predictions, list) and isinstance(references, list):
+            self.res_predictions = predictions
+            self.res_references = references
+        else:
+            dl = data_loader.DataLoader(predictions, references, method)
+            self.res_predictions = dl.get_predictions()
+            self.res_references = dl.get_references()
         scores = dict()
         scores["total_items"] = len(self.res_references)
         scores["empty_items"] = self._remove_empty(self.res_predictions, self.res_references)
