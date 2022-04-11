@@ -40,7 +40,7 @@
 > One NLG evaluation library to rule them all
 
 <p align="center">
-  <img src="./figs/nlgmetricverse_banner.png" title="nlg-metricverse" alt="">
+  <img src="./figures/nlgmetricverse_banner.png" title="nlg-metricverse" alt="">
 </p>
 
 ### Explore the universe of Natural Language Generation (NLG) evaluation metrics.
@@ -71,7 +71,7 @@ python setup.py install
 #### Explore on Hugging Face Spaces
 
 The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out here:
-[![](figures/spaces.png)](https://huggingface.co/spaces/nfel/Thermostat)
+[![](./figures/spaces.png)](https://huggingface.co/spaces/nfel/Thermostat)
 
 ## Setup
 
