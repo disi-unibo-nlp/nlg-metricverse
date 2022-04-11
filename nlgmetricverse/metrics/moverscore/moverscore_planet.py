@@ -1,9 +1,7 @@
 # coding=utf-8
-from collections import defaultdict
-from itertools import zip_longest
-from typing import List, Union, Iterable
-import numpy as np
 import datasets
+from moverscore_v2 import get_idf_dict, word_mover_score
+import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
@@ -88,45 +86,22 @@ class MoverscorePlanet(MetricForLanguageGeneration):
 
     def _download_and_prepare(self, dl_manager):
         try:
-            import pyemd
+            import moverscore_v2
         except ModuleNotFoundError:
-            raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="pyemd"))
-        else:
-            super(MoverscorePlanet, self)._download_and_prepare(dl_manager)
-        try:
-            import transformers
-        except ModuleNotFoundError:
-            raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="transformers"))
-        else:
-            super(MoverscorePlanet, self)._download_and_prepare(dl_manager)
+            raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="moverscore_v2"))
 
     def _compute_single_pred_single_ref(
             self,
             predictions,
             references,
             reduce_fn=None,
-            version=2
+            **kwargs
     ):
-        if isinstance(predictions[0], List):
-            res = []
-            score = None
-            for prediction, reference in zip(predictions, references):
-                newRef = [reference]
-                newPred = prediction
-                while len(reference) != len(prediction):
-                    newItem = ''
-                    newPred.append(newItem)
-                if version == 2:
-                    score = self.corpus_score(newPred, newRef, version=2)
-                else:
-                    score = self.corpus_score(newPred, newRef, version=1)
-                res += score
-            scores = np.mean(score)
-        else:
-            if version == 2:
-                scores = self.corpus_score(predictions, references, version=2)
-            else:
-                scores = self.corpus_score(predictions, references, version=1)
+        idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+        idf_dict_ref = get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
+
+        scores = word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+                                  stop_words=[], n_gram=1, remove_subwords=True)
         return {"score": scores}
 
     def _compute_single_pred_multi_ref(
@@ -134,28 +109,17 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             predictions,
             references,
             reduce_fn=None,
-            version=2
+            **kwargs
     ):
-        if isinstance(predictions[0], List):
-            res = []
-            score = None
-            for prediction, reference in zip(predictions, references):
-                newRef = [reference]
-                newPred = prediction
-                while len(reference) != len(prediction):
-                    newItem = ''
-                    newPred.append(newItem)
-                if version == 2:
-                    score = self.corpus_score(newPred, newRef, version=2)
-                else:
-                    score = self.corpus_score(newPred, newRef, version=1)
-                res += score
-            scores = np.mean(score)
-        else:
-            if version == 2:
-                scores = self.corpus_score(predictions, references, version=2)
-            else:
-                scores = self.corpus_score(predictions, references, version=1)
+        res = []
+        for reference in references:
+            idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+            idf_dict_ref = get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
+
+            score = word_mover_score(reference, predictions, idf_dict_ref, idf_dict_hyp,
+                                     stop_words=[], n_gram=1, remove_subwords=True)
+            res.append(score)
+        scores = np.mean(res)
         return {"score": scores}
 
     def _compute_multi_pred_multi_ref(
@@ -163,83 +127,12 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             predictions,
             references,
             reduce_fn=None,
-            version=2
+            **kwargs
     ):
-        if isinstance(predictions[0], List):
-            res = []
-            score = None
-            for prediction, reference in zip(predictions, references):
-                newRef = [reference]
-                newPred = prediction
-                while len(reference) != len(prediction):
-                    newItem = ''
-                    newPred.append(newItem)
-                if version == 2:
-                    score = self.corpus_score(newPred, newRef, version=2)
-                else:
-                    score = self.corpus_score(newPred, newRef, version=1)
-                res += score
-            scores = np.mean(score)
-        else:
-            if version == 2:
-                scores = self.corpus_score(predictions, references, version=2)
-            else:
-                scores = self.corpus_score(predictions, references, version=1)
+        res = []
+        for prediction in predictions:
+            score = self._compute_single_pred_multi_ref(
+                predictions=prediction, references=references, reduce_fn=reduce_fn)
+            res.append(score["score"])
+        scores = np.mean(res)
         return {"score": scores}
-
-    def corpus_score(
-            self,
-            sys_stream: List[str],
-            ref_streams: Union[str, List[Iterable[str]]],
-            version=2
-    ):
-        if isinstance(sys_stream, str):
-            sys_stream = [sys_stream]
-        if isinstance(ref_streams, str):
-            ref_streams = [[ref_streams]]
-        fhs = [sys_stream] + ref_streams
-        corpus_score = 0
-        for lines in zip_longest(*fhs):
-            if None in lines:
-                raise EOFError("Source and reference streams have different lengths!")
-            hypo, *refs = lines
-            corpus_score += self.sentence_score(hypo, refs, version, trace=0)
-        corpus_score /= len(sys_stream)
-
-        return corpus_score
-
-    @staticmethod
-    def sentence_score(
-            hypothesis: str,
-            references: List[str],
-            version=2,
-            trace=0,
-    ):
-        idf_dict_hyp = defaultdict(lambda: 1.)
-        idf_dict_ref = defaultdict(lambda: 1.)
-        hypothesis = [hypothesis] * len(references)
-        if version == 2:
-            import moverscore_v2 as mv2
-            scores = mv2.word_mover_score(
-                references,
-                hypothesis,
-                idf_dict_ref,
-                idf_dict_hyp,
-                stop_words=[],
-                n_gram=1,
-                remove_subwords=False)
-        else:
-            import moverscore as mv
-            scores = mv.word_mover_score(
-                references,
-                hypothesis,
-                idf_dict_ref,
-                idf_dict_hyp,
-                stop_words=[],
-                n_gram=1,
-                remove_subwords=False)
-        sentence_score = np.mean(scores)
-        if trace > 0:
-            print(hypothesis, references, sentence_score)
-
-        return sentence_score
