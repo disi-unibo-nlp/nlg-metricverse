@@ -52,6 +52,9 @@ unsupervised; embedding-based
 
 TASKS
 MT, SUM, D2T, IC
+
+References:
+[Official repository](https://github.com/AIPHES/emnlp19-moverscore).
 """
 
 _KWARGS_DESCRIPTION = """
@@ -61,9 +64,10 @@ Args:
         should be a string with tokens separated by spaces.
     references: list of reference for each prediction. Each
         reference should be a string with tokens separated by spaces.
-    version: which version to compute scoring.
+    version: which MoverScore version use for computing scores.
         Choose between "1" or "2".
-        Second one is more recent and faster.
+        Version 1 is the implementation presented in the paper, mantained for reproducibility but slow
+        to run. Version 2 runs faster by disabling powermean but is a bit worse in performance.
         Default: 2.
 Returns:
     'score': mover score.
