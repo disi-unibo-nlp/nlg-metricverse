@@ -58,12 +58,22 @@ _CITATION = """\
 
 _DESCRIPTION = """\
 BERTScore leverages the pre-trained contextual embeddings from BERT and matches words in candidate and reference
-sentences by cosine similarity.
-It has been shown to correlate with human judgment on sentence-level and system-level evaluation.
-Moreover, BERTScore computes precision, recall, and F1 measure, which can be useful for evaluating different language
-generation tasks.
-See the `README.md` file at [https://github.com/Tiiiger/bert_score](https://github.com/Tiiiger/bert_score) for more
-information.
+sentences by cosine similarity. First, it computes a pairwise cosine similarity between each token embedding in the
+candidate and reference texts. Then, it produces a meaning overlapping measure by calculating a weighted average
+where only the cross-text token pairs with maximum similarity are taken into account with an IDF weight.
+BERTScore has been shown to correlate with human judgment on sentence-level and system-level evaluation; it supports
+around 130 models (for which correlation spreadsheet results are available).
+It can be seen as a special case of MOVERScore, with an hard (1:1) aligment between tokens.
+Moreover, BERTScore computes precision, recall, and F1 measure, which are useful for evaluating a range of NLG tasks.
+
+PROPERTY
+IDF-weighted n-gram hard-alignment via BERT contextualized embeddings
+
+CATEGORY
+unsupervised; embedding-based
+
+References:
+[Official repository](https://github.com/Tiiiger/bert_score).
 """
 
 _KWARGS_DESCRIPTION = """

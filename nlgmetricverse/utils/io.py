@@ -1,5 +1,7 @@
 """
-Utils functions for I/O operations.
+Utils functions for I/O operations:
+- read/write json files
+- read/write pickle files
 """
 import json
 import os
@@ -9,11 +11,11 @@ from typing import Any, Dict, Union
 
 def json_load(fp: str) -> Union[Dict, None]:
     """
-    Try loading json and return parsed dictionary. Returns None if file does not exist, or in case of a serialization
-    error.
+    Load a json file and return the parsed dictionary.
+    Return None if file does not exist, or in case of a serialization error.
 
-    :param fp: File path.
-    :return: Parsed dictionary, None if file does not exist.
+    :param fp: Json file path.
+    :return: Parsed dictionary, None if the file does not exist.
     """
     try:
         with open(fp, "r") as jf:
@@ -28,12 +30,11 @@ def json_load(fp: str) -> Union[Dict, None]:
 
 def json_save(obj: Dict, fp: str, overwrite: bool = True) -> None:
     """
-    Saves a dictionary as json file to given fp.
+    Save a dictionary as a json file to the specified file path.
 
     :param obj: Dict to be saved.
     :param fp: File path.
     :param overwrite: bool.
-    :return: None.
     """
     if os.path.exists(fp) and not overwrite:
         raise ValueError(f"Path {fp} already exists. To overwrite, use `overwrite=True`.")
@@ -44,10 +45,10 @@ def json_save(obj: Dict, fp: str, overwrite: bool = True) -> None:
 
 def pickle_load(fp: str) -> Any:
     """
-    Try loading a dictionary as json file.
+    Load a pickle file (serialized Python object).
 
     :param fp: File path.
-    :return: Parsed dictionary.
+    :return: Parsed Python object.
     """
     try:
         with open(fp, "rb") as pkl:
@@ -60,12 +61,11 @@ def pickle_load(fp: str) -> Any:
 
 def pickle_save(obj: Dict, fp: str, overwrite: bool = True) -> None:
     """
-    Saves a dictionary as json file to given fp.
+    Serialize a dictionary object with pickle to the specified file path.
 
     :param obj: Dict to be saved.
     :param fp: File path.
     :param overwrite: bool.
-    :return: None.
     """
     if os.path.exists(fp) and not overwrite:
         raise ValueError(f"Path {fp} already exists. To overwrite, use overwrite=True.")

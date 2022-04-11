@@ -23,7 +23,7 @@ from typing import Callable, Union
 import datasets
 
 from nlgmetricverse.metrics import EvaluationInstance
-from nlgmetricverse.metrics._core import MetricForCrossLingualEvaluation
+from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import comet` placeholder
@@ -91,7 +91,7 @@ Examples:
 
 
 @datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
-class CometPlanet(MetricForCrossLingualEvaluation):
+class CometPlanet(MetricForLanguageGeneration):
     def _download_and_prepare(self, dl_manager):
         global comet
         try:

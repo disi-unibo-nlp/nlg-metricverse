@@ -39,7 +39,8 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-Word error rate (WER) is a common metric of the performance of an automatic speech recognition system.
+The word error rate (WER) metric is a word-level, length-normalized measure of Levenshtein string-edit distance.
+It is a common metric for evaluating automatic speech recognition or machine translation systems.
 The general difficulty of measuring performance lies in the fact that the recognized word sequence can have a different 
 length from the reference word sequence (supposedly the correct one). The WER is derived from the Levenshtein distance, 
 working at the word level instead of the phoneme level. The WER is a valuable tool for comparing different systems as 
@@ -57,8 +58,40 @@ D is the number of deletions,
 I is the number of insertions,
 C is the number of correct words,
 N is the number of words in the reference (N=S+D+C).
+E.g., wer(['A', 'B', 'C'], ['A', 'A', 'C']) = 0.3333333333333333
+E.g., wer(['A', 'B', 'C', 'D'], ['A', 'A', 'C', 'D']) = 0.25
+To calculate this over the entire test-set, one gets the edit-distances for each gold–predicted pair and normalizes
+these by the length of all the gold examples, rather than normalizing each case. This gives a single summary value
+for the entire set of errors.
+corpus-wer = sum(dists) / sum(lenghts)
+
+BOUNDS
 This value indicates the average number of errors per reference word. The lower the value, the better the
-performance of the ASR system with a WER of 0 being a perfect score.
+performance of the ASR system with a WER of 0 being a perfect score. So, the range-bound of WER is [0, +inf[, where
+0 is best. The lack of a finite upper bound derives from the fact that the normalizing constant is given by the true
+sequences, and the predicted sequences can differ from them in any conceivable way in principle.
+
+DIMENSIONS ENCODED
+This method says that our desired notion of closeness or accuracy can be operationalized in terms of the low-level
+operations of insertion, deletion, and substitution. The guiding intuition is very much like that of F scores.
+
+WEAKNESSES
+The value encoded reveals a potential weakness in certain domains.
+Roughly, the more semantic the task, the less appropriate WER is likely to be.
+For example, adding a negation to a sentence will radically change its meaning but incur only a small WER penalty,
+whereas passivizing a sentence (Kim won the race → The race was won by Kim) will hardly change its meaning at all
+but incur a large WER penalty.
+See also Liu et al. 2016 (https://www.aclweb.org/anthology/D16-1230) for similar arguments in the context of
+dialogue generation.
+
+PROPERTY
+% of insert, delete, replace
+
+CATEGORY
+unsupervised; n-gram overlap
+
+TASKS
+MT, SR
 """
 
 _KWARGS_DESCRIPTION = """
