@@ -1,7 +1,7 @@
 # coding=utf-8
 import datasets
-import numpy as np
 from nltk.translate import nist_score as nist
+import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
@@ -62,15 +62,17 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
-        res = []
-        for prediction, reference in zip(predictions, references):
-            while len(prediction) != len(reference):
-                newItem = ''
-                prediction.append(newItem)
-            score = nist.corpus_nist(reference, prediction, n)
-            res.append(score)
-        scores = np.mean(res)
-        return {"score": scores}
+        newRefs = []
+        scores = []
+        for reference in references:
+            newRef = reference.split()
+            newRefs.append(newRef)
+        for prediction in predictions:
+            newPred = prediction.split()
+            score = nist.sentence_nist(newRefs, newPred, n)
+            scores.append(score)
+        res = np.mean(scores)
+        return {"score": res}
 
     def _compute_single_pred_multi_ref(
             self,
@@ -79,15 +81,20 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
-        res = []
-        for prediction, reference in zip(predictions, references):
-            while len(prediction) != len(reference):
-                newItem = ''
-                prediction.append(newItem)
-            score = nist.corpus_nist(reference, prediction, n)
-            res.append(score)
-        scores = np.mean(res)
-        return {"score": scores}
+        scores = []
+        predScores = []
+        for refList in references:
+            newRefs = []
+            for reference in refList:
+                newRef = reference.split()
+                newRefs.append(newRef)
+            for prediction in predictions:
+                newPred = prediction.split()
+                score = nist.sentence_nist(newRefs, newPred, n)
+                predScores.append(score)
+            scores.append(np.mean(predScores))
+        res = np.mean(scores)
+        return {"score": res}
 
     def _compute_multi_pred_multi_ref(
             self,
@@ -96,12 +103,10 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
-        res = []
-        for prediction, reference in zip(predictions, references):
-            while len(prediction) != len(reference):
-                newItem = ''
-                prediction.append(newItem)
-            score = nist.corpus_nist(reference, prediction, n)
-            res.append(score)
-        scores = np.mean(res)
-        return {"score": scores}
+        scores = []
+        for prediction in predictions:
+            score = self._compute_single_pred_multi_ref(predictions=prediction, references=references,
+                                                        reduce_fn=reduce_fn, n=n)
+            scores.append(score["score"])
+        res = np.mean(scores)
+        return {"score": res}
