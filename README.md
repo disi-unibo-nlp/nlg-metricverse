@@ -56,6 +56,23 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * ☠ New NLG metrics are constantly being proposed in top conferences, but their **implementations (and related features) remain disrupted**, significantly restricting their application. Existing libraries tend to support a very small number of metrics, which mistakenly receive less attention than generative models. The absence of a shared and continuously updated repository makes it difficult to discover alternative metrics and slows down their use on a practical side.
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
+## Installation
+
+Install from PyPI repository
+```
+pip install nlg-metricverse
+```
+or build from source
+```
+git clone https://github.com/disi-unibo-nlp/nlg-metricverse.git
+cd nlg-metricverse
+python setup.py install
+```
+#### Explore on Hugging Face Spaces
+
+The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out here:
+[![](figures/spaces.png)](https://huggingface.co/spaces/nfel/Thermostat)
+
 ## Setup
 
 ## How to
