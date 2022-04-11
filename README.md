@@ -1,7 +1,41 @@
-# nlg-metricverse 🌌
+<h1 align="center">nlg-metricverse 🌌</h1>
 
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-blue?style=plastic&logo=python&logoColor=FFF800)](#python)
----
+<table align="center">
+    <tr>
+        <td align="left">🚀 Spaceship</td>
+        <td align="left">
+          <a href="https://pypi.org/project/jury"><img src="https://img.shields.io/pypi/v/jury?color=blue" alt="PyPI"></a>
+          <a href="https://pypi.org/project/jury"><img src="https://img.shields.io/pypi/pyversions/jury" alt="Python versions"></a>
+          <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple&logo=python&logoColor=FFF800" alt="Made with Python"></a>
+          <br>
+          <a href="https://github.com/obss/jury/actions"><img alt="Build status" src="https://github.com/obss/jury/actions/workflows/ci.yml/badge.svg"></a>
+          <a href="https://libraries.io/pypi/jury"><img alt="Dependencies" src="https://img.shields.io/librariesio/github/obss/jury"></a>
+        </td>
+    </tr>
+    <tr>
+        <td align="left">👨‍🚀 Astronauts</td>
+        <td align="left">
+          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" alt="Open Source Love svg1"></a>
+          <a href="https://github.com/obss/jury/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/pypi/l/jury"></a>
+          <a href="https://GitHub.com/Nthakur20/StrapDown.js/graphs/commit-activity"><img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Maintenance"></a>
+          <a href="https://pepy.tech/badge/beir"><img src="https://pepy.tech/badge/beir" alt="Downloads"></a>
+        </td>
+    </tr>
+    <tr>
+        <td align="left">🛰️ Training Program</td>
+        <td align="left">
+          <a href="https://colab.research.google.com/drive/1HfutiEhHMJLXiWGT8pcipxT5L2TpYEdt?usp=sharing"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+        </td>
+    </tr>
+    <tr>
+        <td align="left">📕 Operating Manual</td>
+        <td align="left">
+          <a href="https://doi.org/10.5281/zenodo.6109838"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6109838.svg" alt="DOI"></a>
+        </td>
+    </tr>
+</table>
+
+<br>
 
 > One NLG evaluation library to rule them all
 
