@@ -29,12 +29,19 @@ from nlgmetricverse.metrics._core.utils import get_token_lengths
 from nlgmetricverse.tokenizer import DefaultTokenizer, TokenizerWrapper
 
 _CITATION = """\
-@INPROCEEDINGS{Papineni02bleu:a,
-    author = {Kishore Papineni and Salim Roukos and Todd Ward and Wei-jing Zhu},
-    title = {BLEU: a Method for Automatic Evaluation of Machine Translation},
-    booktitle = {},
-    year = {2002},
-    pages = {311--318}
+@inproceedings{PapineniRWZ02,
+  author    = {Kishore Papineni and
+               Salim Roukos and
+               Todd Ward and
+               Wei{-}Jing Zhu},
+  title     = {Bleu: a Method for Automatic Evaluation of Machine Translation},
+  booktitle = {Proceedings of the 40th Annual Meeting of the Association for Computational
+               Linguistics, July 6-12, 2002, Philadelphia, PA, {USA}},
+  pages     = {311--318},
+  publisher = {{ACL}},
+  year      = {2002},
+  url       = {https://aclanthology.org/P02-1040/},
+  doi       = {10.3115/1073083.1073135}
 }
 @inproceedings{lin-och-2004-orange,
     title = "{ORANGE}: a Method for Evaluating Automatic Evaluation Metrics for Machine Translation",
