@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-BLEU metric. The part of this file is adapted from HuggingFace's
+BLEU and ORANGE (smooth-BLEU) metrics. The part of this file is adapted from HuggingFace's
 datasets package implementation of BLEU metric. See
 https://github.com/huggingface/datasets/blob/master/metrics/bleu/bleu.py
 """
