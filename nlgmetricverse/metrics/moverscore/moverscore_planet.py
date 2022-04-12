@@ -90,9 +90,9 @@ class MoverscorePlanet(MetricForLanguageGeneration):
 
     def _download_and_prepare(self, dl_manager):
         try:
-            import moverscore_v2
+            import moverscore
         except ModuleNotFoundError:
-            raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="moverscore_v2"))
+            raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="moverscore"))
 
     def _compute_single_pred_single_ref(
             self,
