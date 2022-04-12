@@ -34,6 +34,14 @@ def add_pywin(reqs: List[str]) -> None:
     reqs.extend(ext_package)
 
 
+"""
+Extra (optional) requirements.
+Recommended dependencies that are not required for all uses of the nlg-metricverse library.
+Extra requirements are only installed as needed: they are not automatically installed unless related features
+are called by the user or another package (directly or indirectly).
+They can be forced by putting them in `install-requires`.
+"""
+
 _DEV_REQUIREMENTS = [
     "black==21.7b0",
     "deepdiff==5.5.0",
@@ -78,8 +86,8 @@ setuptools.setup(
     url='https://github.com/disi-unibo-nlp/nlg-metricverse',
     packages=setuptools.find_packages(exclude=["tests"]),
     python_requires=">=3.7",
-    install_requires=get_requirements(),
-    extras_require=extras,
+    install_requires=get_requirements(), # dependencies NECESSARY to run the project
+    extras_require=extras, # OPTIONAL dependencies (installed as needed)
     include_package_data=True,
     entry_points={
         "console_scripts": [
