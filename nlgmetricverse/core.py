@@ -29,8 +29,8 @@ class Nlgmetricverse:
     ):
         self.metrics = self._load_metrics(metrics)
         self._concurrent = run_concurrent
-        self.res_predictions: EvaluationInstance = None,
-        self.res_references: EvaluationInstance = None,
+        self.res_predictions: EvaluationInstance = None
+        self.res_references: EvaluationInstance = None
 
         # Sanity check
         self._validate_metrics()
