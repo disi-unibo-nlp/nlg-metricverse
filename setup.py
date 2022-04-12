@@ -35,11 +35,13 @@ def add_pywin(reqs: List[str]) -> None:
 
 
 """
-Extra (optional) requirements.
+Extra (optional) requirements. This is a feature of `pip`.
 Recommended dependencies that are not required for all uses of the nlg-metricverse library.
 Extra requirements are only installed as needed: they are not automatically installed unless related features
 are called by the user or another package (directly or indirectly).
 They can be forced by putting them in `install-requires`.
+Note: they are organized like a dictionary (key: optional_feature, value: requirements) and can be installed
+by running `pip install nlg-metricverse[optional_feature]`.
 """
 
 _DEV_REQUIREMENTS = [
