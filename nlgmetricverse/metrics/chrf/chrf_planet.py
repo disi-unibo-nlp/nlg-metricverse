@@ -70,9 +70,20 @@ _CITATION = """\
 
 _DESCRIPTION = """\
 ChrF and ChrF++ are two MT evaluation metrics. They both use the F-score statistic for character n-gram matches,
-and ChrF++ adds word n-grams as well which correlates more strongly with direct assessment. We use the implementation
-that is already present in sacrebleu.
-The implementation here is slightly different from sacrebleu in terms of the required input format. The length of
+and ChrF++ adds word n-grams as well which correlates more strongly with direct assessment.
+ChrF compares character n-grams in the reference and candidate sentences, instead of matching word n-grams as done
+in BLEU, ROUGE, etc. The precision and recall are computed over the character n-grams for various values of n (upto 6)
+and are combined using arithmetic averaging to get the overall precision (chrP) and recall (chrR) respectively. In
+other words, chrP represents the percentage of matched character n-grams present in the hypothesis and chrR represents
+the percentage of character n-grams in the reference which are also present in the hypothesis. The final chrF score
+is then computed as:
+$chrF_{\beta} = (1 + \beta^2) \frac{chrP chrR}{\beta^2 chrP + chrR}$,
+where \beta indicates that recall is given \beta times more weightage than precision.
+Popovic propose two enhanced versions of chrF: (i) chrF+, which also considers word unigrams; (ii) chrF++, which
+considers word unigrams and bigrams in addition to character n-grams.
+
+We use the implementation that is already present in sacreBLEU.
+The implementation here is slightly different from sacreBLEU in terms of the required input format. The length of
 the references and hypotheses lists need to be the same, so you may need to transpose your references compared to
 sacrebleu's required input format. See https://github.com/huggingface/datasets/issues/3154#issuecomment-950746534
 See the README.md file at https://github.com/mjpost/sacreBLEU#chrf--chrf for more information.
