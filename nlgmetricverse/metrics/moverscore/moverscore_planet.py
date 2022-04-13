@@ -2,7 +2,7 @@
 """ MOVERScore metric """
 
 import datasets
-from moverscore_v2 import get_idf_dict, word_mover_score
+#from moverscore_v2 import get_idf_dict, word_mover_score (ERROR)
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
