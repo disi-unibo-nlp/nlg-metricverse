@@ -1,10 +1,16 @@
 # coding=utf-8
+""" MOVERScore metric """
+
 import datasets
 from moverscore_v2 import get_idf_dict, word_mover_score
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
-from nlgmetricverse.metrics._core.utils import requirement_message
+from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
+
+# `import moverscore` placeholder
+moverscore = PackagePlaceholder(version="1.0.3")
+
 
 _CITATION = """\
 @inproceedings{zhao2019moverscore,
@@ -31,6 +37,8 @@ BertScore. Both of them use contextualized representations, but they have a diff
 each hypothesis word with a single reference word (1:1), while MoverScore makes a soft alignment (1:N).
 MoverScore demonstrates strong generalization capability across multiple tasks, achieving much higher correlation
 with human judgments than BLEU on machine translation, summarization and image captioning.
+We consider MOVERScore v2, which is faster than the original implementation (by disabling powermean) but a bit
+worse in performance.
 
 BOUNDS
 Intuitively, the metric assigns a perfect score to the system text if it conveys the same meaning as the
@@ -52,9 +60,6 @@ unsupervised; embedding-based
 
 TASKS
 MT, SUM, D2T, IC
-
-References:
-[Official repository](https://github.com/AIPHES/emnlp19-moverscore).
 """
 
 _KWARGS_DESCRIPTION = """
@@ -64,11 +69,6 @@ Args:
         should be a string with tokens separated by spaces.
     references: list of reference for each prediction. Each
         reference should be a string with tokens separated by spaces.
-    version: which MoverScore version use for computing scores.
-        Choose between "1" or "2".
-        Version 1 is the implementation presented in the paper, mantained for reproducibility but slow
-        to run. Version 2 runs faster by disabling powermean but is a bit worse in performance.
-        Default: 2.
 Returns:
     'score': mover score.
 """
@@ -89,10 +89,14 @@ class MoverscorePlanet(MetricForLanguageGeneration):
         )
 
     def _download_and_prepare(self, dl_manager):
+        global moverscore
+        
         try:
             import moverscore
         except ModuleNotFoundError:
             raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="moverscore"))
+        else:
+            super(MoverscorePlanet, self)._download_and_prepare(dl_manager)
 
     def _compute_single_pred_single_ref(
             self,
