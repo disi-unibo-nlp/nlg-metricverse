@@ -76,6 +76,9 @@ prediction) and $B$ is a set of gold texts. The metric has two main components.
 The BLEU score itself is typically a combination of modified n-gram precision for various n (usually up to 4):
 $BLEU(Y) = BP(Y) \cdot \exp\left(\sum_{n=1}^{N} w_{n} \cdot \log\left(modified-precision(Y, n\right)\right)$
 where Y is the dataset, and w_n is a weight for each n-gram level (usually set to 1/n).
+By definition, BLEU is a corpus-level metric, since the statistics above are computed across sentences over an entire
+test set. The sentence-level variant requires a smoothing strategy to counteract the effect of 0 n-gram precisions,
+which are more probable with shorter texts.
 Scores are calculated for individual translated segments—generally sentences—by comparing them with a set of good 
 quality reference translations. Those scores are then averaged over the whole corpus to reach an estimate of the 
 translation's overall quality.
