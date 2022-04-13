@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-BLEU and ORANGE (smooth-BLEU) metrics. The part of this file is adapted from HuggingFace's
+BLEU and ORANGE (smooth-BLEU, i.e., sentBLEU) metrics. The part of this file is adapted from HuggingFace's
 datasets package implementation of BLEU metric. See
 https://github.com/huggingface/datasets/blob/master/metrics/bleu/bleu.py
 """
@@ -91,9 +91,6 @@ human-created translations do not reach this level. Specifically, this value ind
 text is to  the reference texts, with values closer to 1 representing more similar texts. Few human translations will
 attain a  score of 1, since this would indicate that the candidate is identical to one of the reference translations.
 For this  reason, it is not necessary to attain a score of 1.
-
-DIMENSIONS ENCODED
-BLEU scores attempt to achieve the same balance between precision and recall. 
 
 WEAKNESSES
 - Intelligibility or grammatical correctness are not taken into account.
