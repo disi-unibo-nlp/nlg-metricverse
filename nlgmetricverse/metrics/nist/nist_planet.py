@@ -33,6 +33,12 @@ using the arithmetic mean of the ngram matches between candidate and reference t
 brevity penalty is used for smaller variations in phrase lengths. NIST also differs from BLEU in its calculation of the
 brevity penalty insofar as small variations in translation length do not impact the overall score as much. The
 reliability and quality of the NIST metric has been shown to be superior to the BLEU metric in many cases.
+The metric can be thought of as a variant of BLEU which weighs each matched n-gram based on its information gain,
+calculated as:
+$Info(n-gram) = Info(w_1,\dots,w_n) = log_2 \frac{# of occurences of w_1,\dots,w_{n-1}}{# of occurences of w_1,\dots,w_n}$
+To sum up, the idea is to give more credit if a matched n-gram is rare and less credit if a matched n-gram is common.
+This also reduces the chance of gaming the metric by producing trivial n-grams.
+Refer to [Sai et al.](https://arxiv.org/pdf/2008.12009.pdf) for further details.
 
 BOUNDS
 [0, 1], with 1 being the best.
