@@ -29,12 +29,17 @@ jiwer = PackagePlaceholder(version="2.3.0")
 
 
 _CITATION = """\
-@inproceedings{inproceedings,
-    author = {Morris, Andrew and Maier, Viktoria and Green, Phil},
-    year = {2004},
-    month = {01},
-    pages = {},
-    title = {From WER and RIL to MER and WIL: improved evaluation measures for connected speech recognition.}
+@inproceedings{MorrisMG04,
+  author    = {Andrew Cameron Morris and
+               Viktoria Maier and
+               Phil D. Green},
+  title     = {From {WER} and {RIL} to {MER} and {WIL:} improved evaluation measures
+               for connected speech recognition},
+  booktitle = {{INTERSPEECH} 2004 - ICSLP, 8th International Conference on Spoken
+               Language Processing, Jeju Island, Korea, October 4-8, 2004},
+  publisher = {{ISCA}},
+  year      = {2004},
+  url       = {http://www.isca-speech.org/archive/interspeech\_2004/i04\_2765.html}
 }
 """
 
@@ -64,16 +69,14 @@ To calculate this over the entire test-set, one gets the edit-distances for each
 these by the length of all the gold examples, rather than normalizing each case. This gives a single summary value
 for the entire set of errors.
 corpus-wer = sum(dists) / sum(lenghts)
+This method says that our desired notion of closeness or accuracy can be operationalized in terms of the low-level
+operations of insertion, deletion, and substitution. The guiding intuition is very much like that of F scores.
 
 BOUNDS
 This value indicates the average number of errors per reference word. The lower the value, the better the
 performance of the ASR system with a WER of 0 being a perfect score. So, the range-bound of WER is [0, +inf[, where
 0 is best. The lack of a finite upper bound derives from the fact that the normalizing constant is given by the true
 sequences, and the predicted sequences can differ from them in any conceivable way in principle.
-
-DIMENSIONS ENCODED
-This method says that our desired notion of closeness or accuracy can be operationalized in terms of the low-level
-operations of insertion, deletion, and substitution. The guiding intuition is very much like that of F scores.
 
 WEAKNESSES
 The value encoded reveals a potential weakness in certain domains.
