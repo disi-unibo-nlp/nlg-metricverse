@@ -66,7 +66,7 @@ or build from source
 ```
 git clone https://github.com/disi-unibo-nlp/nlg-metricverse.git
 cd nlg-metricverse
-python setup.py install
+pip install -v .
 ```
 #### Explore on Hugging Face Spaces
 
