@@ -1,5 +1,6 @@
 import os
 from scipy.stats import pearsonr, spearmanr
+import numpy as np
 
 from nlgmetricverse import Nlgmetricverse, data_loader
 
@@ -12,19 +13,24 @@ def pearson_and_spearman(
 ):
     if metrics is None:
         metrics = [
-            "bartscore",
             "bertscore",
-            "bleu"
+            "rouge",
+            "meteor"
         ]
-    res1 = scores_single_metric(metric="bertscore", predictions=predictions, references=references, method=method)
-    res2 = scores_single_metric(metric="meteor", predictions=predictions, references=references, method=method)
-    pearson_corr = pearsonr(res1, res2)[0]
-    spearman_corr = spearmanr(res1, res2)[0]
-    print("res1: ", res1)
-    print("res2: ", res2)
+    matrixResP = np.zeros((len(metrics), len(metrics)))
+    matrixResS = np.zeros((len(metrics), len(metrics)))
+    for i, metricA in enumerate(metrics):
+        metrics.remove(metricA)
+        for j, metricB in enumerate(metrics):
+            res1 = scores_single_metric(metric=metricA, predictions=predictions, references=references, method=method)
+            res2 = scores_single_metric(metric=metricB, predictions=predictions, references=references, method=method)
+            matrixResP[i][j] = pearsonr(res1, res2)[0]
+            matrixResS[i][j] = spearmanr(res1, res2)[0]
+    print("matrixResP: ", matrixResP)
+    print("matrixResS: ", matrixResS)
     return {
-        "pearson": pearson_corr,
-        "spearman": spearman_corr
+        "pearson": matrixResP,
+        "spearman": matrixResS
     }
 
 
@@ -40,5 +46,8 @@ def scores_single_metric(metric, predictions, references, method):
         scores.append(score)
         for single_score in score:
             if isinstance(score[single_score], dict):
-                res.append(score[single_score]["score"])
+                if metric == "rouge":
+                    res.append(score[single_score]["rouge1"])
+                else:
+                    res.append(score[single_score]["score"])
     return res
