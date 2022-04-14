@@ -12,8 +12,7 @@ class TestMetrics(unittest.TestCase):
             predictions=self.predictions,
             references=self.references,
         )
-        result = [0.25473327402089213, 0.38700274580351945, 0.5217391304347826]
-        self.assertEqual(scores, result, "Should be 0.29411764705882354")
+        self.assertEqual(scores, "", "Should be ...")
 
 
 if __name__ == '__main__':

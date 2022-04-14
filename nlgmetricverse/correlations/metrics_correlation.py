@@ -19,13 +19,17 @@ def pearson_and_spearman(
         ]
     matrixResP = np.zeros((len(metrics), len(metrics)))
     matrixResS = np.zeros((len(metrics), len(metrics)))
+    scores = {}
+    for metric in metrics:
+        score = scores_single_metric(metric=metric, predictions=predictions, references=references, method=method)
+        scores[metric] = score
     for i, metricA in enumerate(metrics):
         metrics.remove(metricA)
         for j, metricB in enumerate(metrics):
-            res1 = scores_single_metric(metric=metricA, predictions=predictions, references=references, method=method)
-            res2 = scores_single_metric(metric=metricB, predictions=predictions, references=references, method=method)
-            matrixResP[i][j] = pearsonr(res1, res2)[0]
-            matrixResS[i][j] = spearmanr(res1, res2)[0]
+            resA = scores[metricA]
+            resB = scores[metricB]
+            matrixResP[i][j] = pearsonr(resA, resB)[0]
+            matrixResS[i][j] = spearmanr(resA, resB)[0]
     print("matrixResP: ", matrixResP)
     print("matrixResS: ", matrixResS)
     return {
