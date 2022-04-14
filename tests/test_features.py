@@ -3,9 +3,8 @@ import unittest
 
 
 class TestMetrics(unittest.TestCase):
-    predictions = os.getcwd() + "/predictions"
-    references = os.getcwd() + "/references"
-    sources = os.getcwd() + "/sources"
+    predictions = os.getcwd() + "/correlation/predictions"
+    references = os.getcwd() + "/correlation/references"
 
     def test_metrics_correlation(self):
         from nlgmetricverse.correlations import metrics_correlation as mc

@@ -7,13 +7,14 @@ from nlgmetricverse import Nlgmetricverse, data_loader
 def pearson_and_spearman(
         metrics=None,
         method="read_lines",
-        predictions=os.getcwd() + "../tests/predictions",
-        references=os.getcwd() + "../tests/references"
+        predictions=os.getcwd() + "/correlation/predictions",
+        references=os.getcwd() + "/correlation/references"
 ):
     if metrics is None:
         metrics = [
-            "bleu",
-            "meteor"
+            "bartscore",
+            "bertscore",
+            "bleu"
         ]
     res1 = scores_single_metric(metric="bertscore", predictions=predictions, references=references, method=method)
     res2 = scores_single_metric(metric="meteor", predictions=predictions, references=references, method=method)
