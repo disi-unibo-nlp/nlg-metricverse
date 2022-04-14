@@ -137,7 +137,7 @@ class TestMetrics(unittest.TestCase):
         scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
         result = {
             'moverscore': {
-                'score': 0.6413713988727561
+                'score': 0.6407421179890045
             },
             'empty_items': 0,
             'total_items': 2

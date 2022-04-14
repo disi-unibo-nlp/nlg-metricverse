@@ -2,15 +2,14 @@
 """ MOVERScore metric """
 
 import datasets
-#from moverscore_v2 import get_idf_dict, word_mover_score (ERROR)
+# from moverscore_v2 import get_idf_dict, word_mover_score (ERROR)
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import moverscore` placeholder
-moverscore = PackagePlaceholder(version="1.0.3")
-
+moverscore_v2 = PackagePlaceholder(version="1.0.3")
 
 _CITATION = """\
 @inproceedings{zhao2019moverscore,
@@ -89,10 +88,10 @@ class MoverscorePlanet(MetricForLanguageGeneration):
         )
 
     def _download_and_prepare(self, dl_manager):
-        global moverscore
-        
+        global moverscore_v2
+
         try:
-            import moverscore
+            import moverscore_v2
         except ModuleNotFoundError:
             raise ModuleNotFoundError(requirement_message(path="moverscore", package_name="moverscore"))
         else:
@@ -103,13 +102,21 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             predictions,
             references,
             reduce_fn=None,
-            **kwargs
+            idf_dict_ref=None,
+            idf_dict_hyp=None,
+            stop_words=None,
+            n_gram=1,
+            remove_subwords=True
     ):
-        idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
-        idf_dict_ref = get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
+        if stop_words is None:
+            stop_words = []
+        if idf_dict_ref is None:
+            idf_dict_ref = moverscore_v2.get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
+        if idf_dict_hyp is None:
+            idf_dict_hyp = moverscore_v2.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
 
-        scores = word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
-                                  stop_words=[], n_gram=1, remove_subwords=True)
+        scores = moverscore_v2.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+                                                stop_words=stop_words, n_gram=n_gram, remove_subwords=remove_subwords)
         return {"score": scores}
 
     def _compute_single_pred_multi_ref(
@@ -117,15 +124,23 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             predictions,
             references,
             reduce_fn=None,
-            **kwargs
+            idf_dict_ref=None,
+            idf_dict_hyp=None,
+            stop_words=None,
+            n_gram=1,
+            remove_subwords=True
     ):
+        if stop_words is None:
+            stop_words = []
+        if idf_dict_hyp is None:
+            idf_dict_hyp = moverscore_v2.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
         res = []
         for reference in references:
-            idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
-            idf_dict_ref = get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
-
-            score = word_mover_score(reference, predictions, idf_dict_ref, idf_dict_hyp,
-                                     stop_words=[], n_gram=1, remove_subwords=True)
+            if idf_dict_ref is None:
+                idf_dict_ref = moverscore_v2.get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
+            score = moverscore_v2.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+                                                   stop_words=stop_words, n_gram=n_gram,
+                                                   remove_subwords=remove_subwords)
             res.append(score)
         scores = np.mean(res)
         return {"score": scores}
@@ -135,12 +150,20 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             predictions,
             references,
             reduce_fn=None,
-            **kwargs
+            idf_dict_ref=None,
+            idf_dict_hyp=None,
+            stop_words=None,
+            n_gram=1,
+            remove_subwords=True
     ):
+        if stop_words is None:
+            stop_words = []
         res = []
         for prediction in predictions:
-            score = self._compute_single_pred_multi_ref(
-                predictions=prediction, references=references, reduce_fn=reduce_fn)
+            score = self._compute_single_pred_multi_ref(predictions=prediction, references=references,
+                                                        reduce_fn=reduce_fn, idf_dict_ref=idf_dict_ref,
+                                                        idf_dict_hyp=idf_dict_hyp, stop_words=stop_words,
+                                                        n_gram=n_gram, remove_subwords=remove_subwords)
             res.append(score["score"])
         scores = np.mean(res)
         return {"score": scores}
