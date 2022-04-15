@@ -77,3 +77,7 @@ The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out 
 ## Setup
 
 ## How to
+
+## License
+
+The code is released under the [MIT License](LICENSE). It should not be used to promote or profit from violence, hate, and division, environmental destruction, abuse of human rights, or the destruction of people's physical and mental health.
