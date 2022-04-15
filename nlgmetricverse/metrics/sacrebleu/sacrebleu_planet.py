@@ -50,14 +50,19 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
+Comparing BLEU scores is harder than it should be with different implementations, preprocessing techniques, and
+flags that can produce wide swings in the final score and prevent comparisons. SacreBLEU aims to solve these
+problems by wrapping the original reference implementation together with other useful features (including automatic
+test set download), thus taking BLEU more seriously. So, SacreBLEU standardizes BLEU by fixing the tokenization and
+normalization scheme to the one used by the annual Conference on Machine Translation (WMT).
 SacreBLEU provides hassle-free computation of shareable, comparable, and reproducible BLEU scores.
 Inspired by Rico Sennrich's `multi-bleu-detok.perl`, it produces the official WMT scores but works with plain text.
-It also knows all the standard test sets and handles downloading, processing, and tokenization for you.
+To sum up, it knows all the standard test sets and handles downloading, processing, and tokenization for you.
 See the [README.md] file at https://github.com/mjpost/sacreBLEU for more information.
 """
 
 _KWARGS_DESCRIPTION = """
-Produces BLEU scores along with its sufficient statistics
+Produces standardized BLEU scores along with its sufficient statistics
 from a source against one or more references.
 Args:
     predictions: list of predictions to score. Each predictions
