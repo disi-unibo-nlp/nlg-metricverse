@@ -43,11 +43,23 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-BLEURT a learnt evaluation metric for Natural Language Generation. It is built using multiple phases of transfer 
-learning starting from a pretrained BERT model (Devlin et al. 2018) and then employing another pre-training 
-phrase using synthetic data. Finally it is trained on WMT human annotations. You may run BLEURT 
-out-of-the-box or fine-tune it for your specific application (the latter is expected to perform better).
-See the project's README at https://github.com/google-research/bleurt#readme for more information.
+Bilingual Evaluation Understudy with Representations from Transformers (BLEURT) is a fully learned evaluation
+metric modeling human judgments for generated text. BLEURT is based on BERT (Devlin et al. 2018) and a novel
+(additional) pre-training scheme based on millions of synthetic reference-candidate pairs, generated through
+perturbations (i.e., mask-filling, backtranslation, dropping words) and aimed to help the model generalize
+(greater robustness). Differently from existing sentence pairs datasets, synthetic data allow to capture the
+errors and alterations that NLG systems produce (e.g., omissions, repetitions, nonsensical substitutions).
+Extra BERT pre-training on such syntethic data considers several lexical- and semantic-level supervision
+signals with a multitask loss, i.e., a weighted sum aggregation of task-level regression or classification
+losses (BLEU/ROUGE/BERTScore emulation, backtranslation likelihood/flag, textual entailment).
+So, BLEURT models are trained in three steps: regular BERT pre-training (Devlin et al., 2019), pre-training
+on synthetic data, and fine-tuning on task-specific ratings (like translation and/or data-to-text using
+public WMT human annotations). Note: rating data prediction at the third step is done with a classification
+layer on top of BERT's [CLS].
+
+You may run BLEURT  out-of-the-box or fine-tune it for your specific application (the latter is expected to
+perform better). See the project's README at https://github.com/google-research/bleurt#readme for more
+information.
 """
 
 _KWARGS_DESCRIPTION = """
