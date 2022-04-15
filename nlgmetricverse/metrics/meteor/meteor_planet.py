@@ -50,45 +50,35 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-METEOR (Metric for Evaluation of Translation with Explicit ORdering) is an automatic
-metric originally designed to address some of the issues found in BLEU and has been
-widely used for evaluating machine translation models. Compared to BLEU, which only
-measures precision, METEOR is based on the harmonic mean of the unigram precision and
-recall, in which recall is weighted higher than precision.
-It is based on a generalized concept of unigram matching between the machine-produced
-translation and human-produced reference translations. METEOR has several variants that
-extend exact word matching that most of the metrics in this category do not include,
-such as stemming and WordNet-based synonym matching (if English is the target). These
-variants address the problem of reference translation variability, allowing for
-morphological variants and synonyms to be recognized as valid translations. The metric has
-been found to produce good correlation with human judgments at the sentence or segment
-level (Agarwal & Lavie, 2008). This differs from BLEU in that METEOR is explicitly
-designed to compare at the sentence level rather than the corpus level.
-Once all generalized unigram matches between the two strings have been found, METEOR
-computes a score for this matching using a combination of unigram-precision,
-unigram-recall, and a measure of fragmentation that is designed to directly capture
-how well-ordered the matched words in the machine translation are in relation to the
-reference. To take into account longer n-gram matches, a penalty factor is introduced:
-he longer the adjacent mappings between the candidate and the reference, the fewer
-chunks there are (a translation that is identical to the reference will give just one
-chunk). The penalty has the effect of reducing the harmonic mean by up to 50% if there
-are no bigram or longer matches.
-- precision: $P=\frac{m}{w_t}$, where $m$ is the number of unigrams in the hypothesis
-  that are also found in the reference, and $w_t$ is the number of unigrams in the
-  hypothesis
+METEOR (Metric for Evaluation of Translation with Explicit ORdering) is an automatic metric originally designed to
+address some of the issues found in BLEU and has been widely used for evaluating machine translation models.
+Compared to BLEU, which only measures precision, METEOR is based on the harmonic mean of the unigram precision and
+recall, in which recall is weighted higher than precision. It is based on a generalized concept of unigram matching
+between the machine-produced translation and human-produced reference translations. METEOR has several variants that
+extend exact word matching that most of the metrics in this category do not include, such as stemming and
+WordNet-based synonym matching (if English is the target). These variants address the problem of reference translation
+variability, allowing for morphological variants and synonyms to be recognized as valid translations. The metric has
+been found to produce good correlation with human judgments at the sentence or segment level (Agarwal & Lavie, 2008).
+This differs from BLEU in that METEOR is explicitly designed to compare at the sentence level rather than the corpus
+level. Once all generalized unigram matches between the two strings have been found, METEOR computes a score for this
+matching using a combination of unigram-precision, unigram-recall, and a measure of fragmentation that is designed to
+directly capture how well-ordered the matched words in the machine translation are in relation to the reference. To
+take into account longer n-gram matches, a penalty factor is introduced: the longer the adjacent mappings between the
+candidate and the reference, the fewer chunks there are (a translation that is identical to the reference will give
+just one chunk). The penalty has the effect of reducing the harmonic mean by up to 50% if there are no bigram or
+longer matches.
+- precision: $P=\frac{m}{w_t}$, where $m$ is the number of unigrams in the hypothesis that are also found in the
+  reference, and $w_t$ is the number of unigrams in the hypothesis
 - recall: $R=\frac{m}{w_r}$, where $w_r$ is the number of unigrams in the reference
-- harmonic mean: $F_{mean}=\frac{10PR}{R+9P}$, with recall weighted 9 times more than
-  precision
-- penalty: $p=0.5(\frac{c}{u_m})^3$, where $c$ is the number of chunks, and $u_m$ is the
-  number of unigrams that have been mapped. $\frac{c}{m}$ is also known as fragmentation
-  fraction. The exponential value determines the functional relation between fragmentation
-  and the penalty; it is also known as beta.
+- harmonic mean: $F_{mean}=\frac{10PR}{R+9P}$, with recall weighted 9 times more than precision
+- penalty: $p=0.5(\frac{c}{u_m})^3$, where $c$ is the number of chunks, and $u_m$ is the number of unigrams that have
+  been mapped. $\frac{c}{m}$ is also known as fragmentation fraction. The exponential value determines the functional
+  relation between fragmentation and the penalty; it is also known as beta.
 - final score: $M=F_{mean}(1-p)$
-To calculate a score over a whole corpus, or collection of segments, the aggregate values
-for P, R and p are taken and then combined using the same formula. The algorithm also
-works for comparing a candidate translation against more than one reference translations.
-In this case the algorithm compares the candidate against each of the references and
-selects the highest score (f_reduce=max).
+To calculate a score over a whole corpus, or collection of segments, the aggregate values for P, R and p are taken and
+then combined using the same formula. The algorithm also works for comparing a candidate translation against more than
+one reference translations. In this case the algorithm compares the candidate against each of the references and selects
+the highest score (f_reduce=max).
 Example:
 - reference: "the cat sat on the mat"
 - hypothesis: "on the mat sat the cat"
@@ -97,8 +87,8 @@ Example:
 - M = 1.0000*(1-0.5000) = 0.5000
 
 BOUNDS
-The range of METEOR score is between 0 and 1. The higher score means that the candidate
-is closer to reference translation (i.e., closer to human judgment).
+The range of METEOR score is between 0 and 1. The higher score means that the candidate is closer to reference
+translation (i.e., closer to human judgment).
 
 PROPERTY
 n-gram w/ synonym match
