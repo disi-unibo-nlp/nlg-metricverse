@@ -97,9 +97,16 @@ WEAKNESSES
 - Callison-Burch et al. 2006 (http://www.aclweb.org/anthology/E06-1032) criticize BLEU as a machine translation metric
   on the grounds that it fails to correlate with human scoring of translations. They highlight its insensitivity to
   n-gram order and its insensitivity to n-gram types (e.g., function vs. content words) as causes of this lack of
-  correlation.
+  correlation. The authors find that BLEU neither correlates with human judgment on adequacy (whether the hypothesis
+  sentence adequately captures the meaning of the reference sentence) nor on fluency (the quality of language in the
+  hypothesis sentence).
 - Liu et al. 2016 (https://www.aclweb.org/anthology/D16-1230) specifically argue against BLEU as a metric for
   assessing dialogue systems, based on a lack of correlation with human judgments about dialogue coherence.
+- Reiter 2018 (https://aclanthology.org/J18-3002/), in his structured review of BLEU, finds a low correlation between
+  BLEU and human judgment.
+- Sulem et al. 2018 (https://aclanthology.org/D18-1081/) examine BLEU – in the context of text simplification – on
+  grammaticality, meaning preservation and simplicity. They report a very low, and, in some cases, negative
+  correlation with human judgment.
   
 PROPERTY
 n-gram precision
