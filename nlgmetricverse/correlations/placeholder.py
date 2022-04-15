@@ -13,6 +13,10 @@ For comparing gold values $y$ and predicted values $\widehat{y}$, Pearson correl
 $\widehat{y}$ and a bias term to predict $y$ (https://lindeloev.github.io/tests-as-linear/).
 It is also closely related to R-squared.
 
+Pearson Correlation [15] measures the linear correlation between two sets of data. Spearman
+Correlation [73] assesses the monotonic relationships between two variables. Kendall’s Tau [27]
+measures the ordinal association between two measured quantities. BartScore.
+
 BOUNDS
 [-1, 1], where -1 is a complete negative linear correlation, +1 is a complete positive linear correlation, and 0 is no linear
 correlation at all.
