@@ -57,11 +57,29 @@ _CITATION = """\
 """
 
 _DESCRIPTION = """\
-Crosslingual Optimized Metric for Evaluation of Translation (COMET) is an open-source framework used to train 
-Machine Translation metrics that achieve high levels of correlation with different types of human judgments 
-(HTER, DA's or MQM). With the release of the framework the authors also released fully trained models that were used 
-to compete in the WMT20 Metrics Shared Task achieving SOTA in that years competition. See the [README.md] file at 
-https://unbabel.github.io/COMET/html/models.html for more information.
+Crosslingual Optimized Metric for Evaluation of Translation (COMET) is an open-source neural framework for
+generating multilingual-MT evaluation prediction estimates of three types of human judgments (HTER, DA's
+or MQM), training a model for each judgment type, achieving high-level correlations with the ground-truth
+scores and better robustness. To encompass the distinct scoring types, the COMET framework supports two
+architectures with differnet training objectives: (i) the Estimator model (targets = real values, i.e.,
+HTER and MQM); (ii) the Translation Ranking model (targets = relative rankings, i.e., DA). While the
+Estimator is trained to regress directly on a quality score, the Translation Ranking model is trained to
+minimize the distance between a "better" hypothesis and both its corresponding reference and its original
+source. Both models are composed of a pre-trained cross-lingual encoder (e.g., XLM-RoBERTa, multilingual
+BERT), and a pooling layer to produce sentence embeddings.
+- The Estimator model independently encode the hypothesis and the reference (encoding), transforming the
+  word embeddings into a sentence embedding for each segment (pooling). Finally, the resulting sentence
+  embeddings are combined and concatenated into one single vector that is passed to a feed-forward
+  regressor. The entire model is trained by minimizing the Mean Squared Error (MSE).
+- The Translation Ranking model receives 4 segments: the source, the reference, a "better" hypothesis,
+  and a "worse" one. These segments are independently encoded using a pretrained cross-lingual encoder
+  and a pooling layer on top. Finally, using the triplet margin loss (Schroff et al., 2015), the resulting
+  embedding space is optimized to minimize the distance between the "better" hypothesis and the "anchors"
+  (source and reference).
+
+With the release of the framework the authors also released fully trained models that were used to
+compete in the WMT20 Metrics Shared Task achieving SOTA in that years competition. See the [README.md] file
+at https://unbabel.github.io/COMET/html/models.html for more information.
 """
 
 _KWARGS_DESCRIPTION = """
