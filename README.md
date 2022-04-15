@@ -10,6 +10,7 @@
           <br>
           <a href="https://github.com/obss/jury/actions"><img alt="Build status" src="https://github.com/obss/jury/actions/workflows/ci.yml/badge.svg"></a>
           <a href="https://libraries.io/pypi/jury"><img alt="Dependencies" src="https://img.shields.io/librariesio/github/obss/jury"></a>
+          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/disi-unibo-nlp/nlg-metricverse.svg"></a>
         </td>
     </tr>
     <tr>
