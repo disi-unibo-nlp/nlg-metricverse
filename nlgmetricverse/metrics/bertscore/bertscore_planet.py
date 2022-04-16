@@ -63,7 +63,11 @@ candidate and reference texts. Then, it produces a meaning overlapping measure b
 where only the cross-text token pairs with maximum similarity are taken into account with an IDF weight.
 BERTScore has been shown to correlate with human judgment on sentence-level and system-level evaluation; it supports
 around 130 models (for which correlation spreadsheet results are available).
-It can be seen as a special case of MOVERScore, with an hard (1:1) aligment between tokens.
+It can be seen as a special case of MOVERScore (Zhao et al., 2019), with an hard (1:1) aligment between tokens. In
+fact, they are both set-based metrics used to measure the semantic similarity between hypothesis and reference.
+BERTScore uses greedy alignment to compute the similarity between two sets of BERT-based word embeddings from
+hypothesis and from reference, while MOVERScore uses optimal alignments based on Word Mover's Distance (Kusner et al.,
+2015) to do so.
 Moreover, BERTScore computes precision, recall, and F1 measure, which are useful for evaluating a range of NLG tasks.
 
 PROPERTY
