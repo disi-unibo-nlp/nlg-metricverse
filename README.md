@@ -76,6 +76,45 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * ☠ New NLG metrics are constantly being proposed in top conferences, but their **implementations (and related features) remain disrupted**, significantly restricting their application. Existing libraries tend to support a very small number of metrics, which mistakenly receive less attention than generative models. The absence of a shared and continuously updated repository makes it difficult to discover alternative metrics and slows down their use on a practical side.
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
+## 🪐 Available Metrics
+| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| BLEU | 2002 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| NIST | 2002 | HLT | :white_check_mark: | :x: | :x: | :x: | :x: |
+| ORANGE (SentBLEU) | 2004 | COLING | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| ROUGE | 2004 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| WER | 2004 | ICSLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| CER (TODO) | 2004 | ICSLP | | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| METEOR | 2005 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| CIDEr (TODO) | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
+| TER | 2006 | AMTA | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| ChrF(++) | 2015 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| CharacTER (TODO) | 2016 | WMT | | :x: | :x: | :x: | :x: |
+| SacreBLEU | 2018 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| METEOR++ (TODO) | 2018 | WMT | | :x: | :x: | :x: | :x: |
+| MOVERScore | 2019 | ACL | :white_check_mark: | :x: | :x: | :x: | :x: |
+| EED (TODO) | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
+| COMET | 2020 | EMNLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| FactCC(X) (TODO) | 2020 | EMNLP | | :x: | :x: | :x: | :x: |
+| BLEURT | 2020 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| NUBIA (TODO) | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
+| BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| PRISM (TODO) | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
+| BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
+| RoMe (TODO) | 2022 | ACL | | :x: | :x: | :x: | :x: |
+| InfoLM (TODO) | 2022 | AAAI | | :x: | :x: | :x: | :x: |
+| Accuracy (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| Precision (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| F1 (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MER (TODO) | / | / | | :x: | :x: | :x: | :white_check_mark: |
+| Perplexity (TODO) | / | / | | :x: | :white_check_mark: | :x: | :x: |
+| Embedding Cosine Similarity (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Vector Extrema (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Greedy Matching (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+
 ## 🔌 Installation
 Install from PyPI repository
 ```
@@ -159,6 +198,9 @@ references = [
 scores = scorer(predictions, references)
 ```
 The `scorer` automatically selects the proper strategy for applying the selected metric(s) depending on the input format. In any case, if a prediction needs to be compared against multiple references, you can customize the reduction function to use (e.g., `reduce_fn=max` chooses the prediction-reference pair with the highest score for each of the N items in the dataset).
+```python
+scores = scorer.compute(predictions, references, reduce_fn="max")
+```
 
 #### Metric-specific Parameters
 Additional metric-specific parameters can be specified on `compute()`,
