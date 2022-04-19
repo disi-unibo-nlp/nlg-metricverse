@@ -71,6 +71,7 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
     - [Code Style](#code-style)
 - [Custom Metrics](#-custom-metrics)
 - [Contributing](#-contributing)
+- [Contact](#-contact)
 - [License](#license)
 
 ## 💡 Motivations
@@ -300,7 +301,24 @@ class CustomMetric(MetricForLanguageGeneration):
 For more details, have a look at base metric implementation [nlgmetricverse.metrics.Metric](./nlgmetricverse/metrics/_core/base.py)
 
 ## 🙌 Contributing
-PRs are welcomed as always :)
+Thanks go to all these wonderful collaborations for their contribution towards the NLG Metricverse library:
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/giacomofrisoni.png" width="100px;" alt=""/><br /><sub><b>Giacomo Frisoni</b></sub></a></td>
+    <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/andreazammarchi3.png" width="100px;" alt=""/><br /><sub><b>Andrea Zammarchi</b></sub></a></td>
+</table>
+
+> We are hoping that the open-source community will help us edit the code and make it better!
+> Don't hesitate to open issues, even suggest solutions and better still contribute the fix/improvement! We can guide you if you're not sure where to start but want to help us out 🥇.
+> In order to contribute a change to our code base, please submit a pull request (PR) via GitHub and someone from our team will go over it and accept it.
+
+## ✉ Contact
+Contact person: Giacomo Frisoni, [giacomo.frisoni@unibo.it](mailto:giacomo.frisoni@unibo.it).
+Don't hesitate to send us an e-mail or report an issue, if something is broken (and it shouldn't be) or if you have further questions.
 
 ## License
 
