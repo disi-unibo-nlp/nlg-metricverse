@@ -89,7 +89,7 @@ NLG Metricverse supports X diverse evaluation metrics overall (last update: May 
 
 #### N-gram Overlap Galaxy
 
-| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
 | BLEU | 2002 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | NIST | 2002 | HLT | :white_check_mark: | :x: | :x: | :x: | :x: |
@@ -111,7 +111,7 @@ NLG Metricverse supports X diverse evaluation metrics overall (last update: May 
 
 #### Embedding-based Galaxy
 
-| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
 | WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
 | SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
@@ -136,7 +136,7 @@ NLG Metricverse supports X diverse evaluation metrics overall (last update: May 
 
 ### Hypothesis-only Supercluster
 
-| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
 | MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
 | Flesch-Kincaid Readability | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
