@@ -1,7 +1,7 @@
 import os
 
 import numpy as np
-from scipy.stats import pearsonr, spearmanr
+from scipy.stats import pearsonr, spearmanr, kendalltau
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -12,6 +12,7 @@ from nlgmetricverse import data_loader
 def pearson_and_spearman(
         metrics=None,
         method="read_lines",
+        technique="pearson",
         predictions=os.getcwd() + "/correlation/predictions",
         references=os.getcwd() + "/correlation/references"
 ):
@@ -28,8 +29,7 @@ def pearson_and_spearman(
         ]
     if len(metrics) < 2:
         raise ValueError("'metric' length must be at least 2")
-    matrixResP = np.zeros((len(metrics), len(metrics)))
-    matrixResS = np.zeros((len(metrics), len(metrics)))
+    matrixRes = np.zeros((len(metrics), len(metrics)))
     scores = {}
     for metric in metrics:
         score = scores_single_metric(metric=metric, predictions=predictions, references=references, method=method)
@@ -44,15 +44,15 @@ def pearson_and_spearman(
         scores[metric] = mapped_score
     for i, metricA in enumerate(metrics):
         for j, metricB in enumerate(metrics):
-            matrixResP[i][j] = pearsonr(scores[metricA], scores[metricB])[0]
-            matrixResS[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
-    matrix_to_plot(matrixResP, metrics)
-    matrix_to_plot(matrixResS, metrics)
+            if technique == "pearson":
+                matrixRes[i][j] = pearsonr(scores[metricA], scores[metricB])[0]
+            elif technique == "spearman":
+                matrixRes[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
+            elif technique == "kendalltau":
+                matrixRes[i][j] = kendalltau(scores[metricA], scores[metricB])[0]
+    matrix_to_plot(matrixRes, metrics)
 
-    return {
-        "pearson": np.tril(matrixResP, -1),
-        "spearman": np.tril(matrixResS, -1)
-    }
+    return np.tril(matrixRes, -1)
 
 
 def scores_single_metric(metric, predictions, references, method):
