@@ -51,6 +51,11 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 
 ## Tables Of Contents
 - [Motivations](#-motivations)
+- [Available Metrics](#-available-metrics)
+    - [Hypothesis-Reference Supercluster](#hypothesis-reference-supercluster)
+        - [N-gram Overlap Galaxy](#n-gram-overlap-galaxy)
+        - [Embedding-based Galaxy](#embedding-based-galaxy)
+    - [Hypothesis-only Supercluster](#hypothesis-only-supercluster)
 - [Installation](#-installation)
     - [Explore on Hugging Face Spaces](#explore-on-hugging-face-spaces)
 - [Quickstart](#-quickstart)
@@ -61,6 +66,7 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
         - [Prediction-Reference Cardinality](#prediction-reference-cardinality)
         - [Scorer Application](#scorer-application)
         - [Metric-specific Parameters](#metric-specific-parameters)
+        - [Outputs](#outputs)
 - [Tests](#-tests)
     - [Code Style](#code-style)
 - [Custom Metrics](#-custom-metrics)
@@ -77,6 +83,12 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
 ## 🪐 Available Metrics
+NLG Metricverse supports X diverse evaluation metrics overall (last update: May X, 2022).
+
+### Hypothesis-Reference Supercluster
+
+#### N-gram Overlap Galaxy
+
 | Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
 | BLEU | 2002 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -89,11 +101,20 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 | CIDEr (TODO) | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
 | TER | 2006 | AMTA | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | ChrF(++) | 2015 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
-| SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
 | CharacTER (TODO) | 2016 | WMT | | :x: | :x: | :x: | :x: |
 | SacreBLEU | 2018 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
 | METEOR++ (TODO) | 2018 | WMT | | :x: | :x: | :x: | :x: |
+| Accuracy (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| Precision (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| F1 (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MER (TODO) | / | / | | :x: | :x: | :x: | :white_check_mark: |
+
+#### Embedding-based Galaxy
+
+| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
 | MOVERScore | 2019 | ACL | :white_check_mark: | :x: | :x: | :x: | :x: |
 | EED (TODO) | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
 | COMET | 2020 | EMNLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
@@ -103,17 +124,24 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 | BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
 | PRISM (TODO) | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
 | BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
 | RoMe (TODO) | 2022 | ACL | | :x: | :x: | :x: | :x: |
 | InfoLM (TODO) | 2022 | AAAI | | :x: | :x: | :x: | :x: |
-| Accuracy (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| Precision (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| F1 (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| MER (TODO) | / | / | | :x: | :x: | :x: | :white_check_mark: |
 | Perplexity (TODO) | / | / | | :x: | :white_check_mark: | :x: | :x: |
 | Embedding Cosine Similarity (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
 | Vector Extrema (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
 | Greedy Matching (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Coverage (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
+| Density (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
+| Compression (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
+
+### Hypothesis-only Supercluster
+
+| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
+| Flesch-Kincaid Readability | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
+| Average Unique N-gram Ratios | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
+
 
 ## 🔌 Installation
 Install from PyPI repository
@@ -228,6 +256,9 @@ scorer = nlgmetricverse.load_metric(
                 "model _type": "microsoft/deberta-large-mnli",
                 "idf": True})
 ```
+
+#### Outputs
+TODO
 
 ## 🔎 Tests
 TODO
