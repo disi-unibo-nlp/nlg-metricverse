@@ -313,12 +313,13 @@ Thanks go to all these wonderful collaborations for their contribution towards t
 </table>
 
 > We are hoping that the open-source community will help us edit the code and make it better!
-> Don't hesitate to open issues, even suggest solutions and better still contribute the fix/improvement! We can guide you if you're not sure where to start but want to help us out 🥇.
+> Don't hesitate to open issues and contribute the fix/improvement! We can guide you if you're not sure where to start but want to help us out 🥇.
 > In order to contribute a change to our code base, please submit a pull request (PR) via GitHub and someone from our team will go over it and accept it.
+
+> If you have troubles, suggestions, or ideas, the [Discussion](https://github.com/disi-unibo-nlp/nlg-metricverse/discussions) board might have some relevant information. If not, you can post your questions there 💬🗨.
 
 ## ✉ Contact
 Contact person: Giacomo Frisoni, [giacomo.frisoni@unibo.it](mailto:giacomo.frisoni@unibo.it).
-Don't hesitate to send us an e-mail or report an issue, if something is broken (and it shouldn't be) or if you have further questions.
 
 ## License
 
