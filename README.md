@@ -49,7 +49,25 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * Reduces the implementational burden, allowing users to easily move from papers to practical applications.
 * Increases comparability and replicability of NLG research.
 
-## Motivations
+## Tables Of Contents
+- [Motivations](#-motivations)
+- [Installation](#-installation)
+    - [Explore on Hugging Face Spaces](#explore-on-hugging-face-spaces)
+- [Quickstart](#-quickstart)
+    - [Metric Selection](#metric-selection)
+        - [Metric Documentation](#metric-documentation)
+        - [Metric Filtering](#metric-filtering)
+    - [Metric Usage](#metric-usage)
+        - [Prediction-Reference Cardinality](#prediction-reference-cardinality)
+        - [Scorer Application](#scorer-application)
+        - [Metric-specific Parameters](#metric-specific-parameters)
+- [Tests](#-tests)
+    - [Code Style](#code-style)
+- [Custom Metrics](#-custom-metrics)
+- [Contributing](#-contributing)
+- [License](#license)
+
+## 💡 Motivations
 * 📌 Human evaluation is often the best indicator of the quality of a system. However, designing crowd sourcing experiments is an expensive and high-latency process, which does not easily fit in a daily model development pipeline. Therefore, NLG researchers commonly use automatic evaluation metrics, which provide an acceptable proxy for quality and are very cheap to compute.
 * 📌 NLG metrics aims to summarize and quantify the extent to which a model has managed to reproduce or accurately match some gold standard token sequences. Task examples: machine translation, abstractive question answering, single/multi-document summarization, data-to-text, chatbots, image/video captioning, etc.
 * ☠ Different evaluation metrics encode **different properties** and have **different biases and other weaknesses**. Thus, you should choose your metrics carefully depending on your goals and motivate those choices when writing up and presenting your work.
@@ -58,8 +76,46 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * ☠ New NLG metrics are constantly being proposed in top conferences, but their **implementations (and related features) remain disrupted**, significantly restricting their application. Existing libraries tend to support a very small number of metrics, which mistakenly receive less attention than generative models. The absence of a shared and continuously updated repository makes it difficult to discover alternative metrics and slows down their use on a practical side.
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
-## Installation
+## 🪐 Available Metrics
+| Metric | Publication Year | Conference | NLG Metricverse | Jury | HF/datasets | NLG-eval | TorchMetrics
+| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
+| BLEU | 2002 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| NIST | 2002 | HLT | :white_check_mark: | :x: | :x: | :x: | :x: |
+| ORANGE (SentBLEU) | 2004 | COLING | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| ROUGE | 2004 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| WER | 2004 | ICSLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| CER (TODO) | 2004 | ICSLP | | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| METEOR | 2005 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| CIDEr (TODO) | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
+| TER | 2006 | AMTA | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| ChrF(++) | 2015 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| CharacTER (TODO) | 2016 | WMT | | :x: | :x: | :x: | :x: |
+| SacreBLEU | 2018 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| METEOR++ (TODO) | 2018 | WMT | | :x: | :x: | :x: | :x: |
+| MOVERScore | 2019 | ACL | :white_check_mark: | :x: | :x: | :x: | :x: |
+| EED (TODO) | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
+| COMET | 2020 | EMNLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| FactCC(X) (TODO) | 2020 | EMNLP | | :x: | :x: | :x: | :x: |
+| BLEURT | 2020 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| NUBIA (TODO) | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
+| BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| PRISM (TODO) | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
+| BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
+| RoMe (TODO) | 2022 | ACL | | :x: | :x: | :x: | :x: |
+| InfoLM (TODO) | 2022 | AAAI | | :x: | :x: | :x: | :x: |
+| Accuracy (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| Precision (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| F1 (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MER (TODO) | / | / | | :x: | :x: | :x: | :white_check_mark: |
+| Perplexity (TODO) | / | / | | :x: | :white_check_mark: | :x: | :x: |
+| Embedding Cosine Similarity (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Vector Extrema (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Greedy Matching (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
 
+## 🔌 Installation
 Install from PyPI repository
 ```
 pip install nlg-metricverse
@@ -70,14 +126,150 @@ git clone https://github.com/disi-unibo-nlp/nlg-metricverse.git
 cd nlg-metricverse
 pip install -v .
 ```
-#### Explore on Hugging Face Spaces
 
+#### Explore on Hugging Face Spaces
 The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out here:
 [![](./figures/spaces.png)](https://huggingface.co/spaces/nfel/Thermostat)
 
-## Setup
+## 🚀 Quickstart
 
-## How to
+It is only <b>two lines of code</b> to evaluate generated outputs: <b>(i)</b> instantiate your scorer by selecting the desired metric(s) and <b>(ii)</b> apply it!
+
+### Metric Selection
+Specify the metrics you want to use on instantiation,
+```python
+from nlgmetricverse import NLGMetricverse
+
+# If you specify more metrics, each of them will be applyied on your data (allowing for a fast prediction/efficiency comparison)
+scorer = NLGMetricverse(metrics=["bleu", "rouge"])
+```
+or directly import metrics from `nlgmetricverse.metrics` as classes, then instantiate and use them as desired.
+```python
+from nlgmetricverse.metrics import BertScore
+
+scorer = BertScore.construct()
+```
+You can seemlessly access both `nlgmetricverse` and HuggingFace `datasets` metrics through `nlgmetricverse.load_metric`.
+NLG Metricverse falls back to `datasets` implementation of metrics for the ones that are currently not supported; you can see the metrics available for `datasets` on [datasets/metrics](https://github.com/huggingface/datasets/tree/master/metrics). 
+```python
+import nlgmetricverse
+bleu = nlgmetricverse.load_metric("bleu")
+# metrics not available in `nlgmetricverse` but in `datasets`
+wer = nlgmetricverse.load_metric("competition_math") # It falls back to `datasets` package with a warning
+```
+Note: if a selected metric requires specific packages, you'll be invited to install them (e.g., "bertscore" → `pip install bertscore`).
+
+#### Metric Documentation
+TODO
+
+#### Metric Filtering
+TODO
+
+### Metric Usage
+
+#### Prediction-Reference Cardinality
+<i>1:1</i>. One prediction, one reference ([p<sub>1</sub>, ..., p<sub>n</sub>] and [r<sub>1</sub>, ..., r<sub>n</sub>] syntax).
+```python
+predictions = ["Evaluating artificial text has never been so simple", "the cat is on the mat"]
+references = ["Evaluating artificial text is not difficult", "The cat is playing on the mat."]
+```
+<i>1:M</i>. One prediction, many references ([p<sub>1</sub>, ..., p<sub>n</sub>] and [[r<sub>11</sub>, ..., r<sub>1m</sub>], ..., [r<sub>n1</sub>, ..., r<sub>nm</sub>]] syntax)
+```python
+predictions = ["Evaluating artificial text has never been so simple", "the cat is on the mat"]
+references = [
+    ["Evaluating artificial text is not difficult", "Evaluating artificial text is simple"],
+    ["The cat is playing on the mat.", "The cat plays on the mat."]
+]
+```
+<i>K:M</i>. Many predictions, many references ([[p<sub>11</sub>, ..., p<sub>1k</sub>], ..., [p<sub>n1</sub>, ..., p<sub>nk</sub>]] and [[r<sub>11</sub>, ..., r<sub>1m</sub>], ..., [r<sub>n1</sub>, ..., r<sub>nm</sub>]] syntax). This is helpful for language models with a decoding strategy focused on diversity (e.g., beam search, temperature sampling).
+```python
+predictions = [
+    ["Evaluating artificial text has never been so simple", "The evaluation of automatically generated text is simple."],
+    ["the cat is on the mat", "the cat likes playing on the mat"]
+]
+references = [
+    ["Evaluating artificial text is not difficult", "Evaluating artificial text is simple"],
+    ["The cat is playing on the mat.", "The cat plays on the mat."]
+]
+```
+
+#### Scorer Application
+```python
+scores = scorer(predictions, references)
+```
+The `scorer` automatically selects the proper strategy for applying the selected metric(s) depending on the input format. In any case, if a prediction needs to be compared against multiple references, you can customize the reduction function to use (e.g., `reduce_fn=max` chooses the prediction-reference pair with the highest score for each of the N items in the dataset).
+```python
+scores = scorer.compute(predictions, references, reduce_fn="max")
+```
+
+#### Metric-specific Parameters
+Additional metric-specific parameters can be specified on `compute()`,
+```python
+# BertScore example for:
+# - specifying which pre-trained BERT model use
+# - asking to mount idf weighting
+score = scorer.compute(predictions=predictions, references=references,
+                       model_type="microsoft/deberta-large-mnli", idf=True)
+```
+or alternatively on instantiation.
+```python
+from nlgmetricverse.metrics import BertScore
+scorer = BertScore.construct(compute_kwargs={
+            "model_type": "microsoft/deberta-large-mnli",
+            "idf": True})
+score = scorer.compute(predictions=predictions, references=references)
+```
+```python
+import nlgmetricverse
+scorer = nlgmetricverse.load_metric(
+            "bertscore",
+            resulting_name="custom_bertscore",
+            compute_kwargs={
+                "model _type": "microsoft/deberta-large-mnli",
+                "idf": True})
+```
+
+## 🔎 Tests
+TODO
+
+### Code Style
+To check the code style,
+```
+python tests/run_code_style.py check
+```
+To format the codebase,
+```
+python tests/run_code_style.py format
+```
+
+## 🎨 Custom Metrics
+You can use custom metrics by inheriting `nlgmetricverse.metrics.Metric`.
+You can see current metrics implemented on NLG Metricverse from [nlgmetricverse/metrics](https://github.com/disi-unibo-nlp/nlg-metricverse/tree/main/nlgmetricverse/metrics).
+NLG Metricverse itself uses `datasets.Metric` as a base class to drive its own base class as `nlgmetricverse.metrics.Metric`. The interface is similar; however, NLG Metricverse makes the metrics to take a unified input type by handling metric-specific inputs and allowing multiple cardinalities (1:1, 1:M, K:M).
+For implementing custom metrics, both base classes can be used but we strongly recommend using `nlgmetricverse.metrics.Metric` for its advantages.
+```python
+from nlgmetricverse.metrics import MetricForLanguageGeneration
+
+class CustomMetric(MetricForLanguageGeneration):
+    def _compute_single_pred_single_ref(
+        self, predictions, references, reduce_fn = None, **kwargs
+    ):
+        raise NotImplementedError
+
+    def _compute_single_pred_multi_ref(
+        self, predictions, references, reduce_fn = None, **kwargs
+    ):
+        raise NotImplementedError
+
+    def _compute_multi_pred_multi_ref(
+            self, predictions, references, reduce_fn = None, **kwargs
+    ):
+        raise NotImplementedError
+```
+For more details, have a look at base metric implementation [nlgmetricverse.metrics.Metric](./nlgmetricverse/metrics/_core/base.py)
+
+## 🙌 Contributing
+PRs are welcomed as always :)
 
 ## License
 
