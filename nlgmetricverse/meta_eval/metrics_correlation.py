@@ -1,10 +1,12 @@
 import os
-from scipy.stats import pearsonr, spearmanr
+
 import numpy as np
+from scipy.stats import pearsonr, spearmanr
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from nlgmetricverse import Nlgmetricverse, data_loader
+import nlgmetricverse
+from nlgmetricverse import data_loader
 
 
 def pearson_and_spearman(
@@ -16,8 +18,13 @@ def pearson_and_spearman(
     if metrics is None:
         metrics = [
             "bertscore",
+            "bleu",
+            "chrf",
             "meteor",
             "rouge",
+            "sacrebleu",
+            "ter",
+            "wer"
         ]
     if len(metrics) < 2:
         raise ValueError("'metric' length must be at least 2")
@@ -36,36 +43,30 @@ def pearson_and_spearman(
             mapped_score = score
         scores[metric] = mapped_score
     for i, metricA in enumerate(metrics):
-        metrics.remove(metricA)
         for j, metricB in enumerate(metrics):
-            resA = scores[metricA]
-            resB = scores[metricB]
-            matrixResP[i][j] = pearsonr(resA, resB)[0]
-            matrixResS[i][j] = spearmanr(resA, resB)[0]
-    print("matrixResP: ", matrixResP)
-    print("matrixResS: ", matrixResS)
-
-    sns.heatmap(matrixResP, annot=True)
-    plt.show()
-    sns.heatmap(matrixResS, annot=True)
-    plt.show()
-
+            matrixResP[i][j] = pearsonr(scores[metricA], scores[metricB])[0]
+            matrixResS[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
+    matrix_to_plot(matrixResP, metrics)
+    matrix_to_plot(matrixResS, metrics)
 
     return {
-        "pearson": matrixResP,
-        "spearman": matrixResS
+        "pearson": np.tril(matrixResP, -1),
+        "spearman": np.tril(matrixResS, -1)
     }
 
 
 def scores_single_metric(metric, predictions, references, method):
-    scorer = Nlgmetricverse(metrics=[metric])
+    scorer = nlgmetricverse.load_metric(metric)
     dl = data_loader.DataLoader(predictions=predictions, references=references, method=method)
     preds = dl.get_predictions()
     refs = dl.get_references()
     scores = []
     res = []
     for i, pred in enumerate(preds):
-        score = scorer(predictions=pred, references=refs[i], method=method)
+        if metric == "bleu":
+            score = scorer.compute(predictions=[pred], references=[refs[i]], max_order=1)
+        else:
+            score = scorer.compute(predictions=[pred], references=[refs[i]])
         scores.append(score)
         for single_score in score:
             if isinstance(score[single_score], dict):
@@ -81,3 +82,9 @@ def map_range(value, left_min, left_max, right_min, right_max):
     rightSpan = right_max - right_min
     valueScaled = float(value - left_min) / float(leftSpan)
     return right_min + (valueScaled * rightSpan)
+
+
+def matrix_to_plot(matrix, metrics):
+    mask = np.triu(np.ones_like(matrix, dtype=bool))
+    sns.heatmap(np.tril(matrix, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
+    plt.show()
