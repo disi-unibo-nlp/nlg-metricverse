@@ -146,7 +146,9 @@ class TestMetrics(unittest.TestCase):
 
     def test_nist(self):
         scorer = Nlgmetricverse(metrics=["nist"])
-        scores = scorer(predictions=self.predictions, references=self.references, method="read_lines")
+        predictions = os.getcwd() + "/correlation/predictions"
+        references = os.getcwd() + "/correlation/references"
+        scores = scorer(predictions=predictions, references=references, method="read_lines")
         result = {
             'nist': {
                 'score': 1.2580194300219625

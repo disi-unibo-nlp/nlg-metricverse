@@ -7,7 +7,7 @@ class TestMetrics(unittest.TestCase):
     references = os.getcwd() + "/correlation/references"
 
     def test_metrics_correlation(self):
-        from nlgmetricverse.correlations import metrics_correlation as mc
+        from nlgmetricverse.meta_eval import metrics_correlation as mc
         scores = mc.pearson_and_spearman(
             predictions=self.predictions,
             references=self.references,
