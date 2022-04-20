@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dependencies
         run: >
-          pip install -v 
+          pip install -v .
           
       - name: Run tests.
         run: |
