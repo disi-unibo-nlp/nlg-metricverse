@@ -14,64 +14,37 @@ from tests.nlgmetricverse import EXPECTED_OUTPUTS
 set_env("CUDA_VISIBLE_DEVICES", "-1")
 
 _TEST_METRICS = [
-    load_metric("accuracy"),
     load_metric("bleu"),
-    load_metric("f1"),
     load_metric("meteor"),
-    load_metric("precision"),
-    load_metric("recall"),
     load_metric("rouge"),
-    load_metric("sacrebleu"),
-    load_metric("squad"),
+    load_metric("sacrebleu")
 ]
 
 _STR_TEST_METRIC = "bleu"
 
 _LIST_STR_TEST_METRICS = [
-    "accuracy",
     "bleu",
-    "f1",
     "meteor",
-    "precision",
-    "recall",
     "rouge",
-    "sacrebleu",
-    "squad",
+    "sacrebleu"
 ]
 
 _LIST_DICT_TEST_METRICS = [
-    {"path": "accuracy"},
     {"path": "bleu", "resulting_name": "bleu-1", "compute_kwargs": {"max_order": 1}},
     {"path": "bleu", "resulting_name": "bleu-2", "compute_kwargs": {"max_order": 2}},
-    {"path": "f1", "resulting_name": "F1"},
     {"path": "meteor", "resulting_name": "METEOR"},
-    {"path": "precision"},
-    {"path": "recall"},
     {"path": "rouge"},
-    {"path": "sacrebleu"},
-    {"path": "squad"},
+    {"path": "sacrebleu"}
 ]
 
 _LIST_MIXED_TEST_METRICS = [
-    "accuracy",
     "bleu",
-    {"path": "f1"},
     {"path": "meteor"},
-    {"path": "precision"},
-    "recall",
     "rouge",
-    {"path": "sacrebleu"},
-    {"path": "squad"},
+    {"path": "sacrebleu"}
 ]
 
 _DATASETS_METRICS = "competition_math"
-
-_TEST_METRICS_SEQUENCE_CLASSIFICATION = [
-    {"path": "accuracy", "task": "sequence-classification"},
-    {"path": "f1", "task": "sequence-classification"},
-    {"path": "precision", "task": "sequence-classification"},
-    {"path": "recall", "task": "sequence-classification"},
-]
 
 
 @pytest.fixture(scope="package")
@@ -179,11 +152,6 @@ def nlgmetricverse_list_mixed():
 @pytest.fixture(scope="function")
 def nlgmetricverse_datasets():
     return Nlgmetricverse(metrics=_DATASETS_METRICS)
-
-
-@pytest.fixture(scope="function")
-def nlgmetricverse_sequence_classification():
-    return Nlgmetricverse(metrics=_TEST_METRICS_SEQUENCE_CLASSIFICATION)
 
 
 def get_expected_output(prefix: Optional[str] = None):
