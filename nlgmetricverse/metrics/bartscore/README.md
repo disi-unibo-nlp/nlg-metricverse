@@ -15,20 +15,15 @@ The authors present four methods for using BARTScore based on different generati
 - <b>F-score</b> (<img src="https://render.githubusercontent.com/render/math?math={r \leftrightarrow h}##gh-light-mode-only">): consider both directions and use the arithmetic average of Precision and Recall ones. This version can be broadly used to evaluate the semantic overlap (informativeness, adequacy) between reference texts and generated texts.
 
 ### Inputs
-- **predictions** (`list`): list of predictions to score. Each prediction
-        should be a string with tokens separated by spaces.
-- **references** (`list`): list of reference for each prediction. Each
-        reference should be a string with tokens separated by spaces.
-- **rouge_types** (`list`): A list of rouge types to calculate. Defaults to `['rouge1', 'rouge2', 'rougeL', 'rougeLsum']`.
-    - Valid rouge types:
-        - `"rouge1"`: unigram (1-gram) based scoring
-        - `"rouge2"`: bigram (2-gram) based scoring
-        - `"rougeL"`: Longest common subsequence based scoring.
-        - `"rougeLSum"`: splits text using `"\n"`
-        - See [here](https://github.com/huggingface/datasets/issues/617) for more information
-- **use_aggregator** (`boolean`): If True, returns aggregates. Defaults to `True`.
-- **use_stemmer** (`boolean`): If `True`, uses Porter stemmer to strip word suffixes. Defaults to `False`.
-
+#### Construction
+- **model_checkpoint** (`str`): BARTScore checkpoint. Will default to bartscore-large-cnn.
+- **model_weights** (`str`): Optional BARTScore weights, overrides the checkpoint weights.
+- **device** (`str`): On which the contextual embedding model will be allocated on. If this argument is None, the model lives on cuda:0 if cuda is available.
+#### Computation
+- **predictions** (`list`): Prediction/candidate sentences.
+- **references** (`list`): Reference sentences.
+- **batch_size** (`int`): BARTScore processing batch size.
+- **segment_scores** (`bool`): If True, then score for each instance are returned separately. Otherwise, average score is returned.
 
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={]-inf,0[}##gh-light-mode-only"><br>
