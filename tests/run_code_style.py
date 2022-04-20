@@ -1,5 +1,4 @@
 import sys
-
 from tests.utils import shell, validate_and_exit
 
 if __name__ == "__main__":
