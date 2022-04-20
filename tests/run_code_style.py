@@ -1,6 +1,6 @@
 import sys
 
-from utils import shell, validate_and_exit
+from tests.utils import shell, validate_and_exit
 
 if __name__ == "__main__":
     arg = sys.argv[1]
