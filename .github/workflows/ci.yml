@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dependencies
         run: >
-          pip install -v .
+          python setup.py install
       - name: Lint with flake8 and black
         run: |
           python tests/run_code_style.py check
