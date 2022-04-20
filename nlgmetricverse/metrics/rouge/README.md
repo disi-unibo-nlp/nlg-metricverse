@@ -5,21 +5,13 @@ ROUGE, or Recall-Oriented Understudy for Gisting Evaluation, is a set of metrics
 The metrics compare an automatically produced text against one or more (human-produced) references.
 Note that ROUGE is case insensitive, meaning that upper case letters are treated the same way as lower case letters.
 ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
-- ROUGE-N is similar to BLEU-N in counting the n-gram matches between the hypothesis and reference, however, it is
-  recall-based (not precision-based).
-- ROUGE-L measures the longest common subsequence (LCS) between a pair of sentences. ROUGE-L is a F-measure where
-  the precision and recall are computed using the length of the LCS. Note that ROUGE-L does not check for
-  consecutiveness of the matches as long as the word order is the same. It hence cannot differentiate between
-  hypotheses that could have different semantic implications, as long as they have the same LCS even with different
-  spatial positions of the words w.r.t the reference.<br>
+- ROUGE-N is similar to BLEU-N in counting the n-gram matches between the hypothesis and reference, however, it is recall-based (not precision-based).
+- ROUGE-L measures the longest common subsequence (LCS) between a pair of sentences. ROUGE-L is a F-measure where the precision and recall are computed using the length of the LCS. Note that ROUGE-L does not check for consecutiveness of the matches as long as the word order is the same. It hence cannot differentiate between hypotheses that could have different semantic implications, as long as they have the same LCS even with different spatial positions of the words w.r.t the reference.<br>
   <img src="https://render.githubusercontent.com/render/math?math={P_{LCS}=\frac{|LCS|}{|words\_in\_hypothesis|}}##gh-light-mode-only"><br>
   <img src="https://render.githubusercontent.com/render/math?math={R_{LCS}=\frac{|LCS|}{|words\_in\_reference|}}##gh-light-mode-only"><br>
   <img src="https://render.githubusercontent.com/render/math?math={\text{ROUGE-L} = F_{LCS} = \frac{(1 + \beta^2)R_{LCS}P_{LCS}}{R_{LCS} + \beta^2 P_{LCS}}}##gh-light-mode-only">
-- ROUGE-W addresses this by using a weighted LCS matching that adds a gap penalty to reduce weight on each
-  non-consecutive match.
-- ROUGE-S uses skip-bigram co-occurrence statistics to measure the similarity of the hypothesis and reference.
-  Skipbigrams are pairs of words in the same sentence order, with arbitrary words in between. ROUGE-S is also computed
-  as an F-score similar to ROUGE-L.
+- ROUGE-W addresses this by using a weighted LCS matching that adds a gap penalty to reduce weight on each non-consecutive match.
+- ROUGE-S uses skip-bigram co-occurrence statistics to measure the similarity of the hypothesis and reference. Skipbigrams are pairs of words in the same sentence order, with arbitrary words in between. ROUGE-S is also computed as an F-score similar to ROUGE-L.
 
 ### Inputs
 - **predictions** (`list`): list of predictions to score. Each prediction
