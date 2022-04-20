@@ -1,0 +1,92 @@
+{
+  "basic": {
+    "empty_items": 0,
+    "total_items": 2,
+    "sacrebleu": {
+      "score": 0.42728700639623396,
+      "counts": [
+        7,
+        4,
+        2,
+        1
+      ],
+      "totals": [
+        8,
+        7,
+        6,
+        5
+      ],
+      "precisions": [
+        0.875,
+        0.5714285714285715,
+        0.33333333333333337,
+        0.2
+      ],
+      "bp": 1.0,
+      "sys_len": 8,
+      "ref_len": 8
+    }
+  },
+  "multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "sacrebleu": {
+      "score": 0.2705411345269698,
+      "counts": [
+        9,
+        4,
+        2,
+        1
+      ],
+      "totals": [
+        14,
+        12,
+        10,
+        8
+      ],
+      "precisions": [
+        0.6428571428571429,
+        0.33333333333333337,
+        0.2,
+        0.125
+      ],
+      "bp": 1.0,
+      "sys_len": 14,
+      "ref_len": 14
+    }
+  },
+  "multiple_pred_multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "sacrebleu": {
+      "score": 0.5773502691896256,
+      "counts": [
+        10,
+        4,
+        2,
+        0
+      ],
+      "totals": [
+        12,
+        10,
+        8,
+        6
+      ],
+      "precisions": [
+        0.8333333333333333,
+        0.4,
+        0.25,
+        0.08333333333333334
+      ],
+      "bp": 1.0,
+      "sys_len": 12,
+      "ref_len": 11,
+      "adjusted_precisions": [
+        1.6666666666666665,
+        0.8,
+        0.5,
+        0.16666666666666669
+      ]
+    }
+  }
+}

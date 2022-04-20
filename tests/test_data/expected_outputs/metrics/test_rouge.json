@@ -1,0 +1,32 @@
+{
+  "basic": {
+    "empty_items": 0,
+    "total_items": 2,
+    "rouge": {
+      "rouge1": 0.6904761904761905,
+      "rouge2": 0.45238095238095244,
+      "rougeL": 0.619047619047619,
+      "rougeLsum": 0.619047619047619
+    }
+  },
+  "multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "rouge": {
+      "rouge1": 0.6904761904761905,
+      "rouge2": 0.4675324675324676,
+      "rougeL": 0.641025641025641,
+      "rougeLsum": 0.641025641025641
+    }
+  },
+  "multiple_pred_multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "rouge": {
+      "rouge1": 0.8321678321678321,
+      "rouge2": 0.505050505050505,
+      "rougeL": 0.7482517482517482,
+      "rougeLsum": 0.7482517482517482
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "basic": {
+    "empty_items": 0,
+    "total_items": 2,
+    "meteor": {
+      "score": 0.6190249433106576
+    }
+  },
+  "multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "meteor": {
+      "score": 0.6190249433106576
+    }
+  },
+  "multiple_pred_multiple_ref": {
+    "empty_items": 0,
+    "total_items": 2,
+    "meteor": {
+      "score": 0.9012408828265606
+    }
+  }
+}
