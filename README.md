@@ -124,7 +124,7 @@ NLG Metricverse supports X diverse evaluation metrics overall (last update: May 
 | NUBIA (TODO) | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
 | BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
 | PRISM (TODO) | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
-| BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :x: | :x: | :x: |
 | RoMe (TODO) | 2022 | ACL | | :x: | :x: | :x: | :x: |
 | InfoLM (TODO) | 2022 | AAAI | | :x: | :x: | :x: | :x: |
 | Perplexity (TODO) | / | / | | :x: | :white_check_mark: | :x: | :x: |
