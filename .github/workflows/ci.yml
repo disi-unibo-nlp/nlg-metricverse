@@ -54,9 +54,7 @@ jobs:
       - name: Install dependencies
         run: >
           python setup.py install
-      - name: Lint with flake8 and black
-        run: |
-          python tests/run_code_style.py check
+          
       - name: Run tests.
         run: |
           python tests/run_tests.py
