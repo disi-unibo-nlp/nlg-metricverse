@@ -50,7 +50,7 @@ tasks (e.g., text summarization). BARTScore achieves the best performance on 16 
 top-scoring metric.
 $BARTScore = \sum_{t=1}^m w_t log p(y_t|y_{<t},x,\theta)$,
 where $\theta$ are model parameters.
-The authors present four methods for using BARTSCORE based on different generation directions.
+The authors present four methods for using BARTScore based on different generation directions.
 (i) Faithfulness ($s \rightarrow h$): from source document to hypothesis $p(h|s, \theta)$. This direction measures
 how likely it is that the hypothesis could be generated based on the source text (factuality, relevance). This
 measure can also be used for estimating measures of the quality of only the target text (coherence, fluency).
@@ -65,12 +65,6 @@ Recall ones. This version can be broadly used to evaluate the semantic overlap (
 between reference texts and generated texts.
 See the `README.md` file at [https://github.com/neulab/BARTScore](https://github.com/neulab/BARTScore) for more
 information.
-
-BOUNDS
-]-inf,0[. Since BARTScore uses the average log-likelihood for target tokens, the calculated scores will be
-smaller than 0 (the probability is between 0 and 1, so the log of it should be negative). The higher the
-log-likelihood, the higher the probability. To give an example, if SummaryA gets a score of -1 while SummaryB
-gets a score of -100, this means that the model thinks SummaryA is better than summaryB.
 """
 
 _KWARGS_DESCRIPTION = """
