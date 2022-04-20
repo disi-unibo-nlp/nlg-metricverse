@@ -158,7 +158,7 @@ pip install -v .
 
 #### Explore on Hugging Face Spaces
 The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out here:
-[![](./figures/spaces.png)](https://huggingface.co/spaces/nfel/Thermostat)
+[![](./figures/spaces.png)](https://huggingface.co/spaces/disi-unibo-nlp/nlg-metricverse)
 
 ## 🚀 Quickstart
 
