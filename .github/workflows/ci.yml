@@ -56,10 +56,10 @@ jobs:
           pip install -v .
       - name: Lint with flake8 and black
         run: |
-          python ../tests/run_code_style.py check
+          python tests/run_code_style.py check
       - name: Run tests.
         run: |
-          python ../tests/run_tests.py
+          python tests/run_tests.py
       - name: Test CLI for installed package
         run: |
           # version
