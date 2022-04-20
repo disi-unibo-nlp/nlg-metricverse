@@ -84,12 +84,6 @@ def test_evaluate_inconsistent_input(inconsistent_predictions, references, nlgme
         nlgmetricverse_base(predictions=inconsistent_predictions, references=references)
 
 
-def test_evaluate_inconsistent_tasks(predictions, references, nlgmetricverse_base):
-    with pytest.raises(ValueError):
-        nlgmetricverse_base.add_metric("seqeval")
-    nlgmetricverse_base.remove_metric("seqeval")
-
-
 def test_evaluate(predictions, references, nlgmetricverse_base, output_evaluate):
     scores = nlgmetricverse_base(predictions=predictions, references=references)
     assert_almost_equal_dict(actual=scores, desired=output_evaluate)
@@ -154,7 +148,7 @@ def test_load_metric():
     from nlgmetricverse import load_metric
     from nlgmetricverse.metrics._core import Metric as NlgmetricverseMetric
 
-    assert isinstance(load_metric("squad"), NlgmetricverseMetric)
+    assert isinstance(load_metric("chrf"), NlgmetricverseMetric)
     assert isinstance(load_metric("squad_v2"), datasets.Metric)
 
     with pytest.raises(FileNotFoundError):
