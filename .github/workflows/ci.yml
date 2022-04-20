@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies
         run: >
           pip install -e .[dev]
-          pip install -v .
+          pip install -r requirements.txt
           
       - name: Run tests.
         run: |
