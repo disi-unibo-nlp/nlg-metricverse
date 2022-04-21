@@ -106,4 +106,4 @@ This metric hase multiple known limitations and biases:
 ```
 
 ## Further References
-- [Tensorflow implementation](https://github.com/tensorflow/nmt/blob/master/nmt/scripts/bleu.py).
+- [Tensorflow implementation](https://github.com/tensorflow/nmt/blob/master/nmt/scripts/bleu.py)
