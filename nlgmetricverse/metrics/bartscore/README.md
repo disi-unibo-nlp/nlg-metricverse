@@ -21,13 +21,13 @@ The authors present four methods for using BARTScore based on different generati
 ### Inputs
 #### Construction
 - **model_checkpoint** (`str`): BARTScore checkpoint. Will default to bartscore-large-cnn.
-- **model_weights** (`str`): Optional BARTScore weights, overrides the checkpoint weights.
-- **device** (`str`): On which the contextual embedding model will be allocated on. If this argument is None, the model lives on cuda:0 if cuda is available.
+- **model_weights** (`str`): optional BARTScore weights, overrides the checkpoint weights.
+- **device** (`str`): on which the contextual embedding model will be allocated on. If this argument is None, the model lives on cuda:0 if cuda is available.
 #### Computation
-- **predictions** (`list`): Prediction/candidate sentences.
-- **references** (`list`): Reference sentences.
+- **predictions** (`list`): prediction/candidate sentences.
+- **references** (`list`): reference sentences.
 - **batch_size** (`int`): BARTScore processing batch size.
-- **segment_scores** (`bool`): If True, then score for each instance are returned separately. Otherwise, average score is returned.
+- **segment_scores** (`bool`): if True, then score for each instance are returned separately. Otherwise, average score is returned.
 
 ### Outputs
 BARTScore outputs a dictionary with the following values:
