@@ -84,25 +84,24 @@ Computation Args:
 Returns:
     'score': BARTScore loss.
 Examples:
-    >>> bartscore = nlgmetricverse.load_metric("bartscore")
-    >>> predictions = [
-        ["the cat is on the mat", "There is cat playing on mat"],
-        ["Look! what a wonderful day, today.", "Today is a very wonderful day"],
-    ]
+    >>> scorer = Nlgmetricverse(metrics=load_metric("bartscore"))
+    >>> predictions = ["I'm super happy today.", "This is a good idea."]
     >>> references = [
-        ["the cat is playing on the mat.", "The cat plays on the mat."],
-        ["Today is a wonderful day", "The weather outside is wonderful."],
+        ["I feel good today.", "I feel sad today."],
+        ["Not bad.", "Sounds like a good idea."]
     ]
-    >>> results = bartscore.compute(predictions=predictions, references=references)
-    >>> print(results)
+    >>> results = scorer(predictions=predictions, references=references)
+    >>> print(json.dumps(results, indent=4))
     {
-        'bartscore': {
-            'score': -1.8933048248291016,
-            'model_checkpoint': 'bartscore-large-cnn',
-            'model_weights': None,
-            'segment_scores': False
-        }
-    }
+        "total_items": 2,
+        "empty_items": 0,
+        "bartscore": {
+            "score": -2.0635241270065308,
+            "model_checkpoint": "bartscore-large-cnn",
+            "model_weights": null,
+            "segment_scores": true
+         }
+     }
 """
 
 _LICENSE = """Copyright 2022 NeuLab.
