@@ -34,7 +34,7 @@ BERTScore outputs a dictionary with the following values:
 - `precision`: The [precision](https://huggingface.co/metrics/precision) for each sentence from the `predictions` + `references` lists. 
 - `recall`: The [recall](https://huggingface.co/metrics/recall) for each sentence from the `predictions` + `references` lists.
 - `f1`: The [F1 score](https://huggingface.co/metrics/f1) for each sentence from the `predictions` + `references` lists.
-- `hashcode:` The hashcode of the library.
+- `hashcode` The hashcode of the library.
 
 ### Results from popular papers
 The [original BERTScore paper](https://openreview.net/pdf?id=SkeHuCVFDr) reported average model selection accuracies (Hits@1) on WMT18 hybrid systems for different language pairs, which ranged from 0.004 for `en<->tr` to 0.824 for `en<->de`.
