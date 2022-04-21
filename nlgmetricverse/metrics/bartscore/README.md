@@ -30,6 +30,7 @@ The authors present four methods for using BARTScore based on different generati
 - **segment_scores** (`bool`): If True, then score for each instance are returned separately. Otherwise, average score is returned.
 
 ### Outputs
+BARTScore outputs a dictionary with the following values:
 - **score** (`float`): BARTScore loss.
 - **model_checkpoint** (`str`): selected BARTScore checkpoint.
 - **model_weights** (`str`): selected BARTScore weights.
