@@ -69,15 +69,6 @@ BERTScore uses greedy alignment to compute the similarity between two sets of BE
 hypothesis and from reference, while MOVERScore uses optimal alignments based on Word Mover's Distance (Kusner et al.,
 2015) to do so.
 Moreover, BERTScore computes precision, recall, and F1 measure, which are useful for evaluating a range of NLG tasks.
-
-PROPERTY
-IDF-weighted n-gram hard-alignment via BERT contextualized embeddings
-
-CATEGORY
-unsupervised; embedding-based
-
-References:
-[Official repository](https://github.com/Tiiiger/bert_score).
 """
 
 _KWARGS_DESCRIPTION = """
