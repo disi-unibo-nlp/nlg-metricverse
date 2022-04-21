@@ -38,8 +38,8 @@ class Nlgmetricverse:
     def __call__(
             self,
             *,
-            predictions: str,
-            references: str,
+            predictions: EvaluationInstance = None,
+            references: EvaluationInstance = None,
             reduce_fn: Optional[Union[str, Callable]] = None,
             method: str = "no_new_line",
             **kwargs
