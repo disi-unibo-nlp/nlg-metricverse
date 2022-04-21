@@ -191,6 +191,7 @@ class Nlgmetricverse:
         metric, predictions, references, reduce_fn, kwargs = inputs
         start = time.time()
         if isinstance(metric, Metric):
+            predictions, references = Collator(predictions), Collator(references)
             score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn, **kwargs)
         else:
             metric.resulting_name = metric.name
