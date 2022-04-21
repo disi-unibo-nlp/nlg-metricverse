@@ -101,16 +101,20 @@ Returns:
     'f1': F1 score.
     'hashcode': Hashcode of the library.
 Examples:
-    >>> bertscore = nlgmetricverse.load_metric("bertscore")
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> scorer = Nlgmetricverse(metrics=load_metric("bertscore"))
+    >>> predictions = [
+        ["the cat is on the mat", "There is cat playing on the mat"],
+        ["Look! a wonderful day.", "There is a good weather outside"]
+    ]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> results = bertscore.compute(predictions=predictions, references=references)
-    >>> print(results)
-    {'bertscore': {'score': 0.9473764896392822, 'precision': 0.9467198252677917, 'recall': 0.9480386078357697, 
-        'f1': 0.9473764896392822, 'hashcode': 'roberta-large_L17_no-idf_version=0.3.10(hug_trans=4.9.1)'}}
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    {'total_items': 2, 'empty_items': 0, 'bertscore': {'score': 0.9607994854450226, 'precision': 0.9564868807792664,
+    'recall': 0.9651549458503723, 'f1': 0.9607994854450226,
+    'hashcode': 'roberta-large_L17_no-idf_version=0.3.11(hug_trans=4.18.0)'}}
 """
 
 
