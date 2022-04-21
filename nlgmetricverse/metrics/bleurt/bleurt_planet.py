@@ -130,8 +130,7 @@ class BleurtPlanet(MetricForLanguageGeneration):
             raise ModuleNotFoundError(
                 requirement_message(
                     path="bleurt",
-                    package_name="bleurt",
-                    package_source="git+https://github.com/devrimcavusoglu/bleurt.git",
+                    package_name="bleurt"
                 )
             )
 
