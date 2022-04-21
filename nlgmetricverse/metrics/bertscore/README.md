@@ -79,4 +79,5 @@ Finally, calculating the BERTScore metric involves downloading the BERT model th
 ```
 
 ## Further References
-- [Official repository](https://github.com/Tiiiger/bert_score).
+- [BERTScore Project README](https://github.com/Tiiiger/bert_score#readme)
+- [BERTScore ICLR 2020 Poster Presentation](https://iclr.cc/virtual_2020/poster_SkeHuCVFDr.html)
