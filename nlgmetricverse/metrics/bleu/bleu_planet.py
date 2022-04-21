@@ -84,38 +84,6 @@ quality reference translations. Those scores are then averaged over the whole co
 translation's overall quality.
 It has many affinities with WER, but seeks to accommodate the fact that there are typically multiple suitable outputs
 for a given input.
-
-BOUNDS
-[0, 1], with 1 being the best, though with no expectation that any system will achieve 1, since even sets of
-human-created translations do not reach this level. Specifically, this value indicates how similar the candidate
-text is to  the reference texts, with values closer to 1 representing more similar texts. Few human translations will
-attain a  score of 1, since this would indicate that the candidate is identical to one of the reference translations.
-For this  reason, it is not necessary to attain a score of 1.
-
-WEAKNESSES
-- Intelligibility or grammatical correctness are not taken into account.
-- Callison-Burch et al. 2006 (http://www.aclweb.org/anthology/E06-1032) criticize BLEU as a machine translation metric
-  on the grounds that it fails to correlate with human scoring of translations. They highlight its insensitivity to
-  n-gram order and its insensitivity to n-gram types (e.g., function vs. content words) as causes of this lack of
-  correlation. The authors find that BLEU neither correlates with human judgment on adequacy (whether the hypothesis
-  sentence adequately captures the meaning of the reference sentence) nor on fluency (the quality of language in the
-  hypothesis sentence).
-- Liu et al. 2016 (https://www.aclweb.org/anthology/D16-1230) specifically argue against BLEU as a metric for
-  assessing dialogue systems, based on a lack of correlation with human judgments about dialogue coherence.
-- Reiter 2018 (https://aclanthology.org/J18-3002/), in his structured review of BLEU, finds a low correlation between
-  BLEU and human judgment.
-- Sulem et al. 2018 (https://aclanthology.org/D18-1081/) examine BLEU – in the context of text simplification – on
-  grammaticality, meaning preservation and simplicity. They report a very low, and, in some cases, negative
-  correlation with human judgment.
-  
-PROPERTY
-n-gram precision
-
-CATEGORY
-unsupervised; n-gram overlap
-
-TASKS
-MT, IC, DG, QG, RG
 """
 
 _KWARGS_DESCRIPTION = """
@@ -135,17 +103,21 @@ Returns:
     'translation_length': translation_length,
     'reference_length': reference_length
 Examples:
-    >>> bleu = nlgmetricverse.load_metric("bleu")
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> scorer = Nlgmetricverse(metrics=load_metric("bleu"))
+    >>> predictions = [
+        ["the cat is on the mat", "There is cat playing on the mat"],
+        ["Look! a wonderful day.", "There is a good weather outside"]
+    ]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> results = bleu.compute(predictions=predictions, references=references)
-    >>> print(results)
-    {'bleu': {'score': 0.42370250917168295, 
-        'precisions': [0.8823529411764706, 0.6428571428571429, 0.45454545454545453, 0.125], 
-        'brevity_penalty': 1.0, 'length_ratio': 1.0, 'translation_length': 11, 'reference_length': 11}}
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    {'total_items': 2, 'empty_items': 0, 'bleu': {'score': 0.3378703280802838,
+    'precisions': [0.84, 0.5714285714285714, 0.35294117647058826, 0.07692307692307693],
+    'brevity_penalty': 1.0, 'length_ratio': 1.1818181818181819,
+    'translation_length': 13, 'reference_length': 11}}
 """
 
 
