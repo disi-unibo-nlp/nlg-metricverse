@@ -29,10 +29,29 @@ The authors present four methods for using BARTScore based on different generati
 - **batch_size** (`int`): BARTScore processing batch size.
 - **segment_scores** (`bool`): If True, then score for each instance are returned separately. Otherwise, average score is returned.
 
+### Outputs
+- `score`: BARTScore loss.
+
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={]-inf,0[}##gh-light-mode-only"><br>
 Since BARTScore uses the average log-likelihood for target tokens, the calculated scores will be smaller than 0 (the probability is between 0 and 1, so the log of it should be negative). The higher the
 log-likelihood, the higher the probability. To give an example, if SummaryA gets a score of -1 while SummaryB gets a score of -100, this means that the model thinks SummaryA is better than summaryB.
+
+## Examples
+```python
+bertscore = nlgmetricverse.load_metric("bartscore")
+predictions = [
+  ["the cat is on the mat", "There is cat playing on the mat"],
+  ["Look! what a wonderful day, today.", "Today is a very wonderful day"]
+]
+references = [
+  ["the cat is playing on the mat.", "The cat plays on the mat."], 
+  ["Today is a wonderful day", "The weather outside is wonderful."]
+]
+results = bartscore.compute(predictions=predictions, references=references)
+print(results)
+{'bartscore': {'score': -1.8933048248291016,, model_checkpoint': 'bartscore-large-cnn', 'model_weights': None, 'segment_scores': False}}
+```
 
 ## Citation
 ```bibtex
