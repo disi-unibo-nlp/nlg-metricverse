@@ -39,7 +39,7 @@ log-likelihood, the higher the probability. To give an example, if SummaryA gets
 
 ## Examples
 ```python
-bertscore = nlgmetricverse.load_metric("bartscore")
+bartscore = nlgmetricverse.load_metric("bartscore")
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
   ["Look! what a wonderful day, today.", "Today is a very wonderful day"]
