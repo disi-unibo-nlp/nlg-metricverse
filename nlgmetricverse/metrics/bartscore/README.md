@@ -31,6 +31,9 @@ The authors present four methods for using BARTScore based on different generati
 
 ### Outputs
 - `score`: BARTScore loss.
+- `model_checkpoint`: selected BARTScore checkpoint.
+- `model_weights`: selected BARTScore weights.
+- `segment_scores`: selected BARTScore final aggregation strategy.
 
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={]-inf,0[}##gh-light-mode-only"><br>
@@ -39,18 +42,15 @@ log-likelihood, the higher the probability. To give an example, if SummaryA gets
 
 ## Examples
 ```python
-bartscore = nlgmetricverse.load_metric("bartscore")
-predictions = [
-  ["the cat is on the mat", "There is cat playing on the mat"],
-  ["Look! what a wonderful day, today.", "Today is a very wonderful day"]
-]
+predictions = ["I'm super happy today.", "This is a good idea."]
 references = [
-  ["the cat is playing on the mat.", "The cat plays on the mat."], 
-  ["Today is a wonderful day", "The weather outside is wonderful."]
+  ["I feel good today.", "I feel sad today."],
+  ["Not bad.", "Sounds like a good idea."]
 ]
-results = bartscore.compute(predictions=predictions, references=references)
-print(results)
-{'bartscore': {'score': -1.8933048248291016,, model_checkpoint': 'bartscore-large-cnn', 'model_weights': None, 'segment_scores': False}}
+scorer = Nlgmetricverse(metrics=load_metric(base_path + "bartscore"))
+scores = scorer(predictions=auth_predictions, references=auth_references) # max aggregation (default)
+print(scores) # score = avg(single_scores)
+{'total_items': 2, 'empty_items': 0, 'bartscore': {'score': -2.0635241270065308, 'model_checkpoint': 'bartscore-large-cnn', 'model_weights': None, 'segment_scores': False}}
 ```
 
 ## Citation
