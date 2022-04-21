@@ -34,7 +34,7 @@ BERTScore outputs a dictionary with the following values:
 - `precision`: The [precision](https://huggingface.co/metrics/precision) for each sentence from the `predictions` + `references` lists. 
 - `recall`: The [recall](https://huggingface.co/metrics/recall) for each sentence from the `predictions` + `references` lists.
 - `f1`: The [F1 score](https://huggingface.co/metrics/f1) for each sentence from the `predictions` + `references` lists.
-- `hashcode` The hashcode of the library.
+- `hashcode`: The hashcode of the library.
 
 ### Results from popular papers
 The [original BERTScore paper](https://openreview.net/pdf?id=SkeHuCVFDr) reported average model selection accuracies (Hits@1) on WMT18 hybrid systems for different language pairs, which ranged from 0.004 for `en<->tr` to 0.824 for `en<->de`.
@@ -46,18 +46,18 @@ BERTScore `precision`, `recall`, and `f1` belong to <img src="https://render.git
 
 ## Examples
 ```python
-bertscore = nlgmetricverse.load_metric("bertscore")
+scorer = Nlgmetricverse(metrics=load_metric("bertscore"))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
-  ["Look! a wonderful day."]
+  ["Look! a wonderful day.", "There is a good weather outside"]
 ]
 references = [
   ["the cat is playing on the mat.", "The cat plays on the mat."], 
   ["Today is a wonderful day", "The weather outside is wonderful."]
 ]
-results = bertscore.compute(predictions=predictions, references=references)
-print(results)
-{'bertscore': {'score': 0.9473764896392822, 'precision': 0.9467198252677917, 'recall': 0.9480386078357697, 'f1': 0.9473764896392822, 'hashcode': 'roberta-large_L17_no-idf_version=0.3.10(hug_trans=4.9.1)'}}
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+{'total_items': 2, 'empty_items': 0, 'bertscore': {'score': 0.9607994854450226, 'precision': 0.9564868807792664, 'recall': 0.9651549458503723, 'f1': 0.9607994854450226, 'hashcode': 'roberta-large_L17_no-idf_version=0.3.11(hug_trans=4.18.0)'}}
 ```
 
 ## Limitations and bias
