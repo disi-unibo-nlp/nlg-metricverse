@@ -14,27 +14,27 @@ Moreover, BERTScore computes precision, recall, and F1 measure, which are useful
 </p>
 
 ### Inputs
-- **predictions** (`list`): Prediction/candidate sentences.
-- **references** (`list`): Reference sentences.
-- **lang** (`list`): Language of the sentences; required (e.g. 'en'). A string of two letters indicating the language of the sentences, in [ISO 639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
-- **model_type** (`str`): Bert model specification, default using the suggested model for the target language; has to specify at least one of `model_type` or `lang`.
-- **num_layers** (`int`): The layer of representation to use, default using the number of layers tuned on WMT16 correlation data, which depends on the `model_type` used.
-- **verbose** (`bool`): Turn on intermediate status update. The default value is `False`.
-- **idf** (`bool` or `dict`): Use idf weighting; can also be a precomputed idf_dict.
-- **device** (`str`): On which the contextual embedding model will be allocated on. If this argument is `None`, the model lives on `cuda:0` if cuda is available.
-- **nthreads** (`int`): Number of threads for computation. The default value is `4`.
+- **predictions** (`list`): prediction/candidate sentences.
+- **references** (`list`): reference sentences.
+- **lang** (`list`): language of the sentences; required (e.g. 'en'). A string of two letters indicating the language of the sentences, in [ISO 639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes).
+- **model_type** (`str`): BERT model specification, default using the suggested model for the target language; has to specify at least one of `model_type` or `lang`.
+- **num_layers** (`int`): the layer of representation to use, default using the number of layers tuned on WMT16 correlation data, which depends on the `model_type` used.
+- **verbose** (`bool`): turn on intermediate status update. The default value is `False`.
+- **idf** (`bool` or `dict`): use idf weighting; can also be a precomputed idf_dict.
+- **device** (`str`): on which the contextual embedding model will be allocated on. If this argument is `None`, the model lives on `cuda:0` if cuda is available.
+- **nthreads** (`int`): number of threads for computation. The default value is `4`.
 - **batch_size** (`int`): BERTScore processing batch size, at least one of `model_type` or `lang`. `lang` needs to be specified when `rescale_with_baseline` is `True`.
-- **rescale_with_baseline** (`bool`): Rescale bertscore with pre-computed baseline.
-- **baseline_path** (`str`): Customized baseline file.
+- **rescale_with_baseline** (`bool`): rescale bertscore with pre-computed baseline.
+- **baseline_path** (`str`): customized baseline file.
 - **use_fast_tokenizer** (`bool`): `use_fast` parameter passed to HF tokenizer. New in version 0.3.10. The default value is `False`.
 
 ### Outputs
 BERTScore outputs a dictionary with the following values:
-- `score`: BERTScore f1. This is always the same as 'f1' in cases single-prediction and single-reference, and single-prediction and multiple-references, otherwise it is reduced version of 'f1' by `reduce_fn`.
-- `precision`: The [precision](https://huggingface.co/metrics/precision) for each sentence from the `predictions` + `references` lists. 
-- `recall`: The [recall](https://huggingface.co/metrics/recall) for each sentence from the `predictions` + `references` lists.
-- `f1`: The [F1 score](https://huggingface.co/metrics/f1) for each sentence from the `predictions` + `references` lists.
-- `hashcode`: The hashcode of the library.
+- **score** (`float`): BERTScore f1. This is always the same as 'f1' in cases single-prediction and single-reference, and single-prediction and multiple-references, otherwise it is reduced version of 'f1' by `reduce_fn`.
+- **precision** (`float`): The [precision](https://huggingface.co/metrics/precision) for each sentence from the `predictions` + `references` lists. 
+- **recall** (`float`): The [recall](https://huggingface.co/metrics/recall) for each sentence from the `predictions` + `references` lists.
+- **f1** (`float`): The [F1 score](https://huggingface.co/metrics/f1) for each sentence from the `predictions` + `references` lists.
+- **hashcode** (`str`): The hashcode of the library.
 
 ### Results from popular papers
 The [original BERTScore paper](https://openreview.net/pdf?id=SkeHuCVFDr) reported average model selection accuracies (Hits@1) on WMT18 hybrid systems for different language pairs, which ranged from 0.004 for `en<->tr` to 0.824 for `en<->de`.
