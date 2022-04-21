@@ -112,8 +112,8 @@ Examples:
     ]
     >>> scores = scorer(predictions=predictions, references=references)
     >>> print(scores)
-    {'total_items': 2, 'empty_items': 0, 'bertscore': {'score': 0.9607994854450226, 'precision': 0.9564868807792664,
-    'recall': 0.9651549458503723, 'f1': 0.9607994854450226,
+    {'total_items': 2, 'empty_items': 0, 'bertscore': {'score': 0.9607994854450226,
+    'precision': 0.9564868807792664, 'recall': 0.9651549458503723, 'f1': 0.9607994854450226,
     'hashcode': 'roberta-large_L17_no-idf_version=0.3.11(hug_trans=4.18.0)'}}
 """
 
