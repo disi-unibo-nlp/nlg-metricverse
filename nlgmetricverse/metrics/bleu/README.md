@@ -34,8 +34,8 @@ BLEU outputs a dictionary with the following values:
 - **precisions** (`list of floats`): geometric mean of n-gram precisions.
 - **brevity_penalty** (`float`): brevity penalty.
 - **length_ratio** (`float`): ratio of lengths.
-- **translation_length** (`int`): translation_length.
-- **reference_length** (`int`): reference_length.
+- **translation_length** (`int`): translation length.
+- **reference_length** (`int`): reference length.
 
 ### Results from popular papers
 The [original BLEU paper](https://aclanthology.org/P02-1040/) (Papineni et al. 2002) compares BLEU scores of five different models on the same 500-sentence corpus. These scores ranged from 0.0527 to 0.2571.
