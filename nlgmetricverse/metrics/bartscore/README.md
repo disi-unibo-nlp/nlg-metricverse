@@ -30,10 +30,10 @@ The authors present four methods for using BARTScore based on different generati
 - **segment_scores** (`bool`): If True, then score for each instance are returned separately. Otherwise, average score is returned.
 
 ### Outputs
-- `score`: BARTScore loss.
-- `model_checkpoint`: selected BARTScore checkpoint.
-- `model_weights`: selected BARTScore weights.
-- `segment_scores`: selected BARTScore final aggregation strategy.
+- **score** (`float`): BARTScore loss.
+- **model_checkpoint** (`str`): selected BARTScore checkpoint.
+- **model_weights** (`str`): selected BARTScore weights.
+- **segment_scores** (`bool`): selected BARTScore final aggregation strategy.
 
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={]-inf,0[}##gh-light-mode-only"><br>
