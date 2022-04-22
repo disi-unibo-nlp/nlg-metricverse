@@ -69,7 +69,9 @@ Args:
     `references` (list of str): reference sentences
     `config_name` (str): BLEURT checkpoint. Will default to BLEURT-base if None.
 Returns:
-    'scores': List of scores.
+    'score': Average BLEURT score.
+    'scores': List of BLEURT scores.
+    'checkpoint': Selected BLEURT checkpoint.
 Examples:
     >>> scorer = Nlgmetricverse(metrics=load_metric("bertscore", config_name="bleurt-tiny-128"))
     >>> predictions = [
