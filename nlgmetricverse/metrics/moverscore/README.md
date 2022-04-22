@@ -16,7 +16,7 @@ MoverScore demonstrates strong generalization capability across multiple tasks, 
 We consider MOVERScore v2, which is faster than the original implementation (by disabling powermean) but a bit worse in performance.
 
 <p align="center">
-  <img src="../../../figures/metrics/moverscore/fig1.png" width="80%" title="MoverScore soft alignment" alt="">
+  <img src="../../../figures/metrics/moverscore/fig1.png" width="50%" title="MoverScore soft alignment" alt="">
 </p>
 
 ### Inputs
