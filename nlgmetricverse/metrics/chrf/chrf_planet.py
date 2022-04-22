@@ -85,38 +85,41 @@ considers word unigrams and bigrams in addition to character n-grams.
 We use the implementation that is already present in sacreBLEU.
 The implementation here is slightly different from sacreBLEU in terms of the required input format. The length of
 the references and hypotheses lists need to be the same, so you may need to transpose your references compared to
-sacrebleu's required input format. See https://github.com/huggingface/datasets/issues/3154#issuecomment-950746534
+sacrebleu's required input format. See https://github.com/huggingface/datasets/issues/3154#issuecomment-950746534.
 See the README.md file at https://github.com/mjpost/sacreBLEU#chrf--chrf for more information.
 """
 
 _KWARGS_DESCRIPTION = """
 Produces ChrF(++) scores for hypotheses given reference translations.
 Args:
-    predictions: The system stream (a sequence of segments).
-    references: A list of one or more reference streams (each a sequence of segments).
-    char_order: Character n-gram order.
-    word_order: Word n-gram order. If equals to 2, the metric is referred to as chrF++.
-    beta: Determine the importance of recall w.r.t precision.
-    lowercase: Enable case-insensitivity.
-    whitespace: If `True`, include whitespaces when extracting character n-grams.
-    eps_smoothing: If `True`, applies epsilon smoothing similar
-    to reference chrF++.py, NLTK and Moses implementations. Otherwise,
-    it takes into account effective match order similar to sacreBLEU < 2.0.0.
+    `predictions` (list of str): The system stream (a sequence of segments).
+    `references` (list of str): A list of one or more reference streams (each a sequence of segments).
+    `char_order` (int): Character n-gram order.
+    `word_order` (int): Word n-gram order. If equals to 2, the metric is referred to as chrF++.
+    `beta` (int): Determine the importance of recall w.r.t precision.
+    `lowercase` (bool): Enable case-insensitivity.
+    `whitespace` (bool): If `True`, include whitespaces when extracting character n-grams.
+    `eps_smoothing` (bool): If `True`, applies epsilon smoothing similar
+         to reference chrF++.py, NLTK and Moses implementations. Otherwise,
+         it takes into account effective match order similar to sacreBLEU < 2.0.0.
 Returns:
-    'score': The chrF (chrF++) score,
-    'char_order': The character n-gram order,
-    'word_order': The word n-gram order. If equals to 2, the metric is referred to as chrF++,
-    'beta': Determine the importance of recall w.r.t precision
+    'score' (float): The chrF (chrF++) score.
+    'char_order' (int): The character n-gram order.
+    'word_order' (int): The word n-gram order. If equals to 2, the metric is referred to as chrF++.
+    'beta' (int): Determine the importance of recall w.r.t precision.
 Examples:
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> predictions = [
+        ["the cat is on the mat", "There is cat playing on the mat"],
+        ["Look! a wonderful day.", "There is a good weather outside"]
+    ]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> chrf = nlgmetricverse.load_metric("chrf")
-    >>> results = chrf.compute(predictions=prediction, references=reference)
-    >>> print(results)
-    {'chrf': {'score': 0.29778203723986857, 'char_order': 6, 'word_order': 0, 'beta': 2}}
+    >>> scorer = Nlgmetricverse(metrics=load_metric("chrf"))
+    >>> scores = scorer(predictions=prediction, references=reference)
+    >>> print(scores)
+    {'total_items': 2, 'empty_items': 0, 'chrf': {'score': 0.44298405744188873, 'char_order': 6, 'word_order': 0, 'beta': 2}}
 """
 
 
