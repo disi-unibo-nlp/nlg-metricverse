@@ -8,7 +8,7 @@
           <a href="https://pypi.org/project/jury"><img src="https://img.shields.io/pypi/pyversions/jury" alt="Python versions"></a>
           <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple&logo=python&logoColor=FFF800" alt="Made with Python"></a>
           <br>
-          <a href="https://github.com/obss/jury/actions"><img alt="Build status" src="https://github.com/obss/jury/actions/workflows/ci.yml/badge.svg"></a>
+          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/actions"><img alt="Build status" src="https://github.com/disi-unibo-nlp/nlg-metricverse/actions/workflows/ci.yml/badge.svg"></a>
           <a href="https://libraries.io/pypi/jury"><img alt="Dependencies" src="https://img.shields.io/librariesio/github/obss/jury"></a>
           <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/disi-unibo-nlp/nlg-metricverse.svg"></a>
         </td>
@@ -309,7 +309,7 @@ Thanks go to all these wonderful collaborations for their contribution towards t
 <table>
   <tr>
     <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/giacomofrisoni.png" width="100px;" alt=""/><br /><sub><b>Giacomo Frisoni</b></sub></a></td>
-    <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/andreazammarchi3.png" width="100px;" alt=""/><br /><sub><b>Andrea Zammarchi</b></sub></a></td>
+    <td align="center"><a href="https://andreazammarchi3.github.io/"><img src="https://github.com/andreazammarchi3.png" width="100px;" alt=""/><br /><sub><b>Andrea Zammarchi</b></sub></a></td>
 </table>
 
 > We are hoping that the open-source community will help us edit the code and make it better!
