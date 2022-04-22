@@ -9,7 +9,7 @@ from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import moverscore` placeholder
-moverscore = PackagePlaceholder(version="2.0.0")
+moverscore_v2 = PackagePlaceholder(version="2.0.0")
 
 _CITATION = """\
 @inproceedings{zhao2019moverscore,
@@ -88,9 +88,9 @@ class MoverscorePlanet(MetricForLanguageGeneration):
         )
 
     def _download_and_prepare(self, dl_manager):
-        global moverscore
+        global moverscore_v2
         try:
-            import moverscore
+            import moverscore_v2
         except ModuleNotFoundError:
             raise ModuleNotFoundError(requirement_message(path="moverscore_v2", package_name="moverscore"))
         else:
@@ -112,11 +112,11 @@ class MoverscorePlanet(MetricForLanguageGeneration):
         if stop_words is None:
             stop_words = []
         if idf_dict_ref is None:
-            idf_dict_ref = moverscore.get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
+            idf_dict_ref = moverscore_v2.get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
         if idf_dict_hyp is None:
-            idf_dict_hyp = moverscore.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+            idf_dict_hyp = moverscore_v2.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
 
-        scores = moverscore.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+        scores = moverscore_v2.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
                                                 stop_words=stop_words, n_gram=n_gram, remove_subwords=remove_subwords)
         return {"score": scores}
 
@@ -136,12 +136,12 @@ class MoverscorePlanet(MetricForLanguageGeneration):
         if stop_words is None:
             stop_words = []
         if idf_dict_hyp is None:
-            idf_dict_hyp = moverscore.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+            idf_dict_hyp = moverscore_v2.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
         res = []
         for reference in references:
             if idf_dict_ref is None:
-                idf_dict_ref = moverscore.get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
-            score = moverscore.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+                idf_dict_ref = moverscore_v2.get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
+            score = moverscore_v2.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
                                                    stop_words=stop_words, n_gram=n_gram,
                                                    remove_subwords=remove_subwords)
             res.append(score)
