@@ -5,8 +5,7 @@ from scipy.stats import pearsonr, spearmanr, kendalltau
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-import nlgmetricverse
-from nlgmetricverse import data_loader
+from nlgmetricverse import data_loader, Nlgmetricverse, load_metric
 
 
 def pearson_and_spearman(
@@ -18,21 +17,23 @@ def pearson_and_spearman(
 ):
     if metrics is None:
         metrics = [
-            "bertscore",
             "bleu",
             "chrf",
             "meteor",
             "rouge",
             "sacrebleu",
-            "ter",
-            "wer"
+            "ter"
         ]
     if len(metrics) < 2:
         raise ValueError("'metric' length must be at least 2")
+    if not isinstance(predictions, list) and not isinstance(references, list):
+        dl = data_loader.DataLoader(predictions=predictions, references=references, method=method)
+        predictions = dl.get_predictions()
+        references = dl.get_references()
     matrixRes = np.zeros((len(metrics), len(metrics)))
     scores = {}
     for metric in metrics:
-        score = scores_single_metric(metric=metric, predictions=predictions, references=references, method=method)
+        score = scores_single_metric(metric=metric, predictions=predictions, references=references)
         if metric == "bartscore":
             mapped_score = map_range(score, float('-inf'), 0, 0, 1)
         elif metric == "nist":
@@ -55,18 +56,13 @@ def pearson_and_spearman(
     return np.tril(matrixRes, -1)
 
 
-def scores_single_metric(metric, predictions, references, method):
-    scorer = nlgmetricverse.load_metric(metric)
-    dl = data_loader.DataLoader(predictions=predictions, references=references, method=method)
-    preds = dl.get_predictions()
-    refs = dl.get_references()
+def scores_single_metric(metric, predictions, references):
     scores = []
     res = []
-    for i, pred in enumerate(preds):
-        if metric == "bleu":
-            score = scorer.compute(predictions=[pred], references=[refs[i]], max_order=1)
-        else:
-            score = scorer.compute(predictions=[pred], references=[refs[i]])
+    METRIC = check_metric(metric)
+    scorer = Nlgmetricverse(metrics=METRIC)
+    for i, pred in enumerate(predictions):
+        score = scorer(predictions=[pred], references=[references[i]])
         scores.append(score)
         for single_score in score:
             if isinstance(score[single_score], dict):
@@ -88,3 +84,11 @@ def matrix_to_plot(matrix, metrics):
     mask = np.triu(np.ones_like(matrix, dtype=bool))
     sns.heatmap(np.tril(matrix, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
     plt.show()
+
+
+def check_metric(metric):
+    if metric == "bleu":
+        METRIC = [load_metric("bleu", resulting_name="bleu1", compute_kwargs={"max_order": 1})]
+    else:
+        METRIC = [load_metric(metric)]
+    return METRIC
