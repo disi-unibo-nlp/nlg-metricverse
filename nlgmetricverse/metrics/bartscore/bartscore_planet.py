@@ -74,7 +74,6 @@ Construction Args:
     model_weights (str): Optional BARTScore weights, overrides the checkpoint weights.
     device (str): On which the contextual embedding model will be allocated on.
         If this argument is None, the model lives on cuda:0 if cuda is available.
-
 Computation Args:
     predictions (list of str): Prediction/candidate sentences.
     references (list of str or list of list of str): Reference sentences.
