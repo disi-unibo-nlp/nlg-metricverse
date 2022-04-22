@@ -64,7 +64,8 @@ _METRIC_REQUIREMENTS = [
     "seqeval==1.2.2",
     "sentencepiece==0.1.96",
     "bleurt @ git+https://github.com/google-research/bleurt.git",
-    "unbabel-comet @ git+https://github.com/Unbabel/COMET.git@c772b679e20725e6cc79b2107d50594f9ea7a4ae",
+    "torch>=1.10.0"
+    "unbabel-comet>=1.1.0",
 ]
 
 _METRIC_REQUIREMENTS.extend(_PRISM_REQUIREMENTS)

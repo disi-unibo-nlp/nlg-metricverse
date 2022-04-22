@@ -63,25 +63,32 @@ class Nlgmetricverse:
         scores = dict()
         scores["total_items"] = len(self.res_references)
         scores["empty_items"] = self._remove_empty(self.res_predictions, self.res_references)
+        scores["total_time_elapsed"] = 0
 
         if scores["total_items"] == scores["empty_items"]:
             warnings.warn(
                 "At least one of the pairs are empty for all evaluation instances. No evaluation takes place."
             )
             return scores
-
+        total_time = 0
         if self._concurrent:
             inputs_list = self._prepare_concurrent_inputs(self.res_predictions, self.res_references, reduce_fn, kwargs)
             set_env("TOKENIZERS_PARALLELISM", "true")
             with ProcessPoolExecutor() as executor:
                 for score in executor.map(self._compute_single_score, inputs_list):
                     scores.update(score)
+                    time_elapsed = score.get(inputs_list[0][0].resulting_name)
+                    time_elapsed = time_elapsed["time_elapsed"]
+                    total_time += time_elapsed
         else:
             for metric in self.metrics:
                 inputs = (metric, self.res_predictions, self.res_references, reduce_fn, kwargs)
                 score = self._compute_single_score(inputs)
                 scores.update(score)
-
+                time_elapsed = score.get(metric.resulting_name)
+                time_elapsed = time_elapsed["time_elapsed"]
+                total_time += time_elapsed
+        scores["total_time_elapsed"] = str(total_time) + " sec"
         return scores
 
     @staticmethod
@@ -189,16 +196,19 @@ class Nlgmetricverse:
         :return: score
         """
         metric, predictions, references, reduce_fn, kwargs = inputs
-        start = time.time()
         if isinstance(metric, Metric):
+            start = time.time()
             predictions, references = Collator(predictions), Collator(references)
             score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn, **kwargs)
+            end = time.time()
+            score[metric.resulting_name]["time_elapsed"] = end - start
         else:
             metric.resulting_name = metric.name
+            start = time.time()
             score = metric.compute(predictions=predictions, references=references, **kwargs)
+            end = time.time()
             score = self._score_to_dict(score, name=metric.name)
-        end = time.time()
-        print("time elapsed computing " + metric.resulting_name + ": " + str(end - start) + " sec")
+            score[metric.name]["time_elapsed"] = end - start
         return score
 
     def _prepare_concurrent_inputs(self, predictions, references, reduce_fn, kwargs):
