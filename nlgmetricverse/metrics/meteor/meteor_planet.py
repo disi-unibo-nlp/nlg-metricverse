@@ -85,43 +85,27 @@ Example:
 - P = 1, R = 1, F_mean = 1.0000
 - p = 0.5*(6/6)^3 = 0.5000
 - M = 1.0000*(1-0.5000) = 0.5000
-
-BOUNDS
-The range of METEOR score is between 0 and 1. The higher score means that the candidate is closer to reference
-translation (i.e., closer to human judgment).
-
-PROPERTY
-n-gram w/ synonym match
-
-CATEGORY
-unsupervised; n-gram overlap
-
-TASKS
-MT, IC, DG
 """
 
 _KWARGS_DESCRIPTION = """
 Computes METEOR score of translated segments against one or more references.
 Args:
-    predictions: list of predictions to score. Each prediction
+    predictions (list): list of predictions to score. Each prediction
         should be a string with tokens separated by spaces.
-    references: list of reference for each prediction. Each
-        reference should be a string with tokens separated by spaces.
-    alpha: Parameter for controlling relative weights of precision and recall. default: 0.9
-    beta: Parameter for controlling shape of penalty as a function of fragmentation. default: 3
-    gamma: Relative weight assigned to fragmentation penalty. default: 0.5
+    references (list): list of reference for each prediction. Each reference
+        should be a string with tokens separated by spaces.
+    alpha (float): parameter for controlling relative weights of precision and recall. Default: 0.9
+    beta (float): parameter for controlling shape of penalty as a function of fragmentation. Default: 3
+    gamma (float): relative weight assigned to fragmentation penalty. Default: 0.5
 Returns:
-    'score': meteor score.
+    score (float): METEOR score.
 Examples:
-    >>> meteor = nlgmetricverse.load_metric("meteor")
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
-    >>> references = [
-        ["the cat is playing on the mat.", "The cat plays on the mat."], 
-        ["Today is a wonderful day", "The weather outside is wonderful."]
-    ]
-    >>> results = meteor.compute(predictions=predictions, references=references)
-    >>> print(results)
-    {'meteor': {'score': 0.5420511682934044}}
+    >>> scorer = Nlgmetricverse(metrics=load_metric("meteor"))
+    >>> predictions = ["the cat sat on the mat"]
+    >>> references = ["on the mat sat the cat"]
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    { "total_items": 1, "empty_items": 0, "meteor": { "score": 0.5 } }
 """
 
 
