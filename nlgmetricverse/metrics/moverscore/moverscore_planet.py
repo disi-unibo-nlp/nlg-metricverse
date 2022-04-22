@@ -3,11 +3,13 @@
 import os
 
 import datasets
-from moverscore_v2 import get_idf_dict, word_mover_score
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
+from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
+# `import moverscore` placeholder
+moverscore = PackagePlaceholder(version="2.0.0")
 
 _CITATION = """\
 @inproceedings{zhao2019moverscore,
@@ -85,6 +87,15 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             ],
         )
 
+    def _download_and_prepare(self, dl_manager):
+        global moverscore
+        try:
+            import moverscore
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(requirement_message(path="moverscore_v2", package_name="moverscore"))
+        else:
+            super(MoverscorePlanet, self)._download_and_prepare(dl_manager)
+
     def _compute_single_pred_single_ref(
             self,
             predictions,
@@ -94,16 +105,18 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             idf_dict_hyp=None,
             stop_words=None,
             n_gram=1,
-            remove_subwords=True
+            remove_subwords=True,
+            model="distilbert-base-uncased"
     ):
+        os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []
         if idf_dict_ref is None:
-            idf_dict_ref = get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
+            idf_dict_ref = moverscore.get_idf_dict(references)  # idf_dict_ref = defaultdict(lambda: 1.)
         if idf_dict_hyp is None:
-            idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+            idf_dict_hyp = moverscore.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
 
-        scores = word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+        scores = moverscore.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
                                                 stop_words=stop_words, n_gram=n_gram, remove_subwords=remove_subwords)
         return {"score": scores}
 
@@ -116,17 +129,19 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             idf_dict_hyp=None,
             stop_words=None,
             n_gram=1,
-            remove_subwords=True
+            remove_subwords=True,
+            model="distilbert-base-uncased"
     ):
+        os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []
         if idf_dict_hyp is None:
-            idf_dict_hyp = get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
+            idf_dict_hyp = moverscore.get_idf_dict(predictions)  # idf_dict_hyp = defaultdict(lambda: 1.)
         res = []
         for reference in references:
             if idf_dict_ref is None:
-                idf_dict_ref = get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
-            score = word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
+                idf_dict_ref = moverscore.get_idf_dict(reference)  # idf_dict_ref = defaultdict(lambda: 1.)
+            score = moverscore.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
                                                    stop_words=stop_words, n_gram=n_gram,
                                                    remove_subwords=remove_subwords)
             res.append(score)
@@ -142,8 +157,10 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             idf_dict_hyp=None,
             stop_words=None,
             n_gram=1,
-            remove_subwords=True
+            remove_subwords=True,
+            model="distilbert-base-uncased"
     ):
+        os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []
         res = []

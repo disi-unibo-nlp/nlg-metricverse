@@ -1,1 +1,1 @@
-from nlgmetricverse.metrics.moverscore.moverscore import Moverscore
+from nlgmetricverse.metrics.moverscore.moverscore_v2 import Moverscore
