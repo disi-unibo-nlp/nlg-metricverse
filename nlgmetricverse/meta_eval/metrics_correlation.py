@@ -1,19 +1,17 @@
-import os
-
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import pearsonr, spearmanr, kendalltau
-import seaborn as sns
-import matplotlib.pyplot as plt
 
-from nlgmetricverse import data_loader, Nlgmetricverse, load_metric
+from nlgmetricverse import data_loader, Nlgmetricverse
+from nlgmetricverse.utils.correlation import *
 
 
 def pearson_and_spearman(
+        predictions,
+        references,
         metrics=None,
         method="read_lines",
-        technique="pearson",
-        predictions=os.getcwd() + "/correlation/predictions",
-        references=os.getcwd() + "/correlation/references"
+        technique="pearson"
 ):
     if metrics is None:
         metrics = [
@@ -73,22 +71,8 @@ def scores_single_metric(metric, predictions, references):
     return res
 
 
-def map_range(value, left_min, left_max, right_min, right_max):
-    leftSpan = left_max - left_min
-    rightSpan = right_max - right_min
-    valueScaled = float(value - left_min) / float(leftSpan)
-    return right_min + (valueScaled * rightSpan)
-
-
-def matrix_to_plot(matrix, metrics):
+def matrix_to_plot(matrix, metrics, sns=None):
     mask = np.triu(np.ones_like(matrix, dtype=bool))
     sns.heatmap(np.tril(matrix, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
+    plt.title("Metric scores correlation")
     plt.show()
-
-
-def check_metric(metric):
-    if metric == "bleu":
-        METRIC = [load_metric("bleu", resulting_name="bleu1", compute_kwargs={"max_order": 1})]
-    else:
-        METRIC = [load_metric(metric)]
-    return METRIC

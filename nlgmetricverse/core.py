@@ -88,7 +88,7 @@ class Nlgmetricverse:
                 time_elapsed = score.get(metric.resulting_name)
                 time_elapsed = time_elapsed["time_elapsed"]
                 total_time += time_elapsed
-        scores["total_time_elapsed"] = str(total_time) + " sec"
+        scores["total_time_elapsed"] = total_time
         return scores
 
     @staticmethod
