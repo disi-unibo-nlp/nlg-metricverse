@@ -19,13 +19,13 @@ With the release of the framework the authors also released fully trained models
 - **sources** (`list`): source sentences.
 - **predictions** (`list`): candidate translations.
 - **references** (`list`): reference translations.
-- **cuda** (`bool`): if set to True, runs COMET using GPU. By default, it uses one GPU if possible, else use CPU.
-- **show_progress** (`bool`): if set to True, progress updates will be printed out. The default value is `False`.
-- **model** (`str`): COMET model to be used. Will default to `wmt20-comet-da` (previously known as `wmt-large-da-estimator-1719`) if None. Alternate models that can be chosen include `wmt20-comet-qe-da`, `wmt21-comet-mqm`, `wmt21-cometinho-da`, `wmt21-comet-qe-mqm` and `emnlp20-comet-rank`.
+- **gpus** (`int`): optional, an integer (number of GPUs to train on) or a list of integers (which GPUs to train on). Set to 0 to use CPU. The default value is None (uses one GPU if possible, else use CPU).
+- **progress_bar** (`bool`): if set to True, progress updates will be printed out. The default value is `False`.
+- **config_name** (`str`): COMET model to be used. Will default to `wmt20-comet-da` (previously known as `wmt-large-da-estimator-1719`) if None. Alternate models that can be chosen include `wmt20-comet-qe-da`, `wmt21-comet-mqm`, `wmt21-cometinho-da`, `wmt21-comet-qe-mqm` and `emnlp20-comet-rank`.
 
 ### Outputs
 COMET outputs a dictionary with the following values:
-- **samples** (`list`): the mean value of COMET scores `scores` over all the input sentences.
+- **samples** (`float`): the mean value of COMET scores `scores` over all the input sentences.
 - **scores** (`list`): list of COMET scores for each of the input sentences.
 
 ### Results from popular papers
@@ -48,7 +48,7 @@ print(scores)
 ```
 
 ## Limitations and bias
-he models provided for calculating the COMET metric are built on top of XLM-R and cover the following languages:
+The models provided for calculating the COMET metric are built on top of XLM-R and cover the following languages:
 
 Afrikaans, Albanian, Amharic, Arabic, Armenian, Assamese, Azerbaijani, Basque, Belarusian, Bengali, Bengali Romanized, Bosnian, Breton, Bulgarian, Burmese, Burmese, Catalan, Chinese (Simplified), Chinese (Traditional), Croatian, Czech, Danish, Dutch, English, Esperanto, Estonian, Filipino, Finnish, French, Galician, Georgian, German, Greek, Gujarati, Hausa, Hebrew, Hindi, Hindi Romanized, Hungarian, Icelandic, Indonesian, Irish, Italian, Japanese, Javanese, Kannada, Kazakh, Khmer, Korean, Kurdish (Kurmanji), Kyrgyz, Lao, Latin, Latvian, Lithuanian, Macedonian, Malagasy, Malay, Malayalam, Marathi, Mongolian, Nepali, Norwegian, Oriya, Oromo, Pashto, Persian, Polish, Portuguese, Punjabi, Romanian, Russian, Sanskri, Scottish, Gaelic, Serbian, Sindhi, Sinhala, Slovak, Slovenian, Somali, Spanish, Sundanese, Swahili, Swedish, Tamil, Tamil Romanized, Telugu, Telugu Romanized, Thai, Turkish, Ukrainian, Urdu, Urdu Romanized, Uyghur, Uzbek, Vietnamese, Welsh, Western, Frisian, Xhosa, Yiddish.
 
