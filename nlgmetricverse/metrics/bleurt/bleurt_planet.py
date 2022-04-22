@@ -67,20 +67,23 @@ BLEURT score.
 Args:
     `predictions` (list of str): prediction/candidate sentences
     `references` (list of str): reference sentences
-    `config_name` BLEURT checkpoint. Will default to BLEURT-base if None.
+    `config_name` (str): BLEURT checkpoint. Will default to BLEURT-base if None.
 Returns:
     'scores': List of scores.
 Examples:
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> scorer = Nlgmetricverse(metrics=load_metric("bertscore", config_name="bleurt-tiny-128"))
+    >>> predictions = [
+        ["the cat is on the mat", "There is cat playing on the mat"],
+        ["Look! a wonderful day.", "There is a good weather outside"]
+    ]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> bleurt = nlgmetricverse.load_metric("bleurt", config_name="bleurt-tiny-128")
-    >>> results = bleurt.compute(predictions=predictions, references=references)
-    >>> print(results)
-    {'bleurt': {'score': 0.25963682122528553, 'scores': [0.47344309091567993, 0.04583055153489113],
-    'checkpoint': 'bleurt-tiny-128'}}
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    {'total_items': 2, 'empty_items': 0, 'bleurt': {'score': 0.6418270468711853,
+    'scores': [0.47344332933425903, 0.8102107644081116], 'checkpoint': 'bleurt-tiny-128'}}
 """
 
 _LICENSE = """Copyright 2021 Google.
