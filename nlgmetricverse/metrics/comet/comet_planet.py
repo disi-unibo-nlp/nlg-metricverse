@@ -78,33 +78,30 @@ BERT), and a pooling layer to produce sentence embeddings.
   (source and reference).
 
 With the release of the framework the authors also released fully trained models that were used to
-compete in the WMT20 Metrics Shared Task achieving SOTA in that years competition. See the [README.md] file
-at https://unbabel.github.io/COMET/html/models.html for more information.
+compete in the WMT20 Metrics Shared Task achieving SOTA in that years competition.
 """
 
 _KWARGS_DESCRIPTION = """
 COMET score.
 Args:
-`sources` (list of str): Source sentences
-`predictions` (list of str): candidate translations
-`references` (list of str): reference translations
-`cuda` (bool): If set to True, runs COMET using GPU
-`show_progress` (bool): Shows progress
-`model`: COMET model to be used. Will default to `wmt-large-da-estimator-1719` if None.
+`sources` (list of str): source sentences.
+`predictions` (list of str): candidate translations.
+`references` (list of str): reference translations.
+`gpus` (int): optional, an integer (number of GPUs to train on) or a list of integers (which GPUs to train on). Set to 0 to use CPU. The default value is None (uses one GPU if possible, else use CPU).
+`progress_bar` (bool): if set to True, progress updates will be printed out. The default value is False.
+`config_name` (str): COMET model to be used. Will default to wmt20-comet-da (previously known as wmt-large-da-estimator-1719) if None.
+    Alternate models that can be chosen include wmt20-comet-qe-da, wmt21-comet-mqm, wmt21-cometinho-da, wmt21-comet-qe-mqm and emnlp20-comet-rank.
 Returns:
-    `samples`: List of dictionaries with `src`, `mt`, `ref` and `score`.
-    `scores`: List of scores.
+    `samples` (float): the mean value of COMET `scores` over all the input sentences.
+    `scores` (list of floats): List of scores.
 Examples:
-    >>> comet_metric = nlgmetricverse.load_metric('comet', config_name="wmt21-cometinho-da")
-    >>> source = ["Die Katze spielt auf der Matte.", "Heute ist ein wunderbarer Tag."]
-    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
-    >>> references = [
-        ["the cat is playing on the mat.", "The cat plays on the mat."], 
-        ["Today is a wonderful day", "The weather outside is wonderful."]
-    ]
-    >>> results = comet_metric.compute(sources=source, predictions=hypothesis, references=reference)
-    >>> print(results)
-    {'comet': {'scores': [0.6338749527931213, 0.4925243854522705], 'samples': 0.5631996691226959}}
+    >>> scorer = Nlgmetricverse(metrics=load_metric("comet"))
+    >>> sources = ["Dem Feuer konnte Einhalt geboten werden", "Schulen und Kindergärten wurden eröffnet."]
+    >>> predictions = ["The fire could be stopped", "Schools and kindergartens were open"]
+    >>> references = ["They were able to control the fire", "Schools and kindergartens opened"]
+    >>> scores = scorer(sources=sources, predictions=predictions, references=references)
+    >>> print(scores)
+    { "total_items": 2, "empty_items": 0, "comet": { "scores": [ 0.1506408303976059, 0.915494441986084 ], "samples": 0.5330676361918449 } }
 """
 
 
