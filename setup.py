@@ -54,7 +54,7 @@ _DEV_REQUIREMENTS = [
     "pytest-timeout>=2.1.0",
     "pyemd==0.5.1",
     "transformers==4.18.0",
-    "torch==1.10.0"
+    "torch==1.10.0",
     "math_equivalence @ git+https://github.com/hendrycks/math.git",  # for datasets test metric
 ]
 
