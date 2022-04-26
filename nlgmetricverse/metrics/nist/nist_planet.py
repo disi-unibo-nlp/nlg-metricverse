@@ -38,22 +38,6 @@ calculated as:
 $Info(n-gram) = Info(w_1,\dots,w_n) = log_2 \frac{# of occurences of w_1,\dots,w_{n-1}}{# of occurences of w_1,\dots,w_n}$
 To sum up, the idea is to give more credit if a matched n-gram is rare and less credit if a matched n-gram is common.
 This also reduces the chance of gaming the metric by producing trivial n-grams.
-Refer to [Sai et al.](https://arxiv.org/pdf/2008.12009.pdf) for further details.
-
-BOUNDS
-[0, 1], with 1 being the best.
- 
-WEAKNESSES
-It is sensitive to the n-gram frequency, but shares the same limits of BLEU.
-
-PROPERTY
-n-gram precision w/ IDF-weighted n-grams
-
-CATEGORY
-unsupervised; n-gram overlap
-
-TASKS
-MT
 """
 
 _KWARGS_DESCRIPTION = """
