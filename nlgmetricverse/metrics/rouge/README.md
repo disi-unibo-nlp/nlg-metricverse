@@ -7,9 +7,9 @@ Note that ROUGE is case insensitive, meaning that upper case letters are treated
 ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
 - ROUGE-N is similar to BLEU-N in counting the n-gram matches between the hypothesis and reference, however, it is recall-based (not precision-based).
 - ROUGE-L measures the longest common subsequence (LCS) between a pair of sentences. ROUGE-L is a F-measure where the precision and recall are computed using the length of the LCS. Note that ROUGE-L does not check for consecutiveness of the matches as long as the word order is the same. It hence cannot differentiate between hypotheses that could have different semantic implications, as long as they have the same LCS even with different spatial positions of the words w.r.t the reference.<br>
-  <img src="https://render.githubusercontent.com/render/math?math={P_{LCS}=\frac{|LCS|}{|words\_in\_hypothesis|}}##gh-light-mode-only"><br>
-  <img src="https://render.githubusercontent.com/render/math?math={R_{LCS}=\frac{|LCS|}{|words\_in\_reference|}}##gh-light-mode-only"><br>
-  <img src="https://render.githubusercontent.com/render/math?math={\text{ROUGE-L} = F_{LCS} = \frac{(1 + \beta^2)R_{LCS}P_{LCS}}{R_{LCS} + \beta^2 P_{LCS}}}##gh-light-mode-only">
+  <img src="https://render.githubusercontent.com/render/math?math={P_{LCS}=\frac{|LCS|}{|words\_in\_hypothesis|}}"><br>
+  <img src="https://render.githubusercontent.com/render/math?math={R_{LCS}=\frac{|LCS|}{|words\_in\_reference|}}"><br>
+  <img src="https://render.githubusercontent.com/render/math?math={\text{ROUGE-L} = F_{LCS} = \frac{(1 + \beta^2)R_{LCS}P_{LCS}}{R_{LCS} + \beta^2 P_{LCS}}}">
 - ROUGE-W addresses this by using a weighted LCS matching that adds a gap penalty to reduce weight on each non-consecutive match.
 - ROUGE-S uses skip-bigram co-occurrence statistics to measure the similarity of the hypothesis and reference. Skipbigrams are pairs of words in the same sentence order, with arbitrary words in between. ROUGE-S is also computed as an F-score similar to ROUGE-L.
 
@@ -22,8 +22,8 @@ ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
     - Valid rouge types:
         - `"rouge1"`: unigram (1-gram) based scoring
         - `"rouge2"`: bigram (2-gram) based scoring
-        - `"rougeL"`: Longest common subsequence based scoring.
-        - `"rougeLSum"`: splits text using `"\n"`
+        - `"rougeL"`: Longest common subsequence based scoring
+        - `"rougeLSum"`: splits text using `"\n"` (e.g., sentence/paragraph segments) and then calculates rougeL
         - See [here](https://github.com/huggingface/datasets/issues/617) for more information
 - **use_aggregator** (`boolean`): If True, returns aggregates. Defaults to `True`.
 - **use_stemmer** (`boolean`): If `True`, uses Porter stemmer to strip word suffixes. Defaults to `False`.
@@ -41,6 +41,9 @@ If `rouge_types=['rouge1', 'rouge2']` and `use_aggregator=True`, the output is o
 ```
 
 The `precision`, `recall`, and `fmeasure` values all have a range of 0 to 1.
+
+Note: `rougeLSum` scores tend to be greater than `rougeL`.
+Several papers do not use `rougeL` but `rougeLSum`, claiming to apply `rougeL` after a "\n"-splitting as a preprocessing step.
 
 #### Values from Popular Papers
 
