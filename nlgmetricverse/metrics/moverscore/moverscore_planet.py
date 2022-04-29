@@ -1,6 +1,7 @@
 # coding=utf-8
 """ MOVERScore metric """
 import os
+from collections.abc import Callable
 
 import datasets
 import numpy as np
@@ -100,7 +101,7 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             self,
             predictions,
             references,
-            reduce_fn=None,
+            reduce_fn: Callable = None,
             idf_dict_ref=None,
             idf_dict_hyp=None,
             stop_words=None,
@@ -118,13 +119,13 @@ class MoverscorePlanet(MetricForLanguageGeneration):
 
         scores = moverscore_v2.word_mover_score(references, predictions, idf_dict_ref, idf_dict_hyp,
                                                 stop_words=stop_words, n_gram=n_gram, remove_subwords=remove_subwords)
-        return {"score": scores}
+        return {"score": self._reduce_scores(scores, reduce_fn=np.mean)}
 
     def _compute_single_pred_multi_ref(
             self,
             predictions,
             references,
-            reduce_fn=None,
+            reduce_fn: Callable = None,
             idf_dict_ref=None,
             idf_dict_hyp=None,
             stop_words=None,
@@ -145,7 +146,7 @@ class MoverscorePlanet(MetricForLanguageGeneration):
                                                    stop_words=stop_words, n_gram=n_gram,
                                                    remove_subwords=remove_subwords)
             res.append(score)
-        scores = np.mean(res)
+        scores = self._reduce_scores(res, reduce_fn=np.mean)
         return {"score": scores}
 
     def _compute_multi_pred_multi_ref(
@@ -170,5 +171,5 @@ class MoverscorePlanet(MetricForLanguageGeneration):
                                                         idf_dict_hyp=idf_dict_hyp, stop_words=stop_words,
                                                         n_gram=n_gram, remove_subwords=remove_subwords)
             res.append(score["score"])
-        scores = np.mean(res)
+        scores = self._reduce_scores(res, reduce_fn=np.mean)
         return {"score": scores}
