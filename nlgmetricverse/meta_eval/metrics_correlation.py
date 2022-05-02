@@ -6,7 +6,7 @@ from nlgmetricverse import data_loader, Nlgmetricverse
 from nlgmetricverse.utils.correlation import *
 
 
-def pearson_and_spearman(
+def metrics_correlation(
         predictions,
         references,
         metrics=None,
