@@ -18,76 +18,39 @@ ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
         should be a string with tokens separated by spaces.
 - **references** (`list`): list of reference for each prediction. Each
         reference should be a string with tokens separated by spaces.
-- **rouge_types** (`list`): A list of rouge types to calculate. Defaults to `['rouge1', 'rouge2', 'rougeL', 'rougeLsum']`.
+- **rouge_types** (`list`): list of rouge types to calculate. Defaults to `['rouge1', 'rouge2', 'rougeL', 'rougeLsum']`.
     - Valid rouge types:
         - `"rouge1"`: unigram (1-gram) based scoring
         - `"rouge2"`: bigram (2-gram) based scoring
-        - `"rougeL"`: Longest common subsequence based scoring
-        - `"rougeLSum"`: splits text using `"\n"` (e.g., sentence/paragraph segments) and then calculates rougeL
+        - `"rougeL"`: longest common subsequence based scoring
+        - `"rougeLSum"`: splits text using `"\n"` (e.g., sentence/paragraph segments) and then calculates rougeL.
         - See [here](https://github.com/huggingface/datasets/issues/617) for more information
-- **use_aggregator** (`boolean`): If True, returns aggregates. Defaults to `True`.
-- **use_stemmer** (`boolean`): If `True`, uses Porter stemmer to strip word suffixes. Defaults to `False`.
+- **use_aggregator** (`boolean`): aggregation uses [bootstrap resampling](https://github.com/google-research/google-research/blob/master/rouge/scoring.py) to compute mid, high and low confidence intervals for precision, recall, and fmeasure as per the original ROUGE perl implementation. If `True`, aggregates the scores and returns the mid value for each rouge type. If `False` returns the selected metric(s) (`metric_to_select`) for each instance and rouge type. Defaults to `True`, forced to `True` in case of n-arity.
+- **use_stemmer** (`boolean`): if `True`, uses Porter stemmer to strip word suffixes. Defaults to `False`.
+- **metric_to_select** (`str`, optional): metric(s) to select between `precision`, `recall`, `fmeasure`. Defaults to `fmeasure`; if `None` returns all the three metrics.
 
-### Output Values
-The output is a dictionary with one entry for each rouge type in the input list `rouge_types`. If `use_aggregator=False`, each dictionary entry is a list of Score objects, with one score for each sentence. Each Score object includes the `precision`, `recall`, and `fmeasure`. E.g. if `rouge_types=['rouge1', 'rouge2']` and `use_aggregator=False`, the output is:
+**Note**: many papers says to use `rougeL` after a "\n"-splitting as a preprocessing step; this is equivalent to `rougeLsum` and generally produce higher scores.
 
+
+### Outputs
+ROUGE outputs a dictionary with one entry for each rouge type in the input list `rouge_types`. If `use_aggregator=False`, each dictionary entry is a list of float scores representing the selected metrics (see `metric_to_select`) for each rouge type.
+
+
+## Bounds
+The `precision`, `recall`, and `fmeasure` values all have a <img src="https://render.githubusercontent.com/render/math?math={[0,1]}"> range.
+
+
+## Examples
 ```python
-{'rouge1': [Score(precision=1.0, recall=0.5, fmeasure=0.6666666666666666), Score(precision=1.0, recall=1.0, fmeasure=1.0)], 'rouge2': [Score(precision=0.0, recall=0.0, fmeasure=0.0), Score(precision=1.0, recall=1.0, fmeasure=1.0)]}
-```
-
-If `rouge_types=['rouge1', 'rouge2']` and `use_aggregator=True`, the output is of the following format:
-```python
-{'rouge1': AggregateScore(low=Score(precision=1.0, recall=1.0, fmeasure=1.0), mid=Score(precision=1.0, recall=1.0, fmeasure=1.0), high=Score(precision=1.0, recall=1.0, fmeasure=1.0)), 'rouge2': AggregateScore(low=Score(precision=1.0, recall=1.0, fmeasure=1.0), mid=Score(precision=1.0, recall=1.0, fmeasure=1.0), high=Score(precision=1.0, recall=1.0, fmeasure=1.0))}
-```
-
-The `precision`, `recall`, and `fmeasure` values all have a range of 0 to 1.
-
-Note: `rougeLSum` scores tend to be greater than `rougeL`.
-Several papers do not use `rougeL` but `rougeLSum`, claiming to apply `rougeL` after a "\n"-splitting as a preprocessing step.
-
-#### Values from Popular Papers
-
-### Examples
-An example without aggregation:
-```python
->>> rouge = datasets.load_metric('rouge')
->>> predictions = ["hello goodbye", "ankh morpork"]
->>> references = ["goodbye", "general kenobi"]
->>> results = rouge.compute(predictions=predictions,
-...                         references=references)
->>> print(list(results.keys()))
-['rouge1', 'rouge2', 'rougeL', 'rougeLsum']
->>> print(results["rouge1"])
-[Score(precision=0.5, recall=0.5, fmeasure=0.5), Score(precision=0.0, recall=0.0, fmeasure=0.0)]
-```
-
-The same example, but with aggregation:
-```python
->>> rouge = datasets.load_metric('rouge')
->>> predictions = ["hello goodbye", "ankh morpork"]
->>> references = ["goodbye", "general kenobi"]
->>> results = rouge.compute(predictions=predictions,
-...                         references=references,
-...                         use_aggregator=True)
->>> print(list(results.keys()))
-['rouge1', 'rouge2', 'rougeL', 'rougeLsum']
->>> print(results["rouge1"])
-AggregateScore(low=Score(precision=0.0, recall=0.0, fmeasure=0.0), mid=Score(precision=0.25, recall=0.25, fmeasure=0.25), high=Score(precision=0.5, recall=0.5, fmeasure=0.5))
-```
-
-The same example, but only calculating `rouge_1`:
-```python
->>> rouge = datasets.load_metric('rouge')
->>> predictions = ["hello goodbye", "ankh morpork"]
->>> references = ["goodbye", "general kenobi"]
->>> results = rouge.compute(predictions=predictions,
-...                         references=references,
-...                         rouge_types=['rouge_1'],
-...                         use_aggregator=True)
->>> print(list(results.keys()))
-['rouge1']
->>> print(results["rouge1"])
-AggregateScore(low=Score(precision=0.0, recall=0.0, fmeasure=0.0), mid=Score(precision=0.25, recall=0.25, fmeasure=0.25), high=Score(precision=0.5, recall=0.5, fmeasure=0.5))
+predictions = ["The quick brown fox jumped over the lazy dog."]
+references = ["The fox jumped over the dog."]
+scorer = Nlgmetricverse(metrics=load_metric("rouge"))
+scores = scorer(predictions=predictions, references=references,
+                rouge_types=["rougeL"],
+                use_aggregator=False, use_stemmer=False,
+                metric_to_select="fmeasure")
+print(scores)
+{ "total_items": 1, "empty_items": 0, "rouge": { "rougeL": 0.8 } }
 ```
 
 ## Limitations and Bias
@@ -110,3 +73,5 @@ See [Schluter (2017)](https://aclanthology.org/E17-2007/) for an in-depth discus
 
 ## Further References
 - This metrics is a wrapper around the [Google Research reimplementation of ROUGE](https://github.com/google-research/google-research/tree/master/rouge)
+- [To ROUGE or not to ROUGE](https://towardsdatascience.com/to-rouge-or-not-to-rouge-6a5f3552ea45)
+- [ROUGE for summarization tasks](https://huggingface.co/course/chapter7/5?fw=tf)
