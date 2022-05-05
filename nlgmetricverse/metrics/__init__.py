@@ -20,3 +20,4 @@ from nlgmetricverse.metrics.rouge import Rouge
 from nlgmetricverse.metrics.sacrebleu import Sacrebleu
 from nlgmetricverse.metrics.ter import TER
 from nlgmetricverse.metrics.wer import WER
+from nlgmetricverse.metrics.nubia import Nubia
