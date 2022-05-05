@@ -43,31 +43,31 @@ flags.DEFINE_string(
 WMT_LOCATIONS = {
     2015: {
         "eval_data": ("DAseg-wmt-newstest2015", "DAseg-wmt-newstest2015.tar.gz",
-                      "http://www.computing.dcu.ie/~ygraham/")
+                      "https://www.computing.dcu.ie/~ygraham/")
     },
     2016: {
         "eval_data": ("DAseg-wmt-newstest2016", "DAseg-wmt-newstest2016.tar.gz",
-                      "http://www.computing.dcu.ie/~ygraham/")
+                      "https://www.computing.dcu.ie/~ygraham/")
     },
     2017: {
         "submissions":
             ("wmt17-metrics-task-no-hybrids", "wmt17-metrics-task-package.tgz",
-             "http://ufallab.ms.mff.cuni.cz/~bojar/"),
+             "https://ufallab.ms.mff.cuni.cz/~bojar/"),
         "eval_data": ("newstest2017-segment-level-human",
                       "newstest2017-segment-level-human.tar.gz",
-                      "http://computing.dcu.ie/~ygraham/")
+                      "https://computing.dcu.ie/~ygraham/")
     },
     2018: {
         "submissions":
             ("wmt18-metrics-task-nohybrids", "wmt18-metrics-task-nohybrids.tgz",
-             "http://ufallab.ms.mff.cuni.cz/~bojar/wmt18/"),
+             "https://ufallab.ms.mff.cuni.cz/~bojar/wmt18/"),
         "eval_data": ("newstest2018-humaneval", "newstest2018-humaneval.tar.gz",
-                      "http://computing.dcu.ie/~ygraham/")
+                      "https://computing.dcu.ie/~ygraham/")
     },
     2019: {
         "submissions": ("wmt19-submitted-data-v3",
                         "wmt19-submitted-data-v3-txt-minimal.tgz",
-                        "http://ufallab.ms.mff.cuni.cz/~bojar/wmt19/"),
+                        "https://ufallab.ms.mff.cuni.cz/~bojar/wmt19/"),
         "eval_data": ("newstest2019-humaneval", "newstest2019-humaneval.tar.gz",
                       "https://www.computing.dcu.ie/~ygraham/")
     }
