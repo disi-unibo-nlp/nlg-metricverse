@@ -3,7 +3,7 @@ from scipy.stats import pearsonr, spearmanr, kendalltau
 
 from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
-from nlgmetricverse.utils.db_builder import *
+from nlgmetricverse.utils.get_wmt17_sys_results import get_wmt17_sys_data, download_data
 
 
 def metric_human_correlation(
@@ -13,12 +13,6 @@ def metric_human_correlation(
         personal_scores=None,
         method="read_lines",
         technique="pearson",
-        target_file="/tmp/wmt_eval.jsonl",
-        rating_years=None,
-        target_language="en",
-        average_duplicates=True,
-        dev_ratio=None,
-        prevent_leaks=True
 ):
     if metrics is None:
         metrics = [
@@ -31,18 +25,8 @@ def metric_human_correlation(
         ]
     if personal_scores is None:
         # Generate ad DB with human scores from WMT
-        if rating_years is None:
-            rating_years = ["2016"]
-        print("Generating DB...")
-        create_wmt_dataset(target_file, rating_years, target_language)
-        postprocess(target_file, average_duplicates=average_duplicates)
-        if dev_ratio:
-            shuffle_split(
-                target_file,
-                dev_ratio=dev_ratio,
-                prevent_leaks=prevent_leaks)
-        print("DB generated successfully!")
-        return 0
+        data = get_wmt17_sys_data("de-en")
+        return data
     else:
         # Using personal scores
         results = {}
