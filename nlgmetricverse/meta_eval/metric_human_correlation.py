@@ -3,7 +3,7 @@ from scipy.stats import pearsonr, spearmanr, kendalltau
 
 from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
-from nlgmetricverse.utils.get_wmt17_sys_results import get_wmt17_sys_data, download_data
+from nlgmetricverse.utils.get_wmt17_sys_results import get_wmt17_sys_results, download_data
 
 
 def metric_human_correlation(
@@ -25,7 +25,7 @@ def metric_human_correlation(
         ]
     if personal_scores is None:
         # Generate ad DB with human scores from WMT
-        data = get_wmt17_sys_data("de-en")
+        data = get_wmt17_sys_results()
         return data
     else:
         # Using personal scores
