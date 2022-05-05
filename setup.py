@@ -108,10 +108,13 @@ _DEV_REQUIREMENTS = [
     "pyemd==0.5.1",
     "transformers==4.18.0",
     "torch==1.10.0",
+    "pytorch-transformers==1.2.0",
     "math_equivalence @ git+https://github.com/hendrycks/math.git",  # for datasets test metric
+    "fairseq>=0.9.0",
+    "wget==3.2"
 ]
 
-_PRISM_REQUIREMENTS = ["fairseq==0.9.0", "validators"]
+_PRISM_REQUIREMENTS = ["validators"]
 
 _METRIC_REQUIREMENTS = [
     "sacrebleu>=2.0.0",

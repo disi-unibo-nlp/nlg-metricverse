@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 from scipy.stats import pearsonr, spearmanr, kendalltau
 
-from nlgmetricverse import data_loader, Nlgmetricverse
+from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
 
 
@@ -49,30 +50,9 @@ def metrics_correlation(
                 matrixRes[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
             elif technique == "kendalltau":
                 matrixRes[i][j] = kendalltau(scores[metricA], scores[metricB])[0]
-    matrix_to_plot(matrixRes, metrics)
-
-    return np.tril(matrixRes, -1)
-
-
-def scores_single_metric(metric, predictions, references):
-    scores = []
-    res = []
-    METRIC = check_metric(metric)
-    scorer = Nlgmetricverse(metrics=METRIC)
-    for i, pred in enumerate(predictions):
-        score = scorer(predictions=[pred], references=[references[i]])
-        scores.append(score)
-        for single_score in score:
-            if isinstance(score[single_score], dict):
-                if metric == "rouge":
-                    res.append(score[single_score]["rouge1"])
-                else:
-                    res.append(score[single_score]["score"])
-    return res
-
-
-def matrix_to_plot(matrix, metrics, sns=None):
-    mask = np.triu(np.ones_like(matrix, dtype=bool))
-    sns.heatmap(np.tril(matrix, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
+    mask = np.triu(np.ones_like(matrixRes, dtype=bool))
+    sns.heatmap(np.tril(matrixRes, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
     plt.title("Metric scores correlation")
     plt.show()
+
+    return np.tril(matrixRes, -1)
