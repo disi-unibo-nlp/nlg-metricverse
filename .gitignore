@@ -137,3 +137,4 @@ test.py
 
 # Dataset
 wmt17/
+wmt17_log.csv
