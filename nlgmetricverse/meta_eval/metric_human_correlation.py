@@ -25,7 +25,12 @@ def metric_human_correlation(
         ]
     if personal_scores is None:
         # Generate ad DB with human scores from WMT
+        print("Downloading wmt17 data, might take a bit...")
+        download_data()
+        print("Download completed")
+        print("Evaluating...")
         data = get_wmt17_sys_results()
+        print("Evaluation completed")
         return data
     else:
         # Using personal scores

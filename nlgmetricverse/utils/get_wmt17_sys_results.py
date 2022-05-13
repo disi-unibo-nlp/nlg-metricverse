@@ -83,13 +83,15 @@ def get_wmt17_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch
 
 
 def get_wmt17_sys_results(
-        model="roberta-large",
+        model=None,
         log_file="wmt17_log.csv",
         idf=False,
         batch_size=64,
         lang_pairs=None
 ):
 
+    if model is None:
+        model = ["roberta-large"]
     if lang_pairs is None:
         lang_pairs = wmt17_sys_to_lang_pairs
     torch.set_grad_enabled(False)
