@@ -13,6 +13,7 @@ from scipy.stats import pearsonr
 
 import bert_score
 
+wmt17_my_lang_pairs = ['en-cs']
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
 wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh']
 wmt17_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
@@ -25,7 +26,8 @@ def get_wmt17_sys_data(lang_pair):
         "wmt17/manual-evaluation/DA-syslevel.csv", delimiter=" ")
 
     with open("wmt17/input/wmt17-metrics-task/"
-              "wmt17-submitted-data/txt/references/newstest2017-{}{}-ref.{}".format(first, second, second)) as f:
+              "wmt17-submitted-data/txt/references/newstest2017-{}{}-ref.{}".format(first, second, second),
+              encoding = "utf-8") as f:
         refs = f.read().strip().split("\n")
 
     gold_dict = dict(zip(human_scores[human_scores['LP'] == lang_pair]['SYSTEM'],
@@ -41,7 +43,7 @@ def get_wmt17_sys_data(lang_pair):
     cands = []
 
     for system in systems:
-        with open(os.path.join(lang_dir, "newstest2017.{}.{}".format(system, lang_pair))) as f:
+        with open(os.path.join(lang_dir, "newstest2017.{}.{}".format(system, lang_pair)), encoding="utf-8") as f:
             cand_sys = f.read().strip().split("\n")
         gold_scores.append(gold_dict[system])
 
@@ -66,7 +68,7 @@ def get_wmt17_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch
             filename = "cache_score/to_en/17/{}/wmt17_seg_to_{}_{}.pkl".format(scorer.model_type, *lang_pair.split('-'))
 
     if os.path.exists(filename):
-        with open(filename, "rb") as f:
+        with open(filename, "rb", encoding="utf-8") as f:
             return pkl.load(f)
     else:
         refs, cands, gold_scores, systems = get_wmt17_sys_data(lang_pair)
@@ -76,7 +78,7 @@ def get_wmt17_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch
         scores = [s.view(len(systems), -1).mean(dim=-1) for s in raw_scores]
 
         os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, "wb") as f:
+        with open(filename, "wb", encoding="utf-8") as f:
             pkl.dump((scores, gold_scores), f)
 
     return scores, gold_scores
@@ -93,7 +95,7 @@ def get_wmt17_sys_results(
     if model is None:
         model = ["roberta-large"]
     if lang_pairs is None:
-        lang_pairs = wmt17_sys_to_lang_pairs
+        lang_pairs = wmt17_my_lang_pairs
     torch.set_grad_enabled(False)
 
     header = 'model_type'
@@ -101,7 +103,7 @@ def get_wmt17_sys_results(
         header += f',{lang_pair}'
     print(header)
     if not os.path.exists(log_file):
-        with open(log_file, 'w') as f:
+        with open(log_file, 'w', encoding="utf-8") as f:
             print(header, file=f)
 
     print(model)
@@ -124,7 +126,7 @@ def get_wmt17_sys_results(
             for lang_pair in lang_pairs + ['avg']:
                 msg += f",{results[lang_pair][f'{model_type} {name}']}"
             print(msg)
-            with open(log_file, "a") as f:
+            with open(log_file, "a", encoding="utf-8") as f:
                 print(msg, file=f)
 
         del scorer
@@ -144,9 +146,9 @@ def download_data():
     if not os.path.isfile('./wmt17.tgz'):
         url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt17-metrics-task-package.tgz'
         r = requests.get(url, allow_redirects=True)
-        open('wmt17.tgz', 'wb').write(r.content)
+        open('wmt17.tgz', 'wb', encoding="utf-8").write(r.content)
     if not os.path.isdir('input'):
-        tar = tarfile.open("wmt17.tgz")
+        tar = tarfile.open("wmt17.tgz", encoding="utf-8")
         tar.extractall()
         tar.close()
     directory = "input"
@@ -154,7 +156,7 @@ def download_data():
     path = os.path.join(parent_dir, directory)
     os.chdir(path)
     if not os.path.isdir('wmt17-metrics-task'):
-        tar = tarfile.open("wmt17-metrics-task.tgz")
+        tar = tarfile.open("wmt17-metrics-task.tgz", encoding="utf-8")
         tar.extractall()
         tar.close()
     os.chdir(starting_dir)
