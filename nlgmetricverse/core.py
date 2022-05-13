@@ -8,7 +8,6 @@ from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from nlgmetricverse.collator import Collator
-from nlgmetricverse.data_loader import DataLoader
 from nlgmetricverse.definitions import DEFAULT_METRICS
 from nlgmetricverse.metrics import EvaluationInstance, Metric, load_metric
 from nlgmetricverse.utils.common import pop_item_from_dict, replace, set_env
