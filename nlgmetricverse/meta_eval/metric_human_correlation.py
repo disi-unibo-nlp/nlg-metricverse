@@ -30,7 +30,7 @@ def metric_human_correlation(
         print("Download completed")
         print("Evaluating...")
         data = get_wmt17_sys_results()
-        print("Evaluation completed")
+        print("Evaluation completed, you can see the results in the 'wmt17' folder")
         return data
     else:
         # Using personal scores

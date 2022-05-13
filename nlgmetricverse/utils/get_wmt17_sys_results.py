@@ -13,7 +13,7 @@ from scipy.stats import pearsonr
 
 import bert_score
 
-wmt17_my_lang_pairs = ['en-cs']
+
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
 wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh']
 wmt17_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
@@ -95,7 +95,7 @@ def get_wmt17_sys_results(
     if model is None:
         model = ["roberta-large"]
     if lang_pairs is None:
-        lang_pairs = wmt17_my_lang_pairs
+        lang_pairs = wmt17_sys_from_lang_pairs
     torch.set_grad_enabled(False)
 
     header = 'model_type'
