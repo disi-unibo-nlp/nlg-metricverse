@@ -7,7 +7,6 @@ import os
 import warnings
 from pathlib import Path
 from typing import Callable, Sequence, Union
-
 import numpy as np
 import requests
 
@@ -113,3 +112,12 @@ def list_metrics():
     _internal_metrics_path = METRICS_ROOT
     metric_modules = list(_internal_metrics_path.glob("[!_]*"))
     return [module_name.name.replace(".py", "") for module_name in metric_modules]
+
+
+def get_metrics_by_task(task: list = None):
+    from nlgmetricverse import Nlgmetricverse
+    res = []
+    scorer = Nlgmetricverse(metrics=["bleurt"])
+    for metric in scorer.metrics:
+        res.append(metric.info._KWARGS_DESCRIPTION)
+    return res

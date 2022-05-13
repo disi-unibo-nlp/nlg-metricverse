@@ -7,4 +7,4 @@ from nlgmetricverse.metrics._core.base import (
     MetricForTask,
     MetricOutput,
 )
-from nlgmetricverse.metrics._core.utils import PROJECT_ROOT, list_metrics
+from nlgmetricverse.metrics._core.utils import PROJECT_ROOT, list_metrics, get_metrics_by_task

@@ -6,6 +6,7 @@ from nlgmetricverse.metrics._core import (
     MetricForTask,
     list_metrics,
     load_metric,
+    get_metrics_by_task
 )
 from nlgmetricverse.metrics.accuracy import Accuracy
 from nlgmetricverse.metrics.bartscore import Bartscore
