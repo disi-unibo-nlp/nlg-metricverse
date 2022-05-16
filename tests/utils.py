@@ -47,7 +47,6 @@ def assert_almost_equal_dict(actual: Dict, desired: Dict, decimal=3, exclude_pat
     # significant digits default value changed to 3 (from 5) due to variety in
     # results for different hardware architectures.
     actual.pop("total_time_elapsed")
-    desired.pop("total_time_elapsed")
 
     diff = DeepDiff(actual, desired, significant_digits=decimal, exclude_paths=exclude_paths)
     assert diff == {}, f"Actual and Desired Dicts are not Almost Equal:\n {json.dumps(diff, indent=2)}"
