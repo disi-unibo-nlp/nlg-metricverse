@@ -48,7 +48,8 @@ def print_console_centered(text: str, fill_char="="):
 def assert_almost_equal_dict(actual: Dict, desired: Dict, decimal=3, exclude_paths=None):
     # significant digits default value changed to 3 (from 5) due to variety in
     # results for different hardware architectures.
-    actual.pop("total_time_elapsed")
+    if "total_time_elapsed" in actual.keys():
+        actual.pop("total_time_elapsed")
     delete_keys_from_dict(actual, ["time_elapsed"])
 
     diff = DeepDiff(actual, desired, significant_digits=decimal, exclude_paths=exclude_paths)
