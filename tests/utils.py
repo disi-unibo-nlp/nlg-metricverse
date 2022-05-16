@@ -6,6 +6,8 @@ import sys
 from typing import Dict
 
 from deepdiff import DeepDiff
+from collections import MutableMapping
+from contextlib import suppress
 
 
 def shell(command, exit_status=0):
@@ -47,6 +49,7 @@ def assert_almost_equal_dict(actual: Dict, desired: Dict, decimal=3, exclude_pat
     # significant digits default value changed to 3 (from 5) due to variety in
     # results for different hardware architectures.
     actual.pop("total_time_elapsed")
+    delete_keys_from_dict(actual, ["time_elapsed"])
 
     diff = DeepDiff(actual, desired, significant_digits=decimal, exclude_paths=exclude_paths)
     assert diff == {}, f"Actual and Desired Dicts are not Almost Equal:\n {json.dumps(diff, indent=2)}"
@@ -58,3 +61,12 @@ def shell_capture(command, out_json=True):
         out = re.findall(r"{\s+.*\}", out, flags=re.MULTILINE | re.DOTALL)[0].replace("\n", "")
         return json.loads(out)
     return out
+
+
+def delete_keys_from_dict(dictionary, keys):
+    for key in keys:
+        with suppress(KeyError):
+            del dictionary[key]
+    for value in dictionary.values():
+        if isinstance(value, MutableMapping):
+            delete_keys_from_dict(value, keys)
