@@ -76,9 +76,6 @@ class Nlgmetricverse:
             with ProcessPoolExecutor() as executor:
                 for score in executor.map(self._compute_single_score, inputs_list):
                     scores.update(score)
-                    time_elapsed = score.get(inputs_list[0][0].resulting_name)
-                    time_elapsed = time_elapsed["time_elapsed"]
-                    total_time += time_elapsed
         else:
             for metric in self.metrics:
                 inputs = (metric, self.res_predictions, self.res_references, reduce_fn, kwargs)
