@@ -147,6 +147,7 @@ setuptools.setup(
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     url='https://github.com/disi-unibo-nlp/nlg-metricverse',
+    download_url='https://github.com/disi-unibo-nlp/nlg-metricverse/archive/refs/tags/0.1.0.tar.gz',
     packages=setuptools.find_packages(exclude=["tests"]),
     python_requires=">=3.7",
     install_requires=get_requirements(), # dependencies NECESSARY to run the project
