@@ -7,7 +7,7 @@ from tests.utils import assert_almost_equal_dict
 
 
 @pytest.fixture(scope="module")
-def nlgmetricverse_meteor():
+def nlgmetricverse_moverscore():
     metric = AutoMetric.load("moverscore")
     return Nlgmetricverse(metrics=metric)
 
