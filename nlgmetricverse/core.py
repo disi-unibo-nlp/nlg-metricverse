@@ -199,7 +199,7 @@ class Nlgmetricverse:
             end = time.time()
             score[metric.resulting_name]["time_elapsed"] = end - start
         else:
-            metric.resulting_name = metric.name
+            metric.resulting_name = metric.name + "_metric"
             start = time.time()
             score = metric.compute(predictions=predictions, references=references, **kwargs)
             end = time.time()
