@@ -274,11 +274,6 @@
       "ref_len": 8
     }
   },
-  "evaluate_datasets_metric": {
-    "total_items": 2,
-    "empty_items": 0,
-    "competition_math": 0.0
-  },
   "evaluate_corpus": {
     "total_items": 2,
     "empty_items": 0,

@@ -109,11 +109,6 @@ def test_evaluate_list_mixed_input(predictions, references, nlgmetricverse_list_
     assert_almost_equal_dict(actual=scores, desired=output_evaluate_list_mixed_input)
 
 
-def test_evaluate_datasets_metric(predictions, references, nlgmetricverse_datasets, output_evaluate_datasets_metric):
-    scores = nlgmetricverse_datasets(predictions=predictions, references=references)
-    assert_almost_equal_dict(actual=scores, desired=output_evaluate_datasets_metric)
-
-
 def test_evaluate_corpus(single_prediction_array, multiple_references, nlgmetricverse_base, output_evaluate_corpus):
     scores = nlgmetricverse_base(predictions=single_prediction_array, references=multiple_references)
     assert_almost_equal_dict(actual=scores, desired=output_evaluate_corpus)
