@@ -30,18 +30,18 @@ def output_multiple_pred_multiple_ref():
     return output_multiple_pred_multiple_ref.output
 
 
-def test_basic(predictions, references, nlgmetricverse_meteor, output_basic):
-    scores = nlgmetricverse_meteor(predictions=predictions, references=references)
+def test_basic(predictions, references, nlgmetricverse_nist, output_basic):
+    scores = nlgmetricverse_nist(predictions=predictions, references=references)
     assert_almost_equal_dict(actual=scores, desired=output_basic)
 
 
-def test_multiple_ref(predictions, multiple_references, nlgmetricverse_meteor, output_multiple_ref):
-    scores = nlgmetricverse_meteor(predictions=predictions, references=multiple_references)
+def test_multiple_ref(predictions, multiple_references, nlgmetricverse_nist, output_multiple_ref):
+    scores = nlgmetricverse_nist(predictions=predictions, references=multiple_references)
     assert_almost_equal_dict(actual=scores, desired=output_multiple_ref)
 
 
 def test_multiple_pred_multiple_ref(
-    multiple_predictions, multiple_references, nlgmetricverse_meteor, output_multiple_pred_multiple_ref
+    multiple_predictions, multiple_references, nlgmetricverse_nist, output_multiple_pred_multiple_ref
 ):
-    scores = nlgmetricverse_meteor(predictions=multiple_predictions, references=multiple_references)
+    scores = nlgmetricverse_nist(predictions=multiple_predictions, references=multiple_references)
     assert_almost_equal_dict(actual=scores, desired=output_multiple_pred_multiple_ref)
