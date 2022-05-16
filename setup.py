@@ -1,5 +1,6 @@
 # Lint as: python3
 """ NLG Metricverse is an open library of metrics for evaluating artificial text.
+The setup.py file contains information about the package that PyPi needs, like its name, a description, the current version, etc.
 
 Note:
    VERSION needs to be formatted following the MAJOR.MINOR.PATCH convention
@@ -140,8 +141,9 @@ setuptools.setup(
     name='nlg-metricverse',
     version=get_version(),
     author='DISI UniBo NLP',
+    author_email='disi.unibo.nlp@gmail.com',
     license='MIT',
-    description='Apply, compare, and analyze metrics for Natural Language Generation tasks.',
+    description='An End-to-End Library for Evaluating Natural Language Generation.',
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     url='https://github.com/disi-unibo-nlp/nlg-metricverse',
@@ -156,10 +158,11 @@ setuptools.setup(
         ],
     },
     classifiers=[
-        "Development Status :: 5 - Production/Stable",
+        "Development Status :: 3 - Alpha", # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
         "Operating System :: OS Independent",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -170,5 +173,5 @@ setuptools.setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Artificial Intelligence",
     ],
-    keywords="machine-learning, deep-learning, ml, pytorch, NLP, evaluation, question-answering, question-generation"
+    keywords="natural-language-processing natural-language-generation nlg-evaluation metrics language-models visualization python pytorch"
 )
