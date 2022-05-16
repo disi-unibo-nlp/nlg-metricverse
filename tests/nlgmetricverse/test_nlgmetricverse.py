@@ -44,12 +44,6 @@ def output_evaluate_list_mixed_input():
 
 @pytest.fixture
 @get_expected_output(prefix=None)
-def output_evaluate_datasets_metric():
-    return output_evaluate_datasets_metric.output
-
-
-@pytest.fixture
-@get_expected_output(prefix=None)
 def output_evaluate_corpus():
     return output_evaluate_corpus.output
 
