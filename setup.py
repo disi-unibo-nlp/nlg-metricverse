@@ -111,7 +111,7 @@ _DEV_REQUIREMENTS = [
     "torch==1.10.0",
     "pytorch-transformers==1.2.0",
     "math_equivalence @ git+https://github.com/hendrycks/math.git",  # for datasets test metric
-    "fairseq",
+    "fairseq @ git+https://github.com/pytorch/fairseq.git",
     "wget==3.2"
 ]
 
