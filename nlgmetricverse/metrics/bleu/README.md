@@ -74,6 +74,7 @@ This metric hase multiple known limitations and biases:
 - [Liu et al. 2016](https://www.aclweb.org/anthology/D16-1230) specifically argue against BLEU as a metric for assessing dialogue systems, based on a lack of correlation with human judgments about dialogue coherence.
 - [Reiter 2018](https://aclanthology.org/J18-3002/), in his structured review of BLEU, finds a low correlation between BLEU and human judgment.
 - [Sulem et al. 2018](https://aclanthology.org/D18-1081/) examine BLEU – in the context of text simplification – on grammaticality, meaning preservation and simplicity. They report a very low, and, in some cases, negative correlation with human judgment.
+- BLEU score can be misleading since several permutations of the n-grams of a sentence would get the same score as the original sentence, even though not all of the permutations would be correct or sensible. In other words, BLEU admits many spurious variants. It also penalizes correct translations if they substantially differ from the vocabulary of the references. [Zhang et al. 2004](http://www.lrec-conf.org/proceedings/lrec2004/summaries/755.htm).
   
 ## Citation
 ```bibtex
