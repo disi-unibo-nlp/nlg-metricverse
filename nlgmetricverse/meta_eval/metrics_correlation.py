@@ -2,9 +2,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from scipy.stats import pearsonr, spearmanr, kendalltau
+from enum import Enum
 
 from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
+
+
+class Technique(Enum):
+    PEARSON = 1
+    SPEARMAN = 2
+    KENDALLTAU = 3
 
 
 def metrics_correlation(
@@ -12,7 +19,7 @@ def metrics_correlation(
         references,
         metrics=None,
         method="read_lines",
-        technique="pearson"
+        technique=Technique.PEARSON
 ):
     if metrics is None:
         metrics = [
@@ -44,11 +51,11 @@ def metrics_correlation(
         scores[metric] = mapped_score
     for i, metricA in enumerate(metrics):
         for j, metricB in enumerate(metrics):
-            if technique == "pearson":
+            if technique == Technique.PEARSON:
                 matrixRes[i][j] = pearsonr(scores[metricA], scores[metricB])[0]
-            elif technique == "spearman":
+            elif technique == Technique.SPEARMAN:
                 matrixRes[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
-            elif technique == "kendalltau":
+            elif technique == Technique.KENDALLTAU:
                 matrixRes[i][j] = kendalltau(scores[metricA], scores[metricB])[0]
     mask = np.triu(np.ones_like(matrixRes, dtype=bool))
     sns.heatmap(np.tril(matrixRes, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
