@@ -9,6 +9,7 @@ from nlgmetricverse.metrics._core import (
     get_metrics_by_task
 )
 from nlgmetricverse.metrics.accuracy import Accuracy
+from nlgmetricverse.metrics.aun import AUN
 from nlgmetricverse.metrics.bartscore import Bartscore
 from nlgmetricverse.metrics.bertscore import Bertscore
 from nlgmetricverse.metrics.bleu import Bleu

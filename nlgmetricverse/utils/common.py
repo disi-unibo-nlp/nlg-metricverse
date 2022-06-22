@@ -145,3 +145,7 @@ def set_env(name: str, value: str):
     if not isinstance(value, str):
         raise ValueError(f"Expected type str for 'value', got {type(value)}.")
     os.environ[name] = value
+
+
+def remove_duplicates(lst):
+    return [t for t in (set(tuple(i) for i in lst))]
