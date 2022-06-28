@@ -8,11 +8,12 @@ class DataLoader:
     """
     DataLoader for predictions and references. Those have to be paths to dirs.
     """
+
     def __init__(
             self,
             predictions,
             references,
-            method = "no_new_line",
+            method="no_new_line",
     ):
         """
         :param predictions: Dir containing predictions.
@@ -69,10 +70,12 @@ class DataLoader:
         :param input_var: Var containing computes results.
         :param input_dir: Path to dir containing inputs.
         """
+        cur_path = os.getcwd()
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
             with open(f, 'r') as file:
                 input_var.append(file.read().splitlines())
+        os.chdir(cur_path)
         return
 
     @staticmethod

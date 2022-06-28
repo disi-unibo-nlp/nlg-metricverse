@@ -134,6 +134,7 @@ dmypy.json
 
 # Local testing
 test.py
+inputs/
 
 # Dataset
 wmt17/
