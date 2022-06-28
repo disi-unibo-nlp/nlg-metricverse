@@ -73,6 +73,5 @@ class GunningFogPlanet(MetricForLanguageGeneration):
         scores = []
         for prediction in predictions:
             scores.append(textstat.gunning_fog(prediction))
-        print(scores)
         result = np.mean(scores)
         return result

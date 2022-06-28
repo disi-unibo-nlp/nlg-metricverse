@@ -3,7 +3,6 @@ import pandas as pd
 import pickle as pkl
 import os
 import torch
-import argparse
 import requests
 import tarfile
 
@@ -12,6 +11,8 @@ from collections import defaultdict
 from scipy.stats import pearsonr
 
 import bert_score
+
+from nlgmetricverse.utils.common import log
 
 
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
@@ -101,12 +102,12 @@ def get_wmt17_sys_results(
     header = 'model_type'
     for lang_pair in lang_pairs + ['avg']:
         header += f',{lang_pair}'
-    print(header)
+    log(header)
     if not os.path.exists(log_file):
         with open(log_file, 'w', encoding="utf-8") as f:
-            print(header, file=f)
+            log(header, file=f)
 
-    print(model)
+    log(model)
     for model_type in model:
         scorer = bert_score.scorer.BERTScorer(model_type=model_type, idf=idf)
         results = defaultdict(dict)
@@ -125,9 +126,9 @@ def get_wmt17_sys_results(
             msg = f"{model_type} {name} (idf)" if idf else f"{model_type} {name}"
             for lang_pair in lang_pairs + ['avg']:
                 msg += f",{results[lang_pair][f'{model_type} {name}']}"
-            print(msg)
+            log(msg)
             with open(log_file, "a", encoding="utf-8") as f:
-                print(msg, file=f)
+                log(msg, file=f)
 
         del scorer
 

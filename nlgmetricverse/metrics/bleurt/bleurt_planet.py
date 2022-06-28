@@ -25,6 +25,7 @@ import datasets
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
+from nlgmetricverse.utils.common import log
 
 # `import bleurt` placeholder
 bleurt = PackagePlaceholder(version="1.2.2")
@@ -216,4 +217,4 @@ if __name__ == "__main__":
     references = [["hello there", "general kenobi"]]
     bleurt = BleurtPlanet()
     results = bleurt.compute(predictions=predictions, references=references)
-    print(json.dumps(results, indent=2))
+    log(json.dumps(results, indent=2))

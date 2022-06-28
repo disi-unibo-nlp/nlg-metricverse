@@ -73,6 +73,5 @@ class ColemanLiauPlanet(MetricForLanguageGeneration):
         scores = []
         for prediction in predictions:
             scores.append(textstat.coleman_liau_index(prediction))
-        print(scores)
         result = np.mean(scores)
         return result

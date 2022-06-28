@@ -8,6 +8,8 @@ This file defines general functions for:
 """
 import os
 import re
+import sys
+import logging
 from typing import Any, Dict, List, Optional
 
 
@@ -149,3 +151,15 @@ def set_env(name: str, value: str):
 
 def remove_duplicates(lst):
     return [t for t in (set(tuple(i) for i in lst))]
+
+
+def log(message):
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler("debug.log"),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )
+    logging.info(message)

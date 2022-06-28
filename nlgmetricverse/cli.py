@@ -11,7 +11,7 @@ import pandas as pd
 
 from nlgmetricverse import Nlgmetricverse
 from nlgmetricverse import __version__ as nlgmetricverse_version
-from nlgmetricverse.utils.common import get_common_keys
+from nlgmetricverse.utils.common import get_common_keys, log
 from nlgmetricverse.utils.io import json_load, json_save
 
 
@@ -65,7 +65,7 @@ def from_file(
     if export:
         json_save(scores, export)
 
-    print(json.dumps(scores, default=str, indent=4))
+    log(json.dumps(scores, default=str, indent=4))
 
 
 def read_file(filepath: str) -> Union[List[str], List[List[str]]]:
