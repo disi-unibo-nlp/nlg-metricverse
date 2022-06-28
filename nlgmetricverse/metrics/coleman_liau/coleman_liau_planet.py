@@ -1,6 +1,6 @@
 # coding=utf-8
 
-""" Gunning-Fog metric. """
+""" Coleman-Liau metric. """
 
 import datasets
 from typing import Callable
@@ -33,7 +33,7 @@ CHECKPOINT_URLS = {
 
 
 @datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
-class GunningFogPlanet(MetricForLanguageGeneration):
+class ColemanLiauPlanet(MetricForLanguageGeneration):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -49,13 +49,13 @@ class GunningFogPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None, n=1
     ):
-        result = self.__compute_gunning_fog(predictions)
+        result = self.__compute_coleman_liau(predictions)
         return {"score": result}
 
     def _compute_single_pred_multi_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None, n=1
     ):
-        result = self.__compute_gunning_fog(predictions)
+        result = self.__compute_coleman_liau(predictions)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
@@ -63,16 +63,16 @@ class GunningFogPlanet(MetricForLanguageGeneration):
     ):
         res = []
         for prediction in predictions:
-            score = self.__compute_gunning_fog(prediction)
+            score = self.__compute_coleman_liau(prediction)
             res.append(score)
         result = np.mean(res)
         return {"score": result}
 
     @staticmethod
-    def __compute_gunning_fog(predictions):
+    def __compute_coleman_liau(predictions):
         scores = []
         for prediction in predictions:
-            scores.append(textstat.gunning_fog(prediction))
+            scores.append(textstat.coleman_liau_index(prediction))
         print(scores)
         result = np.mean(scores)
         return result
