@@ -1,0 +1,108 @@
+{
+  "metrics": [
+    {
+      "name": "abstractness",
+      "category": ""
+    },
+    {
+      "name": "accuracy",
+      "category": ""
+    },
+    {
+      "name": "aun",
+      "category": ""
+    },
+    {
+      "name": "bartscore",
+      "category": "embedding-based"
+    },
+    {
+      "name": "bertscore",
+      "category": "embedding-based"
+    },
+    {
+      "name": "bleu",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "bleurt",
+      "category": "embedding-based"
+    },
+    {
+      "name": "cer",
+      "category": ""
+    },
+    {
+      "name": "chrf",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "coleman_liau",
+      "category": ""
+    },
+    {
+      "name": "comet",
+      "category": "embedding-based"
+    },
+    {
+      "name": "f1",
+      "category": ""
+    },
+    {
+      "name": "flesch_kincaid",
+      "category": ""
+    },
+    {
+      "name": "gunning_fog",
+      "category": ""
+    },
+    {
+      "name": "meteor",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "moverscore",
+      "category": "embedding-based"
+    },
+    {
+      "name": "nist",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "nubia",
+      "category": "embedding-based"
+    },
+    {
+      "name": "perplexity",
+      "category": ""
+    },
+    {
+      "name": "precision",
+      "category": ""
+    },
+    {
+      "name": "prism",
+      "category": ""
+    },
+    {
+      "name": "repetitiveness",
+      "category": ""
+    },
+    {
+      "name": "rouge",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "sacrebleu",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "ter",
+      "category": "n-gram overlap"
+    },
+    {
+      "name": "wer",
+      "category": "n-gram overlap"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ from nlgmetricverse.metrics._core import (
     MetricForTask,
     list_metrics,
     load_metric,
-    get_metrics_by_task
+    list_metrics_by_filters
 )
 from nlgmetricverse.metrics.abstractness import Abstractness
 from nlgmetricverse.metrics.accuracy import Accuracy

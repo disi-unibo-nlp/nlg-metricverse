@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Callable, Sequence, Union
 import numpy as np
 import requests
+import json
 
 PACKAGE_CORE = Path(os.path.abspath(os.path.dirname(__file__)))
 METRICS_ROOT = PACKAGE_CORE.parent
@@ -114,11 +115,17 @@ def list_metrics():
     return [module_name.name.replace(".py", "") for module_name in metric_modules]
 
 
-def get_metrics_by_task(task: list = None):
-    # TODO
-    from nlgmetricverse import Nlgmetricverse
+def list_metrics_by_filters(category: str = None):
+    return __apply_category_filter(category)
+
+
+def __apply_category_filter(category: str = None):
     res = []
-    scorer = Nlgmetricverse(metrics=["bleurt"])
-    for metric in scorer.metrics:
-        res.append(metric.info._KWARGS_DESCRIPTION)
+    os.chdir("nlgmetricverse/metrics")
+    f = open('list_metrics.json')
+    data = json.load(f)
+    for metric in data['metrics']:
+        if metric["category"] == category:
+            res.append(metric["name"])
+    f.close()
     return res
