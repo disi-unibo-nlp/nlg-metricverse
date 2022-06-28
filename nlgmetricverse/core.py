@@ -52,7 +52,7 @@ class Nlgmetricverse:
         :param method: Method to parse inputs. Can be "no_new_line" or "read_lines".
         :return: scores
         """
-        if isinstance(predictions, list) and isinstance(references, list):
+        if isinstance(predictions, list):
             self.res_predictions = predictions
             self.res_references = references
         else:
