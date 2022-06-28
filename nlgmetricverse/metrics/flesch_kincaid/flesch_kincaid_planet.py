@@ -1,6 +1,6 @@
 # coding=utf-8
 
-""" Readability metric. """
+""" Flesch-Kincaid metric. """
 
 import datasets
 from typing import Callable
@@ -33,7 +33,7 @@ CHECKPOINT_URLS = {
 
 
 @datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
-class ReadabilityPlanet(MetricForLanguageGeneration):
+class FleschKincaidPlanet(MetricForLanguageGeneration):
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,
@@ -49,13 +49,13 @@ class ReadabilityPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None, n=1
     ):
-        result = self.__compute_readability(predictions)
+        result = self.__compute_flesch_kincaid(predictions)
         return {"score": result}
 
     def _compute_single_pred_multi_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None, n=1
     ):
-        result = self.__compute_readability(predictions)
+        result = self.__compute_flesch_kincaid(predictions)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
@@ -63,13 +63,13 @@ class ReadabilityPlanet(MetricForLanguageGeneration):
     ):
         res = []
         for prediction in predictions:
-            score = self.__compute_readability(prediction)
+            score = self.__compute_flesch_kincaid(prediction)
             res.append(score)
         result = np.mean(res)
         return {"score": result}
 
     @staticmethod
-    def __compute_readability(predictions):
+    def __compute_flesch_kincaid(predictions):
         total_words = 0
         total_syllables = 0
 

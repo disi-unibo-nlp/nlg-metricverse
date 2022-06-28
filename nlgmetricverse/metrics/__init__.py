@@ -25,7 +25,7 @@ from nlgmetricverse.metrics.nist import Nist
 from nlgmetricverse.metrics.nubia import Nubia
 from nlgmetricverse.metrics.precision import Precision
 from nlgmetricverse.metrics.prism import Prism
-from nlgmetricverse.metrics.readability import Readability
+from nlgmetricverse.metrics.flesch_kincaid import FleschKincaid
 from nlgmetricverse.metrics.repetitiveness import Repetitiveness
 from nlgmetricverse.metrics.rouge import Rouge
 from nlgmetricverse.metrics.sacrebleu import Sacrebleu
