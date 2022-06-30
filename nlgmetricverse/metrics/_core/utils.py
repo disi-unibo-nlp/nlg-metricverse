@@ -125,7 +125,22 @@ class Categories(Enum):
 class ApplTasks(Enum):
     DataToText = "D2T"
     MachineTranslation = "MT"
-    Summarization = "SUM"
+    DocumentSummarization = "SUM"
+    ImageCaptioning = "IC"
+    SpeechRecognition = "SR"
+    DocumentGeneration = "DG"
+    QuestionGeneration = "QG"
+    ResponseGeneration = "RG"
+
+
+class QualityDims(Enum):
+    Informativeness = "INFO"
+    Relevance = "REL"
+    Fluency = "FLU"
+    Coherence = "COH"
+    Factuality = "FAC"
+    SemanticCoverage = "COV"
+    Adequacy = "ADE"
 
 
 def __apply_category_filter(metrics, category: Categories = None):
@@ -150,12 +165,49 @@ def __apply_task_filter(metrics, appl_task: ApplTasks = None):
     return res
 
 
-def filter_metrics(category: Categories = None, appl_task: ApplTasks = None):
+def __apply_trained_filter(metrics, trained: bool = None):
+    res = []
+    if trained is None:
+        res = metrics
+    else:
+        for metric in metrics:
+            if metric["trained"] == trained:
+                res.append(metric)
+    return res
+
+
+def __apply_unsupervised_filter(metrics, unsupervised: bool = None):
+    res = []
+    if unsupervised is None:
+        res = metrics
+    else:
+        for metric in metrics:
+            if metric["unsupervised"] == unsupervised:
+                res.append(metric)
+    return res
+
+
+def __apply_quality_filter(metrics, quality_dim: ApplTasks = None):
+    res = []
+    if quality_dim is None:
+        res = metrics
+    else:
+        for metric in metrics:
+            if quality_dim.value in metric["quality_dims"]:
+                res.append(metric)
+    return res
+
+
+def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
+                   trained: bool = None, unsupervised: bool = None, quality_dim: QualityDims = None):
     os.chdir("nlgmetricverse/metrics")
     f = open('list_metrics.json')
     data = json.load(f)
     metrics = __apply_category_filter(data['metrics'], category)
     metrics = __apply_task_filter(metrics, appl_task)
+    metrics = __apply_trained_filter(metrics, trained)
+    metrics = __apply_unsupervised_filter(metrics, unsupervised)
+    metrics = __apply_quality_filter(metrics, quality_dim)
     res = []
     for metric in metrics:
         res.append(metric["name"])

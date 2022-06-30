@@ -8,7 +8,8 @@ from nlgmetricverse.metrics._core import (
     load_metric,
     filter_metrics,
     Categories,
-    ApplTasks
+    ApplTasks,
+    QualityDims
 )
 from nlgmetricverse.metrics.abstractness import Abstractness
 from nlgmetricverse.metrics.accuracy import Accuracy

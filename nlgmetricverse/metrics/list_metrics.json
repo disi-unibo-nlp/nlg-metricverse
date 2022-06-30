@@ -3,132 +3,210 @@
     {
       "name": "abstractness",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "accuracy",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "aun",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "bartscore",
       "category": "embedding-based",
-      "appl_tasks": ["MT", "SUM", "D2T"]
+      "appl_tasks": ["MT", "SUM", "D2T"],
+      "trained": true,
+      "unsupervised": true,
+      "quality_dims": ["INFO", "REL", "FLU", "COH", "FAC", "COV", "ADE"]
     },
     {
       "name": "bertscore",
       "category": "embedding-based",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": true,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "bleu",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT", "IC", "DG", "QG", "RG"]
+      "appl_tasks": ["MT", "IC", "DG", "QG", "RG"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": ["ADE", "FLU"]
     },
     {
       "name": "bleurt",
       "category": "embedding-based",
-      "appl_tasks": ["MT", "D2T"]
+      "appl_tasks": ["MT", "D2T"],
+      "trained": true,
+      "unsupervised": false,
+      "quality_dims": []
     },
     {
       "name": "cer",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "chrf",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT", "IC", "SUM"]
+      "appl_tasks": ["MT", "IC", "SUM"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "coleman_liau",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "comet",
       "category": "embedding-based",
-      "appl_tasks": ["MT"]
+      "appl_tasks": ["MT"],
+      "trained": true,
+      "unsupervised": false,
+      "quality_dims": []
     },
     {
       "name": "f1",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "flesch_kincaid",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "gunning_fog",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "meteor",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT", "IC", "DG"]
+      "appl_tasks": ["MT", "IC", "DG"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "moverscore",
       "category": "embedding-based",
-      "appl_tasks": ["MT", "SUM", "D2T", "IC"]
+      "appl_tasks": ["MT", "SUM", "D2T", "IC"],
+      "trained": true,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "nist",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT"]
+      "appl_tasks": ["MT"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "nubia",
       "category": "embedding-based",
-      "appl_tasks": ["MT", "IC"]
+      "appl_tasks": ["MT", "IC"],
+      "trained": true,
+      "unsupervised": false,
+      "quality_dims": []
     },
     {
       "name": "perplexity",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "precision",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "prism",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "repetitiveness",
       "category": "",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "rouge",
       "category": "n-gram overlap",
-      "appl_tasks": []
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": ["COV"]
     },
     {
       "name": "sacrebleu",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT"]
+      "appl_tasks": ["MT"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "ter",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT"]
+      "appl_tasks": ["MT"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     },
     {
       "name": "wer",
       "category": "n-gram overlap",
-      "appl_tasks": ["MT", "SR"]
+      "appl_tasks": ["MT", "SR"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
     }
   ]
 }
