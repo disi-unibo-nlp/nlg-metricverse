@@ -2,107 +2,133 @@
   "metrics": [
     {
       "name": "abstractness",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "accuracy",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "aun",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "bartscore",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": ["MT", "SUM", "D2T"]
     },
     {
       "name": "bertscore",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": []
     },
     {
       "name": "bleu",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT", "IC", "DG", "QG", "RG"]
     },
     {
       "name": "bleurt",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": ["MT", "D2T"]
     },
     {
       "name": "cer",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "chrf",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT", "IC", "SUM"]
     },
     {
       "name": "coleman_liau",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "comet",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": ["MT"]
     },
     {
       "name": "f1",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "flesch_kincaid",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "gunning_fog",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "meteor",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT", "IC", "DG"]
     },
     {
       "name": "moverscore",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": ["MT", "SUM", "D2T", "IC"]
     },
     {
       "name": "nist",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT"]
     },
     {
       "name": "nubia",
-      "category": "embedding-based"
+      "category": "embedding-based",
+      "appl_tasks": ["MT", "IC"]
     },
     {
       "name": "perplexity",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "precision",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "prism",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "repetitiveness",
-      "category": ""
+      "category": "",
+      "appl_tasks": []
     },
     {
       "name": "rouge",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": []
     },
     {
       "name": "sacrebleu",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT"]
     },
     {
       "name": "ter",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT"]
     },
     {
       "name": "wer",
-      "category": "n-gram overlap"
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT", "SR"]
     }
   ]
 }

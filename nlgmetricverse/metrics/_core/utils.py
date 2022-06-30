@@ -10,6 +10,7 @@ from typing import Callable, Sequence, Union
 import numpy as np
 import requests
 import json
+from enum import Enum
 
 PACKAGE_CORE = Path(os.path.abspath(os.path.dirname(__file__)))
 METRICS_ROOT = PACKAGE_CORE.parent
@@ -115,17 +116,48 @@ def list_metrics():
     return [module_name.name.replace(".py", "") for module_name in metric_modules]
 
 
-def list_metrics_by_filters(category: str = None):
-    return __apply_category_filter(category)
+class Categories(Enum):
+    Embedding = "embedding-based"
+    Overlap = "n-gram overlap"
+    Distance = "distance-based"
 
 
-def __apply_category_filter(category: str = None):
+class ApplTasks(Enum):
+    DataToText = "D2T"
+    MachineTranslation = "MT"
+    Summarization = "SUM"
+
+
+def __apply_category_filter(metrics, category: Categories = None):
     res = []
+    if category is None:
+        res = metrics
+    else:
+        for metric in metrics:
+            if metric["category"] == category.value:
+                res.append(metric)
+    return res
+
+
+def __apply_task_filter(metrics, appl_task: ApplTasks = None):
+    res = []
+    if appl_task is None:
+        res = metrics
+    else:
+        for metric in metrics:
+            if appl_task.value in metric["appl_tasks"]:
+                res.append(metric)
+    return res
+
+
+def filter_metrics(category: Categories = None, appl_task: ApplTasks = None):
     os.chdir("nlgmetricverse/metrics")
     f = open('list_metrics.json')
     data = json.load(f)
-    for metric in data['metrics']:
-        if metric["category"] == category:
-            res.append(metric["name"])
+    metrics = __apply_category_filter(data['metrics'], category)
+    metrics = __apply_task_filter(metrics, appl_task)
+    res = []
+    for metric in metrics:
+        res.append(metric["name"])
     f.close()
     return res
