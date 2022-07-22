@@ -97,49 +97,49 @@ NLG Metricverse supports X diverse evaluation metrics overall (last update: May 
 | ORANGE (SentBLEU) | 2004 | COLING | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
 | ROUGE | 2004 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | WER | 2004 | ICSLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| CER (TODO) | 2004 | ICSLP | | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
+| CER | 2004 | ICSLP | | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
 | METEOR | 2005 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| CIDEr (TODO) | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
+| CIDEr | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
 | TER | 2006 | AMTA | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
 | ChrF(++) | 2015 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| CharacTER (TODO) | 2016 | WMT | | :x: | :x: | :x: | :x: |
+| CharacTER | 2016 | WMT | | :x: | :x: | :x: | :x: |
 | SacreBLEU | 2018 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| METEOR++ (TODO) | 2018 | WMT | | :x: | :x: | :x: | :x: |
-| Accuracy (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| Precision (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| F1 (TODO) | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| MER (TODO) | / | / | | :x: | :x: | :x: | :white_check_mark: |
+| METEOR++ | 2018 | WMT | | :x: | :x: | :x: | :x: |
+| Accuracy | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| Precision | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| F1 | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
+| MER | / | / | | :x: | :x: | :x: | :white_check_mark: |
 
 #### Embedding-based Galaxy
 
 | Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| WMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
-| SMD (TODO) | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| WMD | 2015 | ICML | | :x: | :x: | :x: | :x: |
+| SMD | 2015 | ICML | | :x: | :x: | :x: | :x: |
 | MOVERScore | 2019 | ACL | :white_check_mark: | :x: | :x: | :x: | :x: |
-| EED (TODO) | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
+| EED | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
 | COMET | 2020 | EMNLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| FactCC(X) (TODO) | 2020 | EMNLP | | :x: | :x: | :x: | :x: |
+| FactCC(X) | 2020 | EMNLP | | :x: | :x: | :x: | :x: |
 | BLEURT | 2020 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| NUBIA (TODO) | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
+| NUBIA | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
 | BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| PRISM (TODO) | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
+| PRISM | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
 | BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :x: | :x: | :x: |
-| RoMe (TODO) | 2022 | ACL | | :x: | :x: | :x: | :x: |
-| InfoLM (TODO) | 2022 | AAAI | | :x: | :x: | :x: | :x: |
-| Perplexity (TODO) | / | / | | :x: | :white_check_mark: | :x: | :x: |
-| Embedding Cosine Similarity (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Vector Extrema (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Greedy Matching (TODO) | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Coverage (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
-| Density (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
-| Compression (TODO) | ... | ... | | :x: | :x: | :x: | :x: |
+| RoMe | 2022 | ACL | | :x: | :x: | :x: | :x: |
+| InfoLM | 2022 | AAAI | | :x: | :x: | :x: | :x: |
+| Perplexity | / | / | | :x: | :white_check_mark: | :x: | :x: |
+| Embedding Cosine Similarity | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Vector Extrema | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Greedy Matching | / | / | | :x: | :x: | :white_check_mark: | :x: |
+| Coverage | ... | ... | | :x: | :x: | :x: | :x: |
+| Density | ... | ... | | :x: | :x: | :x: | :x: |
+| Compression | ... | ... | | :x: | :x: | :x: | :x: |
 
 ### Hypothesis-only Supercluster
 
 | Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
 | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| MAUVE (TODO) | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
+| MAUVE | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
 | Flesch-Kincaid Readability | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
 | Average Unique N-gram Ratios | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
 
@@ -188,11 +188,6 @@ wer = nlgmetricverse.load_metric("competition_math") # It falls back to `dataset
 ```
 Note: if a selected metric requires specific packages, you'll be invited to install them (e.g., "bertscore" → `pip install bertscore`).
 
-#### Metric Documentation
-TODO
-
-#### Metric Filtering
-TODO
 
 ### Metric Usage
 
@@ -258,12 +253,6 @@ scorer = nlgmetricverse.load_metric(
                 "idf": True})
 ```
 
-#### Outputs
-TODO
-
-## 🔎 Tests
-TODO
-
 ### Code Style
 To check the code style,
 ```
@@ -320,6 +309,7 @@ Thanks go to all these wonderful collaborations for their contribution towards t
 
 ## ✉ Contact
 Contact person: Giacomo Frisoni, [giacomo.frisoni@unibo.it](mailto:giacomo.frisoni@unibo.it).
+A research word conducted within the Department of Computer Science and Engineering, University of Bologna, Italy.
 
 ## License
 
