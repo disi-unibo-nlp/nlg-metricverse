@@ -84,7 +84,7 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
 ## 🪐 Available Metrics
-NLG Metricverse supports X diverse evaluation metrics overall (last update: May X, 2022).
+NLG Metricverse supports 37 diverse evaluation metrics overall (last update: July 22, 2022). The code for these metrics will be progressively released in the coming weeks.
 
 ### Hypothesis-Reference Supercluster
 
@@ -157,7 +157,7 @@ pip install -v .
 ```
 
 #### Explore on Hugging Face Spaces
-The **Spaces** edition of NLG Metricverse launched on May X, 2022. Check it out here:
+The **Spaces** edition of NLG Metricverse will be launched soon. Check it out here:
 [![](./figures/spaces.png)](https://huggingface.co/spaces/disi-unibo-nlp/nlg-metricverse)
 
 ## 🚀 Quickstart
