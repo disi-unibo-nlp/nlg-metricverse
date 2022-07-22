@@ -309,7 +309,7 @@ Thanks go to all these wonderful collaborations for their contribution towards t
 
 ## ✉ Contact
 Contact person: Giacomo Frisoni, [giacomo.frisoni@unibo.it](mailto:giacomo.frisoni@unibo.it).
-A research word conducted within the Department of Computer Science and Engineering, University of Bologna, Italy.
+This research work has been conducted within the Department of Computer Science and Engineering, University of Bologna, Italy.
 
 ## License
 
