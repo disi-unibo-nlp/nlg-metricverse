@@ -9,7 +9,6 @@
           <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple&logo=python&logoColor=FFF800" alt="Made with Python"></a>
           <br>
           <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/actions"><img alt="Build status" src="https://github.com/disi-unibo-nlp/nlg-metricverse/actions/workflows/ci.yml/badge.svg"></a>
-          <a href="https://libraries.io/pypi/nlg-metricverse"><img alt="Dependencies" src="https://img.shields.io/librariesio/github/obss/jury"></a>
           <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/disi-unibo-nlp/nlg-metricverse.svg"></a>
         </td>
     </tr>
