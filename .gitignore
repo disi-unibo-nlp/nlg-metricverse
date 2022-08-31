@@ -139,3 +139,6 @@ inputs/
 # Dataset
 wmt17/
 wmt17_log.csv
+
+# codecarbon
+emissions.csv

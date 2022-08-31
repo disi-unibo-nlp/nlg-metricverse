@@ -6,6 +6,7 @@ import warnings
 import time
 from concurrent.futures import ProcessPoolExecutor
 from typing import Any, Callable, Dict, List, Mapping, Optional, Union
+from codecarbon import EmissionsTracker
 
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.definitions import DEFAULT_METRICS
@@ -63,6 +64,7 @@ class Nlgmetricverse:
         scores["total_items"] = len(self.res_references)
         scores["empty_items"] = self._remove_empty(self.res_predictions, self.res_references)
         scores["total_time_elapsed"] = 0
+        scores["total_CO2_emitted"] = 0
 
         if scores["total_items"] == scores["empty_items"]:
             warnings.warn(
@@ -70,6 +72,7 @@ class Nlgmetricverse:
             )
             return scores
         total_time = 0
+        total_CO2_emitted = 0
         if self._concurrent:
             inputs_list = self._prepare_concurrent_inputs(self.res_predictions, self.res_references, reduce_fn, kwargs)
             set_env("TOKENIZERS_PARALLELISM", "true")
@@ -82,9 +85,13 @@ class Nlgmetricverse:
                 score = self._compute_single_score(inputs)
                 scores.update(score)
                 time_elapsed = score.get(metric.resulting_name)
+                CO2_emitted = score.get(metric.resulting_name)
                 time_elapsed = time_elapsed["time_elapsed"]
+                CO2_emitted = CO2_emitted["CO2_emitted"]
                 total_time += time_elapsed
+                total_CO2_emitted += CO2_emitted
         scores["total_time_elapsed"] = total_time
+        scores["total_CO2_emitted"] = total_CO2_emitted
         return scores
 
     @staticmethod
@@ -194,10 +201,14 @@ class Nlgmetricverse:
         metric, predictions, references, reduce_fn, kwargs = inputs
         if isinstance(metric, Metric):
             start = time.time()
+            tracker = EmissionsTracker()
+            tracker.start()
             predictions, references = Collator(predictions), Collator(references)
             score = metric.compute(predictions=predictions, references=references, reduce_fn=reduce_fn, **kwargs)
             end = time.time()
+            tracker.stop()
             score[metric.resulting_name]["time_elapsed"] = end - start
+            score[metric.resulting_name]["CO2_emitted"] = tracker.final_emissions_data.emissions
         else:
             metric.resulting_name = metric.name + "_metric"
             start = time.time()
