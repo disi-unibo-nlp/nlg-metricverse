@@ -5,7 +5,7 @@ from typing import Optional
 
 import pytest
 
-from nlgmetricverse import Nlgmetricverse, load_metric
+from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.utils.common import set_env
 from tests.nlgmetricverse import EXPECTED_OUTPUTS
 
@@ -121,37 +121,37 @@ def multiple_references():
 
 @pytest.fixture(scope="module")
 def nlgmetricverse_base():
-    return Nlgmetricverse(metrics=_TEST_METRICS)
+    return NLGMetricverse(metrics=_TEST_METRICS)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_concurrent():
-    return Nlgmetricverse(metrics=_TEST_METRICS, run_concurrent=True)
+    return NLGMetricverse(metrics=_TEST_METRICS, run_concurrent=True)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_str():
-    return Nlgmetricverse(metrics=_STR_TEST_METRIC)
+    return NLGMetricverse(metrics=_STR_TEST_METRIC)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_list_str():
-    return Nlgmetricverse(metrics=_LIST_STR_TEST_METRICS)
+    return NLGMetricverse(metrics=_LIST_STR_TEST_METRICS)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_list_dict():
-    return Nlgmetricverse(metrics=_LIST_DICT_TEST_METRICS)
+    return NLGMetricverse(metrics=_LIST_DICT_TEST_METRICS)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_list_mixed():
-    return Nlgmetricverse(metrics=_LIST_MIXED_TEST_METRICS)
+    return NLGMetricverse(metrics=_LIST_MIXED_TEST_METRICS)
 
 
 @pytest.fixture(scope="function")
 def nlgmetricverse_datasets():
-    return Nlgmetricverse(metrics=_DATASETS_METRICS)
+    return NLGMetricverse(metrics=_DATASETS_METRICS)
 
 
 def get_expected_output(prefix: Optional[str] = None):

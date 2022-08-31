@@ -48,7 +48,7 @@ references = [
   ["I feel good today.", "I feel sad today."],
   ["Not bad.", "Sounds like a good idea."]
 ]
-scorer = Nlgmetricverse(metrics=load_metric(base_path + "bartscore"))
+scorer = NLGMetricverse(metrics=load_metric(base_path + "bartscore"))
 scores = scorer(predictions=auth_predictions, references=auth_references) # max aggregation (default)
 print(scores) # score = avg(single_scores)
 {'total_items': 2, 'empty_items': 0, 'bartscore': {'score': -2.0635241270065308, 'model_checkpoint': 'bartscore-large-cnn', 'model_weights': None, 'segment_scores': False}}

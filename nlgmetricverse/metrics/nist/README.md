@@ -33,7 +33,7 @@ NIST outputs a dictionary with the following values:
 
 ## Examples
 ```python
-scorer = Nlgmetricverse(metrics=load_metric("nist", n=5))
+scorer = NLGMetricverse(metrics=load_metric("nist", n=5))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
   ["Look! what a wonderful day, today.", "Today is a very wonderful day"]

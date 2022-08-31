@@ -96,7 +96,7 @@ class AutoMetric:
             else:
                 module = importlib.import_module(module_path)
         except ModuleNotFoundError:
-            # Metric not in Nlgmetricverse
+            # Metric not in NLGMetricverse
             if use_nlgmetricverse_only:
                 raise ValueError(
                     f"Metric {resolved_path.path} is not available on nlgmetricverse, set"

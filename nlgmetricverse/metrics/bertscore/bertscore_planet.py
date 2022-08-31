@@ -101,7 +101,7 @@ Returns:
     'f1': F1 score.
     'hashcode': Hashcode of the library.
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("bertscore"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("bertscore"))
     >>> predictions = [
         ["the cat is on the mat", "There is cat playing on the mat"],
         ["Look! a wonderful day.", "There is a good weather outside"]

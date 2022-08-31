@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from nlgmetricverse import data_loader, Nlgmetricverse
+from nlgmetricverse import data_loader, NLGMetricverse
 from nlgmetricverse.utils.correlation import *
 
 
@@ -28,7 +28,7 @@ def times_correlation(
     times = {}
     for metric in metrics:
         METRIC = check_metric(metric)
-        scorer = Nlgmetricverse(metrics=METRIC)
+        scorer = NLGMetricverse(metrics=METRIC)
         results = scorer(predictions=predictions, references=references)
         times[metric] = results["total_time_elapsed"]
 

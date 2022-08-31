@@ -83,7 +83,7 @@ Computation Args:
 Returns:
     'score': BARTScore loss.
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("bartscore"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("bartscore"))
     >>> predictions = ["I'm super happy today.", "This is a good idea."]
     >>> references = [
         ["I feel good today.", "I feel sad today."],

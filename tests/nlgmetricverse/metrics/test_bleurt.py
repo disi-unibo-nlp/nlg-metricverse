@@ -1,6 +1,6 @@
 import pytest
 
-from nlgmetricverse import Nlgmetricverse
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.metrics import AutoMetric
 from tests.nlgmetricverse.conftest import get_expected_output
 from tests.utils import assert_almost_equal_dict
@@ -10,7 +10,7 @@ from tests.utils import assert_almost_equal_dict
 def nlgmetricverse_bleurt():
     # using bleurt-tiny model to speed up test procedure
     metric = AutoMetric.load("bleurt", config_name="bleurt-tiny-128")
-    return Nlgmetricverse(metrics=metric)
+    return NLGMetricverse(metrics=metric)
 
 
 @pytest.fixture

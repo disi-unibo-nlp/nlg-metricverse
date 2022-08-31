@@ -95,7 +95,7 @@ Returns:
     `samples` (float): the mean value of COMET `scores` over all the input sentences.
     `scores` (list of floats): List of scores.
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("comet"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("comet"))
     >>> sources = ["Dem Feuer konnte Einhalt geboten werden", "Schulen und Kindergärten wurden eröffnet."]
     >>> predictions = ["The fire could be stopped", "Schools and kindergartens were open"]
     >>> references = ["They were able to control the fire", "Schools and kindergartens opened"]

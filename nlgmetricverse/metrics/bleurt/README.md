@@ -37,7 +37,7 @@ In practice however, the answers tend to be very correlated with *fluency* ("Is 
 ## Examples
 ```python
 # Example with BLEURT-tiny checkpoint, which is very light but also very inaccurate
-scorer = Nlgmetricverse(metrics=load_metric(
+scorer = NLGMetricverse(metrics=load_metric(
     base_path + "bleurt",
     config_name="bleurt-tiny-128"))
 predictions = [

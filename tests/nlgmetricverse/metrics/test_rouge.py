@@ -1,6 +1,6 @@
 import pytest
 
-from nlgmetricverse import Nlgmetricverse
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.metrics import AutoMetric
 from tests.nlgmetricverse.conftest import get_expected_output
 from tests.utils import assert_almost_equal_dict
@@ -9,7 +9,7 @@ from tests.utils import assert_almost_equal_dict
 @pytest.fixture(scope="module")
 def nlgmetricverse_rouge():
     metric = AutoMetric.load("rouge")
-    return Nlgmetricverse(metrics=metric)
+    return NLGMetricverse(metrics=metric)
 
 
 @pytest.fixture

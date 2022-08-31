@@ -49,7 +49,7 @@ Scores over 30 generally reflect understandable translations. Scores over 50 gen
 
 ## Examples
 ```python
-scorer = Nlgmetricverse(metrics=load_metric("bleu"))
+scorer = NLGMetricverse(metrics=load_metric("bleu"))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
   ["Look! what a wonderful day, today.", "Today is a very wonderful day"]

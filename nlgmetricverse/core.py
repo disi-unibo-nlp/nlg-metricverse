@@ -1,6 +1,6 @@
 """
 Main library file.
-It contains the Nlgmetricverse main class.
+It contains the NLGMetricverse main class.
 """
 import warnings
 import time
@@ -17,7 +17,7 @@ from nlgmetricverse import data_loader
 MetricParam = Union[str, Metric, Dict[str, Any]]
 
 
-class Nlgmetricverse:
+class NLGMetricverse:
     r"""
     Simple evaluation pipeline for text-based metrics. By default, it computes BLEU(n), METEOR, ROUGE-L metrics.
     """

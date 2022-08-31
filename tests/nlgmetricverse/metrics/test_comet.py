@@ -1,6 +1,6 @@
 import pytest
 
-from nlgmetricverse import Nlgmetricverse
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.metrics import AutoMetric
 from tests.nlgmetricverse.conftest import get_expected_output
 from tests.utils import assert_almost_equal_dict
@@ -13,7 +13,7 @@ def nlgmetricverse_comet():
         config_name="wmt21-cometinho-da",
         compute_kwargs={"gpus": 0, "num_workers": 0, "progress_bar": False, "batch_size": 2},
     )
-    return Nlgmetricverse(metrics=metric)
+    return NLGMetricverse(metrics=metric)
 
 
 @pytest.fixture(scope="module")

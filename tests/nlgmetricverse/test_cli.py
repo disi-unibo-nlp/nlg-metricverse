@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from nlgmetricverse import Nlgmetricverse, data_loader
+from nlgmetricverse import NLGMetricverse, data_loader
 from tests.nlgmetricverse import TEST_DATA_DIR
 from tests.nlgmetricverse.conftest import get_expected_output
 from tests.utils import assert_almost_equal_dict, shell_capture
@@ -33,7 +33,7 @@ def test_cli_from_folder(output_cli_from_folder):
     predictions_folder = str(Path(TEST_DATA_DIR) / "cli" / "from_folder" / "predictions")
     references_folder = str(Path(TEST_DATA_DIR) / "cli" / "from_folder" / "references")
 
-    scorer = Nlgmetricverse()
+    scorer = NLGMetricverse()
     dl = data_loader.DataLoader(predictions=predictions_folder, references=references_folder)
     predictions = dl.get_predictions()
     references = dl.get_references()

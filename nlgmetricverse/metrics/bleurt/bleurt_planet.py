@@ -74,7 +74,7 @@ Returns:
     'scores': List of BLEURT scores.
     'checkpoint': Selected BLEURT checkpoint.
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("bertscore", config_name="bleurt-tiny-128"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("bertscore", config_name="bleurt-tiny-128"))
     >>> predictions = [
         ["the cat is on the mat", "There is cat playing on the mat"],
         ["Look! a wonderful day.", "There is a good weather outside"]
@@ -145,7 +145,7 @@ class BleurtPlanet(MetricForLanguageGeneration):
             logger.warning(
                 "Using default BLEURT-Base checkpoint for sequence maximum length 128. "
                 "You can use a bigger model for better results with e.g: "
-                "Nlgmetricverse(metric={path: 'bleurt', 'checkpoint': 'bleurt-large-512'})."
+                "NLGMetricverse(metric={path: 'bleurt', 'checkpoint': 'bleurt-large-512'})."
             )
             self.config_name = "bleurt-base-128"
 

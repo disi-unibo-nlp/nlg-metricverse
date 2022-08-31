@@ -116,7 +116,7 @@ Examples:
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> scorer = Nlgmetricverse(metrics=load_metric("chrf"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("chrf"))
     >>> scores = scorer(predictions=prediction, references=reference)
     >>> print(scores)
     {'total_items': 2, 'empty_items': 0, 'chrf': {'score': 0.44298405744188873, 'char_order': 6, 'word_order': 0, 'beta': 2}}

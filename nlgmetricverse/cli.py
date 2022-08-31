@@ -9,7 +9,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import fire
 import pandas as pd
 
-from nlgmetricverse import Nlgmetricverse
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse import __version__ as nlgmetricverse_version
 from nlgmetricverse.utils.common import get_common_keys, log
 from nlgmetricverse.utils.io import json_load, json_save
@@ -47,7 +47,7 @@ def from_file(
     references = references or args.get("references")
     reduce_fn = reduce_fn or args.get("reduce_fn")
     metrics = args.get("metrics")
-    scorer = Nlgmetricverse(metrics=metrics)
+    scorer = NLGMetricverse(metrics=metrics)
 
     if os.path.isfile(predictions) and os.path.isfile(references):
         scores = score_from_file(scorer=scorer, predictions=predictions, references=references, reduce_fn=reduce_fn)
@@ -110,7 +110,7 @@ def read_folders(predictions_path: str, references_path: str) -> List[Tuple[str,
     return files_to_read
 
 
-def score_from_file(scorer: Nlgmetricverse, predictions: str, references: str, reduce_fn: Optional[str] = None) -> \
+def score_from_file(scorer: NLGMetricverse, predictions: str, references: str, reduce_fn: Optional[str] = None) -> \
         Dict[str, Any]:
     """
     Get score from files.

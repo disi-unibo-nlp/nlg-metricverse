@@ -1,4 +1,4 @@
-from nlgmetricverse import load_metric, Nlgmetricverse
+from nlgmetricverse import load_metric, NLGMetricverse
 
 
 def map_range(value, left_min, left_max, right_min, right_max):
@@ -20,7 +20,7 @@ def scores_single_metric(metric, predictions, references):
     scores = []
     res = []
     METRIC = check_metric(metric)
-    scorer = Nlgmetricverse(metrics=METRIC)
+    scorer = NLGMetricverse(metrics=METRIC)
     for i, pred in enumerate(predictions):
         score = scorer(predictions=[pred], references=[references[i]])
         scores.append(score)

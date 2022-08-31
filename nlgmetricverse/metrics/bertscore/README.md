@@ -46,7 +46,7 @@ BERTScore `precision`, `recall`, and `f1` belong to <img src="https://render.git
 
 ## Examples
 ```python
-scorer = Nlgmetricverse(metrics=load_metric("bertscore"))
+scorer = NLGMetricverse(metrics=load_metric("bertscore"))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
   ["Look! a wonderful day.", "There is a good weather outside"]

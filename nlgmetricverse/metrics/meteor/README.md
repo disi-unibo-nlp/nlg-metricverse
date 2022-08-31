@@ -41,7 +41,7 @@ The higher score means that the candidate is closer to reference translation (i.
 
 ## Examples
 ```python
-scorer = Nlgmetricverse(metrics=load_metric("meteor"))
+scorer = NLGMetricverse(metrics=load_metric("meteor"))
 predictions = ["the cat sat on the mat"]
 references = ["on the mat sat the cat"]
 scores = scorer(predictions=predictions, references=references)

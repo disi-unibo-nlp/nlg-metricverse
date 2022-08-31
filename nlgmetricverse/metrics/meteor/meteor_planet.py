@@ -100,7 +100,7 @@ Args:
 Returns:
     score (float): METEOR score.
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("meteor"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("meteor"))
     >>> predictions = ["the cat sat on the mat"]
     >>> references = ["on the mat sat the cat"]
     >>> scores = scorer(predictions=predictions, references=references)

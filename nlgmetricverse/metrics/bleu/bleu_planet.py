@@ -103,7 +103,7 @@ Returns:
     'translation_length': translation_length,
     'reference_length': reference_length
 Examples:
-    >>> scorer = Nlgmetricverse(metrics=load_metric("bleu"))
+    >>> scorer = NLGMetricverse(metrics=load_metric("bleu"))
     >>> predictions = [
         ["the cat is on the mat", "There is cat playing on the mat"],
         ["Look! a wonderful day.", "There is a good weather outside"]

@@ -44,7 +44,7 @@ The `precision`, `recall`, and `fmeasure` values all have a <img src="https://re
 ```python
 predictions = ["The quick brown fox jumped over the lazy dog."]
 references = ["The fox jumped over the dog."]
-scorer = Nlgmetricverse(metrics=load_metric("rouge"))
+scorer = NLGMetricverse(metrics=load_metric("rouge"))
 scores = scorer(predictions=predictions, references=references,
                 rouge_types=["rougeL"],
                 use_aggregator=False, use_stemmer=False,
