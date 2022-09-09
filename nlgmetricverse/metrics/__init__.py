@@ -19,6 +19,7 @@ from nlgmetricverse.metrics.bertscore import Bertscore
 from nlgmetricverse.metrics.bleu import Bleu
 from nlgmetricverse.metrics.bleurt import Bleurt
 from nlgmetricverse.metrics.cer import CER
+from nlgmetricverse.metrics.character import CharacTER
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.comet import Comet
 from nlgmetricverse.metrics.f1 import F1
