@@ -1,12 +1,7 @@
-
-import os
-import sys
 import ctypes
-import argparse
-import itertools
 import datasets
 import numpy as np
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
@@ -95,7 +90,7 @@ class CharacTERPlanet(MetricForLanguageGeneration):
     ):
         scores = self.cer_scorer(predictions, references)
         return {
-            "score":  float(np.mean(score)),
+            "score":  float(np.mean(scores)),
         }
 
     def _compute_single_pred_multi_ref(
