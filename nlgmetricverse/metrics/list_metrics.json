@@ -65,6 +65,14 @@
       "quality_dims": []
     },
     {
+      "name": "character",
+      "category": "n-gram overlap",
+      "appl_tasks": ["MT"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": []
+    },
+    {
       "name": "chrf",
       "category": "n-gram overlap",
       "appl_tasks": ["MT", "IC", "SUM"],
