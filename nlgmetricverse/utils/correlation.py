@@ -27,7 +27,9 @@ def scores_single_metric(metric, predictions, references):
         for single_score in score:
             if isinstance(score[single_score], dict):
                 if metric == "rouge":
-                    res.append(score[single_score]["rouge1"])
+                    mean = score[single_score]["rouge1"] + score[single_score]["rouge2"] + score[single_score]["rougeL"]
+                    mean = mean / 3
+                    res.append(mean)
                 else:
                     res.append(score[single_score]["score"])
     return res

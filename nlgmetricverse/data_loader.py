@@ -73,7 +73,7 @@ class DataLoader:
         cur_path = os.getcwd()
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
-            with open(f, 'r') as file:
+            with open(f, 'r', encoding="utf-8") as file:
                 input_var.append(file.read().splitlines())
         os.chdir(cur_path)
         return
@@ -88,6 +88,6 @@ class DataLoader:
         """
         os.chdir(input_dir)
         for f in sorted(glob.glob("*.txt")):
-            with open(f, 'r') as file:
+            with open(f, 'r', encoding="utf-8") as file:
                 input_var.append(file.read().replace('\n', ' '))
         return

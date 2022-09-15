@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr, spearmanr, kendalltau
 
+import nlgmetricverse
 from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse.utils.get_wmt17_sys_results import get_wmt17_sys_results, download_data
@@ -40,15 +41,19 @@ def metric_human_correlation(
                 dataLoader = data_loader.DataLoader(predictions=predictions, references=references, method=method)
                 predictions = dataLoader.get_predictions()
                 references = dataLoader.get_references()
+
             score = scores_single_metric(metric=metric, predictions=predictions, references=references)
-            if metric == "bartscore":
-                mapped_score = map_range(score, float('-inf'), 0, 0, 1)
-            elif metric == "nist":
-                mapped_score = map_range(score, 0, 10, 0, 1)
-            elif metric == "perplexity":
-                mapped_score = map_range(score, float('inf'), 1, 0, 1)
-            else:
-                mapped_score = score
+
+            mapped_score = []
+            for i, single_score in enumerate(score):
+                if metric == "bartscore":
+                    mapped_score.append(map_range(single_score, -7, 0, 0, 1))
+                elif metric == "nist":
+                    mapped_score.append(map_range(single_score, 0, 10, 0, 1))
+                elif metric == "perplexity":
+                    mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
+                else:
+                    mapped_score.append(single_score)
 
             if technique == "pearson":
                 results[metric] = pearsonr(mapped_score, personal_scores)[0]
@@ -58,8 +63,12 @@ def metric_human_correlation(
                 results[metric] = kendalltau(mapped_score, personal_scores)[0]
             results[metric] = map_range(results[metric], -1, 1, 0, 1)
 
-        plt.bar(list(results.keys()), results.values(), color='g')
+        plt.bar(list(results.keys()), results.values(), color=["tab:blue", "tab:orange", "tab:green", "tab:red",
+                                                               "tab:purple", "tab:brown", "tab:pink", "tab:grey",
+                                                               "tab:olive", "tab:cyan"])
         plt.title("Metric-human correlation")
+        plt.xticks(rotation=90)
+        plt.tight_layout()
         plt.show()
 
         return results

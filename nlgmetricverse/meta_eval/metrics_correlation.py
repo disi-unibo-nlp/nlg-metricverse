@@ -23,12 +23,14 @@ def metrics_correlation(
 ):
     if metrics is None:
         metrics = [
+            "bertscore",
             "bleu",
             "chrf",
             "meteor",
             "rouge",
             "sacrebleu",
-            "ter"
+            "ter",
+            "wer"
         ]
     if len(metrics) < 2:
         raise ValueError("'metric' length must be at least 2")
@@ -40,15 +42,18 @@ def metrics_correlation(
     scores = {}
     for metric in metrics:
         score = scores_single_metric(metric=metric, predictions=predictions, references=references)
-        if metric == "bartscore":
-            mapped_score = map_range(score, float('-inf'), 0, 0, 1)
-        elif metric == "nist":
-            mapped_score = map_range(score, 0, 10, 0, 1)
-        elif metric == "perplexity":
-            mapped_score = map_range(score, float('inf'), 1, 0, 1)
-        else:
-            mapped_score = score
+        mapped_score = []
+        for i, single_score in enumerate(score):
+            if metric == "bartscore":
+                mapped_score.append(map_range(single_score, -7, 0, 0, 1))
+            elif metric == "nist":
+                mapped_score.append(map_range(single_score, 0, 10, 0, 1))
+            elif metric == "perplexity":
+                mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
+            else:
+                mapped_score.append(single_score)
         scores[metric] = mapped_score
+
     for i, metricA in enumerate(metrics):
         for j, metricB in enumerate(metrics):
             if technique == Technique.PEARSON:
@@ -60,6 +65,7 @@ def metrics_correlation(
     mask = np.triu(np.ones_like(matrixRes, dtype=bool))
     sns.heatmap(np.tril(matrixRes, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask, cmap="Blues")
     plt.title("Metric scores correlation")
+    plt.tight_layout()
     plt.show()
 
     return np.tril(matrixRes, -1)
