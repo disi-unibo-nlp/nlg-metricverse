@@ -29,6 +29,7 @@ from nlgmetricverse.metrics.meteor import Meteor
 from nlgmetricverse.metrics.moverscore import Moverscore
 from nlgmetricverse.metrics.nist import Nist
 from nlgmetricverse.metrics.nubia import Nubia
+from nlgmetricverse.metrics.perplexity import Perplexity
 from nlgmetricverse.metrics.precision import Precision
 from nlgmetricverse.metrics.prism import Prism
 from nlgmetricverse.metrics.repetitiveness import Repetitiveness
