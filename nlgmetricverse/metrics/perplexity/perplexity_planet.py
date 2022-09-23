@@ -150,8 +150,6 @@ class PerplexityPlanet(MetricForLanguageGeneration):
             predictions: EvaluationInstance, 
             references: EvaluationInstance,
             batch_size: int = 16,
-            reduce_fn: Callable = None,
-            segment_scores: bool = False,
             **kwargs,
     ):
         scores = self.perplexity_score(predictions=predictions, batch_size=batch_size)
@@ -163,7 +161,6 @@ class PerplexityPlanet(MetricForLanguageGeneration):
             references: EvaluationInstance,
             batch_size: int = 16,
             reduce_fn: Callable = None,
-            segment_scores: bool = False,
             **kwargs,
     ):  
         scores = self.perplexity_score(predictions=predictions, batch_size=batch_size)
