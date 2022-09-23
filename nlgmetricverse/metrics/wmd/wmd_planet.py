@@ -40,17 +40,21 @@ class WMDPlanet(MetricForLanguageGeneration):
         Downloads and import the computation of WMD score from the implementation
         of WMD computation from gensim library. 
         """
-        import gensim.downloader as api
-        self.model = api.load(self.model_name)
-        if self.enable_stop_words:
-            import nltk
-            from nltk import download
-            from nltk.corpus import stopwords
-            try:
-                nltk.data.find('corpora/stopwords.zip')
-            except:
-                download('stopwords')  # Download stopwords list.
-            self.stop_words = stopwords.words('english') 
+        try:
+            import gensim.downloader as api
+        except:
+             raise ModuleNotFoundError(requirement_message(path="WMD", package_name="gensim"))
+        else:
+            self.model = api.load(self.model_name)
+            if self.enable_stop_words:
+                import nltk
+                from nltk import download
+                from nltk.corpus import stopwords
+                try:
+                    nltk.data.find('corpora/stopwords.zip')
+                except:
+                    download('stopwords')  # Download stopwords list.
+                self.stop_words = stopwords.words('english') 
     def _info(self):
         return datasets.MetricInfo(
             description=_DESCRIPTION,

@@ -45,7 +45,7 @@ class CharacTERPlanet(MetricForLanguageGeneration):
         try:
             import Levenshtein
         except ModuleNotFoundError:
-            raise ModuleNotFoundError(requirement_message(path="Levenshtein", package_name="python-Levenshtein"))
+            raise ModuleNotFoundError(requirement_message(path="CharacTER", package_name="python-Levenshtein"))
         else:
             characTER_source = (
                 "https://raw.githubusercontent.com/rwth-i6/CharacTER/master/CharacTER.py"
