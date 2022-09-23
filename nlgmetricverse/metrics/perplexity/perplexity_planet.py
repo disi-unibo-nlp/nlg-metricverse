@@ -57,8 +57,8 @@ class PerplexityPlanet(MetricForLanguageGeneration):
 
     def _download_and_prepare(self, dl_manager) -> None:
         """
-        Downloads and import the computation of characTER score from the implementation
-        of characTER computation from rwth-i6/CharacTER. The code is sourced from a specific
+        Downloads and import the computation of Perplexity score from the implementation
+        of Perplexity computation. The code is sourced from a specific
         commit on the master branch, in order to keep things stable. See
         https://github.com/huggingface/datasets/blob/main/metrics/perplexity/perplexity.py
 
