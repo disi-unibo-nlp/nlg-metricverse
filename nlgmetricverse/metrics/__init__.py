@@ -25,6 +25,7 @@ from nlgmetricverse.metrics.comet import Comet
 from nlgmetricverse.metrics.f1 import F1
 from nlgmetricverse.metrics.flesch_kincaid import FleschKincaid
 from nlgmetricverse.metrics.gunning_fog import GunningFog
+from nlgmetricverse.metrics.mauve import Mauve
 from nlgmetricverse.metrics.meteor import Meteor
 from nlgmetricverse.metrics.moverscore import Moverscore
 from nlgmetricverse.metrics.nist import Nist
