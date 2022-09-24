@@ -38,24 +38,10 @@ class EEDPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
 
     def _download_and_prepare(self, dl_manager) -> None:
-        """
-        Downloads and import the computation of characTER score from the implementation
-        of characTER computation from rwth-i6/CharacTER. The code is sourced from a specific
-        commit on the master branch, in order to keep things stable. See
-        https://github.com/rwth-i6/ExtendedEditDistance/blob/master/EED.py  
-
-        """
-
-        EED_source = (
-            "https://raw.githubusercontent.com/rwth-i6/ExtendedEditDistance/master/EED.py"
-        )
-        preprocess_data_source=(
-            "https://raw.githubusercontent.com/rwth-i6/ExtendedEditDistance/master/util.py"
-        )
+        
         libED_path = dl_manager.download(LIBRARY_URLS["libed"])
         self.ed_wrapper = ctypes.CDLL(libED_path)
         self.ed_wrapper.wrapper.restype = ctypes.c_float
-        self.external_module_path = dl_manager.download(preprocess_data_source)
     
     def _info(self):
         return datasets.MetricInfo(
