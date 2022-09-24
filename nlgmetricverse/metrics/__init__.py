@@ -23,6 +23,7 @@ from nlgmetricverse.metrics.character import CharacTER
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.cider import Cider
 from nlgmetricverse.metrics.comet import Comet
+from nlgmetricverse.metrics.eed import EED
 from nlgmetricverse.metrics.f1 import F1
 from nlgmetricverse.metrics.flesch_kincaid import FleschKincaid
 from nlgmetricverse.metrics.gunning_fog import GunningFog
