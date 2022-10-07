@@ -1,14 +1,12 @@
 import matplotlib.pyplot as plt
 
-from nlgmetricverse import data_loader, DataLoaderStrategies
 from nlgmetricverse.utils.correlation import *
 
 
 def times_correlation(
         predictions,
         references,
-        metrics,
-        strategy=DataLoaderStrategies.OneRecordPerLine
+        metrics
 ):
     if not isinstance(predictions, list) and not isinstance(references, list):
         raise Exception("predictions and references must be of type list")

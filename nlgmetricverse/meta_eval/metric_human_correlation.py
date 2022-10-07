@@ -1,7 +1,6 @@
 import random
 
 import matplotlib.pyplot as plt
-from scipy.stats import pearsonr, spearmanr, kendalltau
 
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse.utils.benchmarks.get_wmt17_sys_results import *
@@ -12,7 +11,6 @@ def metric_human_correlation(
         references,
         metrics,
         human_scores=Benchmarks.WMT17,
-        method="one_record_per_line",
         correlation_measures=None,
 ):
     if correlation_measures is None:
