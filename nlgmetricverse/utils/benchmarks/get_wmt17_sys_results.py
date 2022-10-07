@@ -133,7 +133,7 @@ def get_wmt17_sys_results(
         del scorer
 
 
-def download_data():
+def wmt17_download_data():
     starting_dir = os.getcwd()
     directory = "wmt17"
     parent_dir = os.path.curdir

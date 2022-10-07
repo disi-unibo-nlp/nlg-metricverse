@@ -1,3 +1,4 @@
+from enum import Enum
 from nlgmetricverse import load_metric, NLGMetricverse
 
 
@@ -19,8 +20,8 @@ def check_metric(metric):
 def scores_single_metric(metric, predictions, references):
     scores = []
     res = []
-    METRIC = check_metric(metric)
-    scorer = NLGMetricverse(metrics=METRIC)
+    checked_metric = check_metric(metric)
+    scorer = NLGMetricverse(metrics=checked_metric)
     for i, pred in enumerate(predictions):
         score = scorer(predictions=[pred], references=[references[i]])
         scores.append(score)
@@ -33,3 +34,13 @@ def scores_single_metric(metric, predictions, references):
                 else:
                     res.append(score[single_score]["score"])
     return res
+
+
+class CorrelationMeasures(Enum):
+    Pearson = 1
+    Spearman = 2
+    KendallTau = 3
+
+
+class Benchmarks(Enum):
+    WMT17 = 1

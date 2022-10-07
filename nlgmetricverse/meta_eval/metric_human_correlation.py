@@ -1,49 +1,39 @@
+import random
+
 import matplotlib.pyplot as plt
 from scipy.stats import pearsonr, spearmanr, kendalltau
 
-import nlgmetricverse
-from nlgmetricverse import data_loader
 from nlgmetricverse.utils.correlation import *
-from nlgmetricverse.utils.get_wmt17_sys_results import get_wmt17_sys_results, download_data
+from nlgmetricverse.utils.benchmarks.get_wmt17_sys_results import *
 
 
 def metric_human_correlation(
         predictions,
         references,
-        metrics=None,
-        personal_scores=None,
+        metrics,
+        human_scores=Benchmarks.WMT17,
         method="read_lines",
-        technique="pearson",
+        correlation_measures=None,
 ):
-    if metrics is None:
-        metrics = [
-            "bleu",
-            "chrf",
-            "meteor",
-            "rouge",
-            "sacrebleu",
-            "ter"
-        ]
-    if personal_scores is None:
-        # Generate ad DB with human scores from WMT
-        # print("Downloading wmt17 data, first time might take a bit...")
-        download_data()
-        # print("Download completed")
-        # print("Evaluating...")
-        data = get_wmt17_sys_results()
-        # print("Evaluation completed, you can see the results in the 'wmt17' folder")
-        return data
+    if correlation_measures is None:
+        correlation_measures = [CorrelationMeasures.Pearson]
+    if not isinstance(human_scores, list):
+        if human_scores == Benchmarks.WMT17:
+            # Generate ad DB with human scores from WMT
+            # print("Downloading wmt17 data, first time might take a bit...")
+            wmt17_download_data()
+            # print("Download completed")
+            # print("Evaluating...")
+            data = get_wmt17_sys_results()
+            # print("Evaluation completed, you can see the results in the 'wmt17' folder")
+            return data
     else:
         # Using personal scores
-        results = {}
+        scores = {}
         for metric in metrics:
             if not isinstance(predictions, list) and not isinstance(references, list):
-                dataLoader = data_loader.DataLoader(predictions=predictions, references=references, method=method)
-                predictions = dataLoader.get_predictions()
-                references = dataLoader.get_references()
-
+                raise Exception("predictions and references must be of type list")
             score = scores_single_metric(metric=metric, predictions=predictions, references=references)
-
             mapped_score = []
             for i, single_score in enumerate(score):
                 if metric == "bartscore":
@@ -54,21 +44,31 @@ def metric_human_correlation(
                     mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
                 else:
                     mapped_score.append(single_score)
+            scores[metric] = mapped_score
+        results = []
+        for correlation_measure in correlation_measures:
+            correlation_results = {}
+            for i, metric in enumerate(metrics):
+                if correlation_measure == CorrelationMeasures.Pearson:
+                    correlation_results[metric] = pearsonr(scores[metric], human_scores)[0]
+                elif correlation_measure == CorrelationMeasures.Spearman:
+                    correlation_results[metric] = spearmanr(scores[metric], human_scores)[0]
+                elif CorrelationMeasures == CorrelationMeasures.KendallTau:
+                    correlation_results[metric] = kendalltau(scores[metric], human_scores)[0]
+                correlation_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
 
-            if technique == "pearson":
-                results[metric] = pearsonr(mapped_score, personal_scores)[0]
-            elif technique == "spearman":
-                results[metric] = spearmanr(mapped_score, personal_scores)[0]
-            elif technique == "kendalltau":
-                results[metric] = kendalltau(mapped_score, personal_scores)[0]
-            results[metric] = map_range(results[metric], -1, 1, 0, 1)
-
-        plt.bar(list(results.keys()), results.values(), color=["tab:blue", "tab:orange", "tab:green", "tab:red",
-                                                               "tab:purple", "tab:brown", "tab:pink", "tab:grey",
-                                                               "tab:olive", "tab:cyan"])
-        plt.title("Metric-human correlation")
-        plt.xticks(rotation=90)
-        plt.tight_layout()
-        plt.show()
-
+            bar_list = plt.bar(list(correlation_results.keys()), correlation_results.values(), label=correlation_measure)
+            for bar in bar_list:
+                r = random.random()
+                b = random.random()
+                g = random.random()
+                color = (r, g, b)
+                bar.set_color(color)
+            results.append(correlation_results)
+            plt.xticks(np.arange(len(correlation_measures)), correlation_measures)
+            plt.xlabel("Correlation measure")
+            plt.ylabel("Scores")
+            plt.title("Metric-human correlation")
+            plt.legend()
+            plt.show()
         return results
