@@ -49,14 +49,8 @@ def metric_human_correlation(
         for correlation_measure in correlation_measures:
             correlation_results = {}
             for i, metric in enumerate(metrics):
-                if correlation_measure == CorrelationMeasures.Pearson:
-                    correlation_results[metric] = pearsonr(scores[metric], human_scores)[0]
-                elif correlation_measure == CorrelationMeasures.Spearman:
-                    correlation_results[metric] = spearmanr(scores[metric], human_scores)[0]
-                elif CorrelationMeasures == CorrelationMeasures.KendallTau:
-                    correlation_results[metric] = kendalltau(scores[metric], human_scores)[0]
+                correlation_results[metric] = calc_correlation(scores[metric], human_scores, correlation_measure)
                 correlation_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
-
             bar_list = plt.bar(list(correlation_results.keys()), correlation_results.values(), label=correlation_measure)
             for bar in bar_list:
                 r = random.random()

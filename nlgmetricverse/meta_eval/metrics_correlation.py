@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from scipy.stats import pearsonr, spearmanr, kendalltau
 
 from nlgmetricverse.utils.correlation import *
 
@@ -40,12 +39,7 @@ def metrics_correlation(
     for correlation_measure in correlation_measures:
         for i, metricA in enumerate(metrics):
             for j, metricB in enumerate(metrics):
-                if correlation_measure == CorrelationMeasures.Pearson:
-                    matrix_res[i][j] = pearsonr(scores[metricA], scores[metricB])[0]
-                elif correlation_measure == CorrelationMeasures.Spearman:
-                    matrix_res[i][j] = spearmanr(scores[metricA], scores[metricB])[0]
-                elif correlation_measure == CorrelationMeasures.KendallTau:
-                    matrix_res[i][j] = kendalltau(scores[metricA], scores[metricB])[0]
+                matrix_res[i][j] = calc_correlation(scores[metricA], scores[metricB], correlation_measure)
         mask = np.triu(np.ones_like(matrix_res, dtype=bool))
         sns.heatmap(np.tril(matrix_res, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask,
                            cmap="Blues")

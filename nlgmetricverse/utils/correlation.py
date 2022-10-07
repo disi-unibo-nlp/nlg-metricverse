@@ -1,4 +1,6 @@
 from enum import Enum
+from scipy.stats import pearsonr, spearmanr, kendalltau
+
 from nlgmetricverse import load_metric, NLGMetricverse
 
 
@@ -44,3 +46,13 @@ class CorrelationMeasures(Enum):
 
 class Benchmarks(Enum):
     WMT17 = 1
+
+
+def calc_correlation(x, y, correlation_measure):
+    if correlation_measure == CorrelationMeasures.Pearson:
+        return pearsonr(x, y)[0]
+    elif correlation_measure == CorrelationMeasures.Spearman:
+        return spearmanr(x, y)[0]
+    elif correlation_measure == CorrelationMeasures.KendallTau:
+        return kendalltau(x, y)[0]
+    
