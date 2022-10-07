@@ -1,7 +1,13 @@
 import glob
 import os
+from enum import Enum
 
 from nlgmetricverse.metrics import EvaluationInstance
+
+
+class DataLoaderStrategies(Enum):
+    ReadLines = 0
+    NoNewLine = 1
 
 
 class DataLoader:
@@ -13,18 +19,18 @@ class DataLoader:
             self,
             predictions,
             references,
-            method="no_new_line",
+            strategy=DataLoaderStrategies.NoNewLine,
     ):
         """
         :param predictions: Dir containing predictions.
         :param references: Dir containing references.
-        :param method: Method to be applied.
+        :param strategy: Strategy to be applied for reading files.
         """
         self.res_predictions: EvaluationInstance = []
         self.res_references: EvaluationInstance = []
         self.dir_predictions = predictions
         self.dir_references = references
-        self.execute_method(method)
+        self.execute_method(strategy)
         self.check_inputs()
 
     def check_inputs(self):
@@ -47,17 +53,17 @@ class DataLoader:
         """
         return self.res_references
 
-    def execute_method(self, method):
+    def execute_method(self, strategy):
         """
-        Compute the method to be applied for scanning predictions and references. By default, is "no_new_line",
+        Compute the strategy to be applied for scanning predictions and references. By default, is "no_new_line",
         but can also be "read_lines".
 
-        :param method: Method to be applied.
+        :param strategy: Strategy to be applied.
         """
-        if method == "read_lines":
+        if strategy == DataLoaderStrategies.ReadLines:
             self.read_lines(self.res_predictions, self.dir_predictions)
             self.read_lines(self.res_references, self.dir_references)
-        elif method == "no_new_line":
+        elif strategy == DataLoaderStrategies.NoNewLine:
             self.no_new_line(self.res_predictions, self.dir_predictions)
             self.no_new_line(self.res_references, self.dir_references)
         return

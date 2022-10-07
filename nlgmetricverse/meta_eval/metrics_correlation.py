@@ -39,7 +39,7 @@ def metrics_correlation(
     for correlation_measure in correlation_measures:
         for i, metricA in enumerate(metrics):
             for j, metricB in enumerate(metrics):
-                matrix_res[i][j] = calc_correlation(scores[metricA], scores[metricB], correlation_measure)
+                matrix_res[i][j] = compute_correlation(scores[metricA], scores[metricB], correlation_measure)
         mask = np.triu(np.ones_like(matrix_res, dtype=bool))
         sns.heatmap(np.tril(matrix_res, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask,
                            cmap="Blues")

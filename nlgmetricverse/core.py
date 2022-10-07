@@ -12,7 +12,7 @@ from nlgmetricverse.collator import Collator
 from nlgmetricverse.definitions import DEFAULT_METRICS
 from nlgmetricverse.metrics import EvaluationInstance, Metric, load_metric
 from nlgmetricverse.utils.common import pop_item_from_dict, replace, set_env
-from nlgmetricverse import data_loader
+from nlgmetricverse import data_loader, DataLoaderStrategies
 
 MetricParam = Union[str, Metric, Dict[str, Any]]
 
@@ -41,7 +41,7 @@ class NLGMetricverse:
             predictions: EvaluationInstance = None,
             references: EvaluationInstance = None,
             reduce_fn: Optional[Union[str, Callable]] = None,
-            method: str = "no_new_line",
+            strategy: DataLoaderStrategies = DataLoaderStrategies.NoNewLine,
             **kwargs
     ) -> Dict[str, float]:
         """
@@ -50,14 +50,14 @@ class NLGMetricverse:
         :param predictions: Predictions.
         :param references: References.
         :param reduce_fn: Reduce function name.
-        :param method: Method to parse inputs. Can be "no_new_line" or "read_lines".
+        :param strategy: Strategy to parse inputs. Can be NoNewLine or ReadLines.
         :return: scores
         """
         if isinstance(predictions, list):
             self.res_predictions = predictions
             self.res_references = references
         else:
-            dl = data_loader.DataLoader(predictions, references, method)
+            dl = data_loader.DataLoader(predictions, references, strategy)
             self.res_predictions = dl.get_predictions()
             self.res_references = dl.get_references()
         scores = dict()
