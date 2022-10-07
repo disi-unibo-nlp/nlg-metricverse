@@ -6,8 +6,8 @@ from nlgmetricverse.metrics import EvaluationInstance
 
 
 class DataLoaderStrategies(Enum):
-    ReadLines = 0
-    NoNewLine = 1
+    OneRecordPerLine = 0
+    OneRecordPerFile = 1
 
 
 class DataLoader:
@@ -17,20 +17,20 @@ class DataLoader:
 
     def __init__(
             self,
-            predictions,
-            references,
-            strategy=DataLoaderStrategies.NoNewLine,
+            pred_path,
+            ref_path,
+            strategy=DataLoaderStrategies.OneRecordPerFile,
     ):
         """
-        :param predictions: Dir containing predictions.
-        :param references: Dir containing references.
+        :param pred_path: Dir containing predictions.
+        :param ref_path: Dir containing references.
         :param strategy: Strategy to be applied for reading files.
         """
         self.res_predictions: EvaluationInstance = []
         self.res_references: EvaluationInstance = []
-        self.dir_predictions = predictions
-        self.dir_references = references
-        self.execute_method(strategy)
+        self.dir_predictions = pred_path
+        self.dir_references = ref_path
+        self.compute_strategy(strategy)
         self.check_inputs()
 
     def check_inputs(self):
@@ -53,25 +53,25 @@ class DataLoader:
         """
         return self.res_references
 
-    def execute_method(self, strategy):
+    def compute_strategy(self, strategy):
         """
-        Compute the strategy to be applied for scanning predictions and references. By default, is "no_new_line",
-        but can also be "read_lines".
+        Compute the strategy to be applied for scanning predictions and references. By default, is "one_record_per_file",
+        but can also be "one_record_per_line".
 
         :param strategy: Strategy to be applied.
         """
-        if strategy == DataLoaderStrategies.ReadLines:
-            self.read_lines(self.res_predictions, self.dir_predictions)
-            self.read_lines(self.res_references, self.dir_references)
-        elif strategy == DataLoaderStrategies.NoNewLine:
-            self.no_new_line(self.res_predictions, self.dir_predictions)
-            self.no_new_line(self.res_references, self.dir_references)
+        if strategy == DataLoaderStrategies.OneRecordPerLine:
+            self.one_record_per_line(self.res_predictions, self.dir_predictions)
+            self.one_record_per_line(self.res_references, self.dir_references)
+        elif strategy == DataLoaderStrategies.OneRecordPerFile:
+            self.one_record_per_file(self.res_predictions, self.dir_predictions)
+            self.one_record_per_file(self.res_references, self.dir_references)
         return
 
     @staticmethod
-    def read_lines(input_var, input_dir):
+    def one_record_per_line(input_var, input_dir):
         """
-        One element for each line.
+        One record per line in file
 
         :param input_var: Var containing computes results.
         :param input_dir: Path to dir containing inputs.
@@ -85,9 +85,9 @@ class DataLoader:
         return
 
     @staticmethod
-    def no_new_line(input_var, input_dir):
+    def one_record_per_file(input_var, input_dir):
         """
-        Multiline elements.
+        One record per file in dir.
 
         :param input_var: Var containing computes results.
         :param input_dir: Path to dir containing inputs.

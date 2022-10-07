@@ -12,7 +12,7 @@ def metric_human_correlation(
         references,
         metrics,
         human_scores=Benchmarks.WMT17,
-        method="read_lines",
+        method="one_record_per_line",
         correlation_measures=None,
 ):
     if correlation_measures is None:

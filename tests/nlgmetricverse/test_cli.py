@@ -34,7 +34,7 @@ def test_cli_from_folder(output_cli_from_folder):
     references_folder = str(Path(TEST_DATA_DIR) / "cli" / "from_folder" / "references")
 
     scorer = NLGMetricverse()
-    dl = data_loader.DataLoader(predictions=predictions_folder, references=references_folder)
+    dl = data_loader.DataLoader(pred_path=predictions_folder, ref_path=references_folder)
     predictions = dl.get_predictions()
     references = dl.get_references()
     out = scorer(predictions=predictions, references=references)

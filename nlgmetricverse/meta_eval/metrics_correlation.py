@@ -9,7 +9,7 @@ def metrics_correlation(
         predictions,
         references,
         metrics,
-        method="read_lines",
+        method="one_record_per_line",
         correlation_measures=None
 ):
     if correlation_measures is None:

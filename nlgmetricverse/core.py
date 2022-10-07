@@ -41,7 +41,7 @@ class NLGMetricverse:
             predictions: EvaluationInstance = None,
             references: EvaluationInstance = None,
             reduce_fn: Optional[Union[str, Callable]] = None,
-            strategy: DataLoaderStrategies = DataLoaderStrategies.NoNewLine,
+            strategy: DataLoaderStrategies = DataLoaderStrategies.OneRecordPerFile,
             **kwargs
     ) -> Dict[str, float]:
         """
