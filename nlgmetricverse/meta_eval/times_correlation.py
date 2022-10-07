@@ -11,9 +11,7 @@ def times_correlation(
         strategy=DataLoaderStrategies.ReadLines
 ):
     if not isinstance(predictions, list) and not isinstance(references, list):
-        dl = data_loader.DataLoader(predictions=predictions, references=references, strategy=strategy)
-        predictions = dl.get_predictions()
-        references = dl.get_references()
+        raise Exception("predictions and references must be of type list")
     times = {}
     for metric in metrics:
         checked_metric = check_metric(metric)
