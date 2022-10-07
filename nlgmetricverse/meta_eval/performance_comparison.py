@@ -8,6 +8,13 @@ def times_correlation(
         references,
         metrics
 ):
+    """
+    Compare the computational time of metrics.
+
+    :param predictions: List of predictions
+    :param references: List of references
+    :param metrics: List of metrics
+    """
     if not isinstance(predictions, list) and not isinstance(references, list):
         raise Exception("predictions and references must be of type list")
     times = {}

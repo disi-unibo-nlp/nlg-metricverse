@@ -11,6 +11,15 @@ def metrics_correlation(
         metrics,
         correlation_measures=None
 ):
+    """
+    Calculates the correlation between different metrics, with the possibility of choosing
+    between several correlation techniques.
+
+    :param predictions: List of predictions
+    :param references: List of references
+    :param metrics: List of metrics
+    :param correlation_measures: The correlation technique to apply
+    """
     if correlation_measures is None:
         correlation_measures = [CorrelationMeasures.Pearson]
     if len(metrics) < 2:
