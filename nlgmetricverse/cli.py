@@ -11,7 +11,8 @@ import pandas as pd
 
 from nlgmetricverse import NLGMetricverse
 from nlgmetricverse import __version__ as nlgmetricverse_version
-from nlgmetricverse.utils.common import get_common_keys, log
+from nlgmetricverse.utils.sys import log
+from nlgmetricverse.utils.data_structure import get_common_keys
 from nlgmetricverse.utils.io import json_load, json_save
 
 

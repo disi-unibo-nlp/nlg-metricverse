@@ -11,7 +11,8 @@ from codecarbon import EmissionsTracker
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.definitions import DEFAULT_METRICS
 from nlgmetricverse.metrics import EvaluationInstance, Metric, load_metric
-from nlgmetricverse.utils.common import pop_item_from_dict, replace, set_env
+from nlgmetricverse.utils.sys import set_env
+from nlgmetricverse.utils.data_structure import pop_item_from_dict, replace
 from nlgmetricverse import data_loader, DataLoaderStrategies
 
 MetricParam = Union[str, Metric, Dict[str, Any]]

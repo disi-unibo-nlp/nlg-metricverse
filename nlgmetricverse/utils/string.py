@@ -1,8 +1,16 @@
-"""
-Utils file for Natural Language Processing
-"""
 import re
 import string
+
+
+def camel_to_snake(name):
+    """
+    Convert a string from camel case to snake case.
+
+    :param name: The string to be converted.
+    :return: The converted string.
+    """
+    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
 
 def normalize_text(text: str, uncased: bool = True) -> str:

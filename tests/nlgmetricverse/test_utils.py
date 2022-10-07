@@ -2,8 +2,8 @@ import numpy as np
 import pytest
 
 from nlgmetricverse.metrics._core.utils import is_reduce_fn
-from nlgmetricverse.utils.common import bulk_remove_keys
-from nlgmetricverse.utils.nlp import normalize_text
+from nlgmetricverse.utils.data_structure import bulk_remove_keys
+from nlgmetricverse.utils.string import normalize_text
 
 
 @pytest.fixture

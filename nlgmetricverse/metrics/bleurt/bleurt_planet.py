@@ -25,7 +25,7 @@ import datasets
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
-from nlgmetricverse.utils.common import log
+from nlgmetricverse.utils.sys import log
 
 # `import bleurt` placeholder
 bleurt = PackagePlaceholder(version="1.2.2")

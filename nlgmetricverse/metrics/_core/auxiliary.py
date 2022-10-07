@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional, Union
 
 from nlgmetricverse.metrics._core.base import MetricForTask
 from nlgmetricverse.metrics._core.utils import TaskNotAvailable
-from nlgmetricverse.utils.common import camel_to_snake
+from nlgmetricverse.utils.string import camel_to_snake
 
 
 class TaskMapper:

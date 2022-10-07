@@ -25,7 +25,7 @@ import numpy as np
 
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
-from nlgmetricverse.utils.nlp import normalize_text
+from nlgmetricverse.utils.string import normalize_text
 
 _CITATION = """
     @inproceedings{papineni2002bleu,

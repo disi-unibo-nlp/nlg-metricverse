@@ -7,7 +7,7 @@ from typing import List, Union
 
 import numpy as np
 
-from nlgmetricverse.utils.common import NestedSingleType
+from nlgmetricverse.utils.data_structure import NestedSingleType
 
 
 class Collator(list):

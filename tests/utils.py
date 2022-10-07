@@ -9,6 +9,9 @@ from deepdiff import DeepDiff
 from collections import MutableMapping
 from contextlib import suppress
 
+import nlgmetricverse.utils.data_structure
+
+
 def shell(command, exit_status=0):
     """
     Run command through shell and return exit status if exit status of command run match with given exit status.
@@ -58,7 +61,7 @@ def assert_almost_equal_dict(actual: Dict, desired: Dict, decimal=3, exclude_pat
 def shell_capture(command, out_json=True):
     out = os.popen(command).read()
     if out_json:
-        out = re.findall(r"{\s+.*\}", out, flags=re.MULTILINE | re.DOTALL)[0].replace("\n", "")
+        out = nlgmetricverse.utils.data_structure.replace("\n", "")
         return json.loads(out)
     return out
 

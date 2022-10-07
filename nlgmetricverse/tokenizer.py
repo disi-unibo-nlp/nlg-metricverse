@@ -1,7 +1,7 @@
 from typing import List, Tuple
 
 from nlgmetricverse.collator import Collator
-from nlgmetricverse.utils.nlp import normalize_text
+from nlgmetricverse.utils.string import normalize_text
 
 
 class DefaultTokenizer:

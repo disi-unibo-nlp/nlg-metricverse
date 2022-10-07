@@ -7,16 +7,15 @@ This file defines general functions for:
 - setting environment variables
 """
 import logging
-import sys
 import os
-import re
-from typing import Optional, List, Dict, Any
 
 import torch
 from collections import defaultdict
 from distutils.version import LooseVersion
-from transformers import AutoModel, GPT2Tokenizer, AutoTokenizer
+from transformers import GPT2Tokenizer, AutoTokenizer
 from transformers import __version__ as trans_version
+
+import nlgmetricverse.utils.data_structure
 
 SCIBERT_URL_DICT = {
     "scibert-scivocab-uncased": "https://s3-us-west-2.amazonaws.com/ai2-s2-research/scibert/pytorch_models/scibert_scivocab_uncased.tar",  # recommend by the SciBERT authors
@@ -167,158 +166,6 @@ model2layers = {
 }
 
 
-class NestedSingleType:
-    @staticmethod
-    def is_iterable(obj):
-        """
-        Check if an object is iterable.
-
-        :param obj: The object to be checked.
-        :return: True if object is iterable, False otherwise.
-        """
-        if isinstance(obj, str) or isinstance(obj, dict):
-            return False
-        try:
-            iter(obj)
-        except TypeError:
-            return False
-        return True
-
-    @staticmethod
-    def join(types: List[str]):
-        """
-        Join nested types.
-
-        :param types: Types to be nested.
-        :return: Joined nested types (lowercase).
-        """
-        nested_types = f"{types.pop(-1)}"
-
-        for _type in types:
-            nested_types = f"{_type}<{nested_types}>"
-        return nested_types.lower()
-
-    @classmethod
-    def get_type(cls, obj, order: Optional[int] = None):
-        """
-        Get object type.
-
-        :param obj: Object inspected.
-        :param order: Optional, if there is a preferred index (e.g., 0=primary, 1=secondary).
-        :return: Object type.
-        """
-        _obj = obj
-
-        types = []
-        while cls.is_iterable(_obj):
-            types.append(type(_obj).__name__)
-            _obj = _obj[0]
-        types.append(type(_obj).__name__)
-
-        if order is not None:
-            try:
-                return types[order]
-            except IndexError:
-                return None
-
-        return cls.join(types)
-
-
-def camel_to_snake(name):
-    """
-    Convert a string from camel case to snake case.
-
-    :param name: The string to be converted.
-    :return: The converted string.
-    """
-    name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
-
-
-def bulk_remove_keys(obj: Dict, keys: List[str]) -> Dict:
-    """
-    Remove keys from Dict.
-
-    :param obj: Dict.
-    :param keys: Keys to be removed.
-    :return: Dict updated.
-    """
-    return {k: v for k, v in obj.items() if k not in keys}
-
-
-def get_common_keys(d1: Dict, d2: Dict) -> List[str]:
-    """
-    Get common keys between two Dicts.
-
-    :param d1: Dict 1.
-    :param d2:  Dict 2.
-    :return: List of common keys.
-    """
-    set1 = set(d1.keys())
-    set2 = set(d2.keys())
-
-    return list(set1.intersection(set2))
-
-
-def pop_item_from_dict(d: Dict[str, Any], key: str, default: Any = None, must_exists: bool = False):
-    """
-    Pop key from Dict d if key exists, return d otherwise.
-
-    :param d: Dictionary for key to be removed.
-    :param key: Key name to remove from dictionary d.
-    :param default: Default value to return if key not found.
-    :param must_exists: Raises an exception if True when given key does not exist.
-    :return: Popped value for key if found, None otherwise.
-    """
-    if key not in d and must_exists:
-        raise KeyError(f"'{key}' not found in '{d}'.")
-    val = d.pop(key) if key in d else default
-    return val
-
-
-def replace(a: List, obj: object, index=-1):
-    """
-    Replace an object in a list with another object.
-
-    :param a: List containing the object.
-    :param obj: Replacing object.
-    :param index: Index of the object to be replaced.
-    :return: Updated list.
-    """
-    del a[index]
-    a.insert(index, obj)
-    return a
-
-
-def set_env(name: str, value: str):
-    """
-    Set a Py environment.
-
-    :param name: Key of the environment.
-    :param value: Value of the environment.
-    :return: Any.
-    """
-    if not isinstance(value, str):
-        raise ValueError(f"Expected type str for 'value', got {type(value)}.")
-    os.environ[name] = value
-
-
-def remove_duplicates(lst):
-    return [t for t in (set(tuple(i) for i in lst))]
-
-
-def log(message):
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-        handlers=[
-            logging.FileHandler("debug.log"),
-            logging.StreamHandler(sys.stdout)
-        ]
-    )
-    logging.info(message)
-
-
 def sent_encode(tokenizer, sent):
     "Encoding as sentence based on the tokenizer"
     sent = sent.strip()
@@ -353,73 +200,6 @@ def sent_encode(tokenizer, sent):
             return tokenizer.encode(sent, add_special_tokens=True, max_length=tokenizer.max_len)
         else:
             raise NotImplementedError(f"transformers version {trans_version} is not supported")
-
-
-def get_model(model_type, num_layers, all_layers=None):
-    if model_type.startswith("scibert"):
-        model = AutoModel.from_pretrained(cache_scibert(model_type))
-    elif "t5" in model_type:
-        from transformers import T5EncoderModel
-
-        model = T5EncoderModel.from_pretrained(model_type)
-    else:
-        model = AutoModel.from_pretrained(model_type)
-    model.eval()
-
-    if hasattr(model, "decoder") and hasattr(model, "encoder"):
-        model = model.encoder
-
-    # drop unused layers
-    if not all_layers:
-        if hasattr(model, "n_layers"):  # xlm
-            assert (
-                    0 <= num_layers <= model.n_layers
-            ), f"Invalid num_layers: num_layers should be between 0 and {model.n_layers} for {model_type}"
-            model.n_layers = num_layers
-        elif hasattr(model, "layer"):  # xlnet
-            assert (
-                    0 <= num_layers <= len(model.layer)
-            ), f"Invalid num_layers: num_layers should be between 0 and {len(model.layer)} for {model_type}"
-            model.layer = torch.nn.ModuleList([layer for layer in model.layer[:num_layers]])
-        elif hasattr(model, "encoder"):  # albert
-            if hasattr(model.encoder, "albert_layer_groups"):
-                assert (
-                        0 <= num_layers <= model.encoder.config.num_hidden_layers
-                ), f"Invalid num_layers: num_layers should be between 0 and {model.encoder.config.num_hidden_layers} for {model_type}"
-                model.encoder.config.num_hidden_layers = num_layers
-            elif hasattr(model.encoder, "block"):  # t5
-                assert (
-                        0 <= num_layers <= len(model.encoder.block)
-                ), f"Invalid num_layers: num_layers should be between 0 and {len(model.encoder.block)} for {model_type}"
-                model.encoder.block = torch.nn.ModuleList([layer for layer in model.encoder.block[:num_layers]])
-            else:  # bert, roberta
-                assert (
-                        0 <= num_layers <= len(model.encoder.layer)
-                ), f"Invalid num_layers: num_layers should be between 0 and {len(model.encoder.layer)} for {model_type}"
-                model.encoder.layer = torch.nn.ModuleList([layer for layer in model.encoder.layer[:num_layers]])
-        elif hasattr(model, "transformer"):  # bert, roberta
-            assert (
-                    0 <= num_layers <= len(model.transformer.layer)
-            ), f"Invalid num_layers: num_layers should be between 0 and {len(model.transformer.layer)} for {model_type}"
-            model.transformer.layer = torch.nn.ModuleList([layer for layer in model.transformer.layer[:num_layers]])
-        elif hasattr(model, "layers"):  # bart
-            assert (
-                    0 <= num_layers <= len(model.layers)
-            ), f"Invalid num_layers: num_layers should be between 0 and {len(model.layers)} for {model_type}"
-            model.layers = torch.nn.ModuleList([layer for layer in model.layers[:num_layers]])
-        else:
-            raise ValueError("Not supported")
-    else:
-        if hasattr(model, "output_hidden_states"):
-            model.output_hidden_states = True
-        elif hasattr(model, "encoder"):
-            model.encoder.output_hidden_states = True
-        elif hasattr(model, "transformer"):
-            model.transformer.output_hidden_states = True
-        # else:
-        #     raise ValueError(f"Not supported model architecture: {model_type}")
-
-    return model
 
 
 def get_tokenizer(model_type, use_fast=False):
@@ -470,7 +250,7 @@ def cache_scibert(model_type, cache_folder="~/.cache/torch/transformers"):
     if not model_type.startswith("scibert"):
         return model_type
 
-    underscore_model_type = model_type.replace("-", "_")
+    underscore_model_type = nlgmetricverse.utils.data_structure.replace("-", "_")
     cache_folder = os.path.abspath(os.path.expanduser(cache_folder))
     filename = os.path.join(cache_folder, underscore_model_type)
 

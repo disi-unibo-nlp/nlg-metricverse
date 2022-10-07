@@ -7,7 +7,7 @@ from nlgmetricverse.metrics.bleu.bleu_planet import BleuPlanet
 
 __main_class__ = "Bleu"
 
-from nlgmetricverse.utils.common import camel_to_snake
+from nlgmetricverse.utils.string import camel_to_snake
 
 
 class Bleu(MetricAlias):

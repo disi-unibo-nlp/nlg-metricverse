@@ -9,13 +9,13 @@ import pandas as pd
 from collections import defaultdict
 
 from nlgmetricverse.utils.common import (
-    get_model,
     get_tokenizer,
     get_bert_embedding,
     lang2model,
     model2layers,
     sent_encode,
 )
+from nlgmetricverse.utils.model import get_model
 
 
 def similarity_word_matching(

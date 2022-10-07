@@ -12,8 +12,7 @@ from scipy.stats import pearsonr
 
 import bert_score
 
-from nlgmetricverse.utils.common import log
-
+from nlgmetricverse.utils.sys import log
 
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
 wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh']

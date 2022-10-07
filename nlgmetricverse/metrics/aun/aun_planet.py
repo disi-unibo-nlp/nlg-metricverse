@@ -8,7 +8,7 @@ from nltk import ngrams
 
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
-from nlgmetricverse.utils.common import remove_duplicates
+from nlgmetricverse.utils.data_structure import remove_duplicates
 
 _CITATION = """
 
