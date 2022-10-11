@@ -13,7 +13,7 @@ from nlgmetricverse.definitions import DEFAULT_METRICS
 from nlgmetricverse.metrics import EvaluationInstance, Metric, load_metric
 from nlgmetricverse.utils.sys import set_env
 from nlgmetricverse.utils.data_structure import pop_item_from_dict, replace
-from nlgmetricverse import data_loader, DataLoaderStrategies
+from nlgmetricverse import DataLoaderStrategies, DataLoader
 
 MetricParam = Union[str, Metric, Dict[str, Any]]
 
@@ -58,7 +58,7 @@ class NLGMetricverse:
             self.res_predictions = predictions
             self.res_references = references
         else:
-            dl = data_loader.DataLoader(predictions, references, strategy)
+            dl = DataLoader(predictions, references, strategy)
             self.res_predictions = dl.get_predictions()
             self.res_references = dl.get_references()
         scores = dict()
