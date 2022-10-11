@@ -9,8 +9,6 @@ from deepdiff import DeepDiff
 from collections import MutableMapping
 from contextlib import suppress
 
-import nlgmetricverse.utils.data_structure
-
 
 def shell(command, exit_status=0):
     """
