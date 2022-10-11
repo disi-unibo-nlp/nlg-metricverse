@@ -61,7 +61,7 @@ def assert_almost_equal_dict(actual: Dict, desired: Dict, decimal=3, exclude_pat
 def shell_capture(command, out_json=True):
     out = os.popen(command).read()
     if out_json:
-        out = nlgmetricverse.utils.data_structure.replace("\n", "")
+        out = re.findall(r"{\s+.*\}", out, flags=re.MULTILINE | re.DOTALL)[0].replace("\n", "")
         return json.loads(out)
     return out
 
