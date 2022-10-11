@@ -5,7 +5,6 @@ from typing import Optional
 
 import pytest
 
-import nlgmetricverse.utils.data_structure
 from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.utils.sys import set_env
 from tests.nlgmetricverse import EXPECTED_OUTPUTS
@@ -164,7 +163,7 @@ def get_expected_output(prefix: Optional[str] = None):
     def wrapper(fn, *args, **kwargs):
         module_name = os.path.basename(inspect.getfile(fn)).replace(".py", "")
         path = os.path.join(EXPECTED_OUTPUTS, prefix, f"{module_name}.json")
-        test_name = nlgmetricverse.utils.data_structure.replace("output_", "")
+        test_name = fn.__name__.replace("output_", "")
         fn.output = json_load(path)[test_name]
         return fn
 
