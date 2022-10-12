@@ -4,8 +4,8 @@
     <tr>
         <td align="left">🚀 Spaceship</td>
         <td align="left">
-          <a href="https://pypi.org/project/nlg-metricverse"><img src="https://img.shields.io/pypi/v/jury?color=blue" alt="PyPI"></a>
-          <a href="https://pypi.org/project/nlg-metricverse"><img src="https://img.shields.io/pypi/pyversions/jury" alt="Python versions"></a>
+          <a href="https://pypi.org/project/nlg-metricverse"><img src="https://img.shields.io/pypi/v/nlg-metricverse?color=blue" alt="PyPI"></a>
+          <a href="https://pypi.org/project/nlg-metricverse"><img src="https://img.shields.io/pypi/pyversions/nlg-metricverse" alt="Python versions"></a>
           <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg?color=purple&logo=python&logoColor=FFF800" alt="Made with Python"></a>
           <br>
           <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/actions"><img alt="Build status" src="https://github.com/disi-unibo-nlp/nlg-metricverse/actions/workflows/ci.yml/badge.svg"></a>
@@ -16,7 +16,7 @@
         <td align="left">👨‍🚀 Astronauts</td>
         <td align="left">
           <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/"><img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" alt="Open Source Love svg1"></a>
-          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/pypi/l/jury"></a>
+          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/pypi/l/nlg-metricverse"></a>
           <a href="https://GitHub.com/Nthakur20/StrapDown.js/graphs/commit-activity"><img src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" alt="Maintenance"></a>
         </td>
     </tr>
@@ -29,7 +29,7 @@
     <tr>
         <td align="left">📕 Operating Manual</td>
         <td align="left">
-        Submitted to COLING22
+            <a href="https://aclanthology.org/2022.coling-1.306/">COLING22 Long Paper</a>
         </td>
     </tr>
 </table>
@@ -43,17 +43,15 @@
 </p>
 
 ### Explore the universe of Natural Language Generation (NLG) evaluation metrics.
-NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-use python environment.
+NLG Metricverse is an end-to-end Python library for NLG evaluation, devised to provide a living unified codebase for fast application, analysis, comparison, visualization, and prototyping of automatic metrics.
+* Spures the adoption of newly proposed metrics, unleashing their potential
 * Reduces the implementational burden, allowing users to easily move from papers to practical applications.
 * Increases comparability and replicability of NLG research.
+* Provides content-rich metric cards and static/interactive visualization tools to improve metric understanding and scoring interpretation.
 
 ## Tables Of Contents
 - [Motivations](#-motivations)
-- [Available Metrics](#-available-metrics)
-    - [Hypothesis-Reference Supercluster](#hypothesis-reference-supercluster)
-        - [N-gram Overlap Galaxy](#n-gram-overlap-galaxy)
-        - [Embedding-based Galaxy](#embedding-based-galaxy)
-    - [Hypothesis-only Supercluster](#hypothesis-only-supercluster)
+- [Available Metrics](#-available-metrics-and-supported-features)
 - [Installation](#-installation)
     - [Explore on Hugging Face Spaces](#explore-on-hugging-face-spaces)
 - [Quickstart](#-quickstart)
@@ -65,81 +63,41 @@ NLG Metricverse is a living collection of NLG metrics in a unified and easy-to-u
         - [Scorer Application](#scorer-application)
         - [Metric-specific Parameters](#metric-specific-parameters)
         - [Outputs](#outputs)
-- [Tests](#-tests)
-    - [Code Style](#code-style)
+- [Code Style](#code-style)
 - [Custom Metrics](#-custom-metrics)
 - [Contributing](#-contributing)
 - [Contact](#-contact)
 - [License](#license)
 
+
 ## 💡 Motivations
+* 📖 As Natural Language Generation (NLG) models are getting better over time, accurately evaluating them is becoming an increasingly pressing priority, asking researchers to deal with semantics, different plausible targets, and multiple intrinsic quality dimensions (e.g., informativeness, fluency, factuality).
+* 🤖 Task examples: machine translation, abstractive question answering, single/multi-document summarization, data-to-text, chatbots, image/video captioning, etc.
 * 📌 Human evaluation is often the best indicator of the quality of a system. However, designing crowd sourcing experiments is an expensive and high-latency process, which does not easily fit in a daily model development pipeline. Therefore, NLG researchers commonly use automatic evaluation metrics, which provide an acceptable proxy for quality and are very cheap to compute.
-* 📌 NLG metrics aims to summarize and quantify the extent to which a model has managed to reproduce or accurately match some gold standard token sequences. Task examples: machine translation, abstractive question answering, single/multi-document summarization, data-to-text, chatbots, image/video captioning, etc.
-* ☠ Different evaluation metrics encode **different properties** and have **different biases and other weaknesses**. Thus, you should choose your metrics carefully depending on your goals and motivate those choices when writing up and presenting your work.
-* ☠ **As NLG models have gotten better over time, evaluation metrics have become an important bottleneck for research in this field**. In fact, areas can stagnate due to poor metrics, so we must be vigilant! It is an increasingly pressing priority to develop and apply better evaluation metrics given the recent advances in neural text generation. You shouldn't feel confined to the most traditional overlap-based metrics. If you're working on an established problem, you'll feel pressure from readers to be conservative and use the metrics that have already been tested for the same task. However, this might be a compelling pressure. Our view is that NLP engineers should enrich their evaluation toolkits with multiple metrics capturing different textual properties, being free to argue against cultural norms and motivate new ones, also exploring the latest contributions focused on semantics.
-* ☠ NLG evaluation is very challenging also because **the relationships between candidate and reference texts tend to be one-to-many or many-to-many**. An artificial text predicted by a model might have multiple human references (i.e., there is more than one effective way to say most things), as well as a model can generate multiple distinct outputs. Such cardinality is crucial, but official implementations tend to neglect it.
-* ☠ New NLG metrics are constantly being proposed in top conferences, but their **implementations (and related features) remain disrupted**, significantly restricting their application. Existing libraries tend to support a very small number of metrics, which mistakenly receive less attention than generative models. The absence of a shared and continuously updated repository makes it difficult to discover alternative metrics and slows down their use on a practical side.
+* 📌 NLG metrics automatically compute a holistic or dimension-specific score, an acceptable proxy for effectiveness and efficiency. However, they are becoming an important bottleneck for research in the field. As we know, areas can stagnate due to poor metrics, and we believe that you shouldn't feel confined to the most traditional overlap-based techniques like ROUGE.
+* 💡 If you're working on an established problem, you'll feel pressure from readers to be conservative and use the metrics that have already been tested for the same task. However, this might be a compelling pressure. Our view is that NLP engineers should enrich their evaluation toolkits with multiple metrics capturing different textual properties, being free to argue against cultural norms and motivate new ones, also exploring the latest contributions focused on semantics.
+* ☠ New NLG metrics are constantly being proposed to top-tier venue conferences, but their implementation remains disrupted, with distinct environments, properties, settings, benchmarks, and features—making them difficult to compare or apply.
+* ☠ The absence of a collective and continuously updated repository discourages the use of modern solutions and slows their understanding.
 * 🎯 NLG Metricverse implements a large number of prominent evaluation metrics in NLG, seeking to articulate the textual properties they encode (e.g., fluency, grammatical correctness, informativeness), tasks, and limits. Understanding, using, and examining a metric has never been easier.
 
-## 🪐 Available Metrics
-NLG Metricverse supports 37 diverse evaluation metrics overall (last update: July 22, 2022). The code for these metrics will be progressively released in the coming weeks.
 
-### Hypothesis-Reference Supercluster
+## 🪐 Available Metrics and Supported Features
+NLG Metricverse supports 38 diverse evaluation metrics overall (last update: October 12, 2022). The code for these metrics will be progressively released in the coming weeks.
 
-#### N-gram Overlap Galaxy
+Some libraries have already tried to make an integrated environment. To our best knowledge, [NLGEval](https://github.com/Maluuba/nlg-eval), [HugginFace Datasets](https://huggingface.co/docs/datasets/index), [Evaluate](https://huggingface.co/docs/evaluate/index), [Torch-Metrics](https://torchmetrics.readthedocs.io/en/stable/), and [Jury](https://github.com/obss/jury) are the only resources available.
+However, none of them possess all the properties listed below: (i) large number of heterogeneous NLG metrics, (ii) concurrent computation of more metrics at once, (iii) support for multiple references and/or predictions, (iv) meta-evaluation, and (v) visualization.
 
-| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| BLEU | 2002 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| NIST | 2002 | HLT | :white_check_mark: | :x: | :x: | :x: | :x: |
-| ORANGE (SentBLEU) | 2004 | COLING | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| ROUGE | 2004 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
-| WER | 2004 | ICSLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| CER | 2004 | ICSLP | | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| METEOR | 2005 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| CIDEr | 2005 | | | :x: | :x: | :white_check_mark: | :x: |
-| TER | 2006 | AMTA | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| ChrF(++) | 2015 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| CharacTER | 2016 | WMT | | :x: | :x: | :x: | :x: |
-| SacreBLEU | 2018 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| METEOR++ | 2018 | WMT | | :x: | :x: | :x: | :x: |
-| Accuracy | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| Precision | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| F1 | / | / | | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| MER | / | / | | :x: | :x: | :x: | :white_check_mark: |
+The following table summarizes the discrepancies between NLG Metricverse and related work.
 
-#### Embedding-based Galaxy
+| | NLG-Metricverse | NLGEval | Datasets | Evaluate | TorchMetrics | Jury |
+| ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
+| #NLG-specific metrics | 38 + Datasets | 8 | 22 | 22 | 13 | 19 + Datasets |
+| More metrics at once | :white_check_mark: | :x: | :x: | :white_check_mark: | :x: | :white_check_mark: |
+| Multiple refs/preds | :white_check_mark: | :white_check_mark: | :x: | :x: | :x: | :white_check_mark: |
+| Meta-evaluation | :white_check_mark: | :x: | :x: | :x: | :x: | :x: |
+| Visualization | :white_check_mark: | :x: | :x: | :x: | :x: | :x: |
 
-| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| WMD | 2015 | ICML | | :x: | :x: | :x: | :x: |
-| SMD | 2015 | ICML | | :x: | :x: | :x: | :x: |
-| MOVERScore | 2019 | ACL | :white_check_mark: | :x: | :x: | :x: | :x: |
-| EED | 2019 | WMT | | :x: | :x: | :x: | :white_check_mark: |
-| COMET | 2020 | EMNLP | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| FactCC(X) | 2020 | EMNLP | | :x: | :x: | :x: | :x: |
-| BLEURT | 2020 | ACL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :x: |
-| NUBIA | 2020 | EvalNLGEval<br>NeurIPS talk | | :x: | :x: | :x: | :x: |
-| BERTScore | 2020 | ICLR | :white_check_mark: | :white_check_mark: | :white_check_mark: | :x: | :white_check_mark: |
-| PRISM | 2020 | EMNLP | | :white_check_mark: | :x: | :x: | :x: |
-| BARTScore | 2021 | NeurIPS | :white_check_mark: | :white_check_mark: | :x: | :x: | :x: |
-| RoMe | 2022 | ACL | | :x: | :x: | :x: | :x: |
-| InfoLM | 2022 | AAAI | | :x: | :x: | :x: | :x: |
-| Perplexity | / | / | | :x: | :white_check_mark: | :x: | :x: |
-| Embedding Cosine Similarity | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Vector Extrema | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Greedy Matching | / | / | | :x: | :x: | :white_check_mark: | :x: |
-| Coverage | ... | ... | | :x: | :x: | :x: | :x: |
-| Density | ... | ... | | :x: | :x: | :x: | :x: |
-| Compression | ... | ... | | :x: | :x: | :x: | :x: |
-
-### Hypothesis-only Supercluster
-
-| Metric | Publication Year | Conference | NLG Metricverse | [Jury](https://github.com/obss/jury) | [HF/datasets](https://github.com/huggingface/datasets/tree/master/metrics) | [NLG-eval](https://github.com/Maluuba/nlg-eval) | [TorchMetrics](https://github.com/PyTorchLightning/metrics/tree/master/torchmetrics/text)
-| ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- |
-| MAUVE | 2021 | NeurIPS | | :x: | :white_check_mark: | :x: | :x: |
-| Flesch-Kincaid Readability | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
-| Average Unique N-gram Ratios | ... | ... | :white_check_mark: | :x: | :x: | :x: | :x: |
+🔍 [Complete comparison and supported metrics](https://github.com/disi-unibo-nlp/nlg-metricverse/blob/main/comparison.md) 
 
 
 ## 🔌 Installation
@@ -165,8 +123,6 @@ It is only <b>two lines of code</b> to evaluate generated outputs: <b>(i)</b> in
 ### Metric Selection
 Specify the metrics you want to use on instantiation,
 ```python
-from nlgmetricverse import NLGMetricverse
-
 # If you specify more metrics, each of them will be applyied on your data (allowing for a fast prediction/efficiency comparison)
 scorer = NLGMetricverse(metrics=["bleu", "rouge"])
 ```
@@ -179,10 +135,9 @@ scorer = BertScore.construct()
 You can seemlessly access both `nlgmetricverse` and HuggingFace `datasets` metrics through `nlgmetricverse.load_metric`.
 NLG Metricverse falls back to `datasets` implementation of metrics for the ones that are currently not supported; you can see the metrics available for `datasets` on [datasets/metrics](https://github.com/huggingface/datasets/tree/master/metrics). 
 ```python
-import nlgmetricverse
-bleu = nlgmetricverse.load_metric("bleu")
+bleu = NLGMetricverse.load_metric("bleu")
 # metrics not available in `nlgmetricverse` but in `datasets`
-wer = nlgmetricverse.load_metric("competition_math") # It falls back to `datasets` package with a warning
+wer = NLGMetricverse.load_metric("competition_math") # It falls back to `datasets` package with a warning
 ```
 Note: if a selected metric requires specific packages, you'll be invited to install them (e.g., "bertscore" → `pip install bertscore`).
 
@@ -190,6 +145,9 @@ Note: if a selected metric requires specific packages, you'll be invited to inst
 ### Metric Usage
 
 #### Prediction-Reference Cardinality
+
+☠ NLG evaluation is very challenging also because the relationships between candidate and reference texts tend to be one-to-many or many-to-many. An artificial text predicted by a model might have multiple human references (i.e., there is more than one effective way to say most things), as well as a model can generate multiple distinct outputs. Such cardinality is crucial, but official implementations tend to neglect it. We do not.
+
 <i>1:1</i>. One prediction, one reference ([p<sub>1</sub>, ..., p<sub>n</sub>] and [r<sub>1</sub>, ..., r<sub>n</sub>] syntax).
 ```python
 predictions = ["Evaluating artificial text has never been so simple", "the cat is on the mat"]
@@ -225,30 +183,14 @@ scores = scorer.compute(predictions, references, reduce_fn="max")
 ```
 
 #### Metric-specific Parameters
-Additional metric-specific parameters can be specified on `compute()`,
+Additional metric-specific parameters can be specified on instantiation.
 ```python
-# BertScore example for:
-# - specifying which pre-trained BERT model use
-# - asking to mount idf weighting
-score = scorer.compute(predictions=predictions, references=references,
-                       model_type="microsoft/deberta-large-mnli", idf=True)
-```
-or alternatively on instantiation.
-```python
-from nlgmetricverse.metrics import BertScore
-scorer = BertScore.construct(compute_kwargs={
-            "model_type": "microsoft/deberta-large-mnli",
-            "idf": True})
-score = scorer.compute(predictions=predictions, references=references)
-```
-```python
-import nlgmetricverse
-scorer = nlgmetricverse.load_metric(
-            "bertscore",
-            resulting_name="custom_bertscore",
-            compute_kwargs={
-                "model _type": "microsoft/deberta-large-mnli",
-                "idf": True})
+metrics = [
+    load_metric("bleu", resulting_name="bleu_1", compute_kwargs={"max_order": 1}),
+    load_metric("bleu", resulting_name="bleu_2", compute_kwargs={"max_order": 2}),
+    load_metric("bertscore", resulting_name="bertscore_1", compute_kwargs={"model_type": "microsoft/deberta-large-mnli", "idf": True}),
+    load_metric("rouge")]
+scorer = NLGMetricverse(metrics=metrics)
 ```
 
 ### Code Style
@@ -297,6 +239,7 @@ Thanks go to all these wonderful collaborations for their contribution towards t
   <tr>
     <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/giacomofrisoni.png" width="100px;" alt=""/><br /><sub><b>Giacomo Frisoni</b></sub></a></td>
     <td align="center"><a href="https://andreazammarchi3.github.io/"><img src="https://github.com/andreazammarchi3.png" width="100px;" alt=""/><br /><sub><b>Andrea Zammarchi</b></sub></a></td>
+    <td align="center"><img src="https://github.com/marcoavagnano98.png" width="100px;" alt=""/><br /><sub><b>Marco Avagnano</b></sub></td>
 </table>
 
 > We are hoping that the open-source community will help us edit the code and make it better!
