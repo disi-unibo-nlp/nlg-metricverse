@@ -21,6 +21,7 @@ https://github.com/huggingface/evaluate/blob/master/metrics/bleu/bleu.py
 import math
 from typing import Callable, Dict, Tuple
 
+import datasets
 import evaluate
 
 from nlgmetricverse.collator import Collator
@@ -133,10 +134,10 @@ class BleuPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            features=evaluate.Features(
+            features=datasets.Features(
                 {
-                    "predictions": evaluate.Sequence(evaluate.Value("string", id="tokens"), id="sequence"),
-                    "references": evaluate.Sequence(evaluate.Value("string", id="tokens"), id="sequence"),
+                    "predictions": datasets.Sequence(datasets.Value("string", id="tokens"), id="sequence"),
+                    "references": datasets.Sequence(datasets.Value("string", id="tokens"), id="sequence"),
                 }
             ),
             codebase_urls=[
