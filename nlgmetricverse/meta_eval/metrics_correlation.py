@@ -29,18 +29,23 @@ def metrics_correlation(
     matrix_res = np.zeros((len(metrics), len(metrics)))
     scores = {}
     for metric in metrics:
-        score = scores_single_metric(metric=metric, predictions=predictions, references=references)
-        mapped_score = []
-        for i, single_score in enumerate(score):
-            if metric == "bartscore":
-                mapped_score.append(map_range(single_score, -7, 0, 0, 1))
-            elif metric == "nist":
-                mapped_score.append(map_range(single_score, 0, 10, 0, 1))
-            elif metric == "perplexity":
-                mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
-            else:
-                mapped_score.append(single_score)
-        scores[metric] = mapped_score
+        single_metric_scores = []
+        res = []
+        single_metric_scorer = NLGMetricverse(metrics=metric)
+        for i, pred in enumerate(predictions):
+            single_metric_score = single_metric_scorer(predictions=[pred], references=[references[i]])
+            single_metric_scores.append(single_metric_score)
+            for single_score in single_metric_score:
+                if isinstance(single_metric_score[single_score], dict):
+                    if metric == "rouge":
+                        mean = single_metric_score[single_score]["rouge1"] + single_metric_score[single_score][
+                            "rouge2"] + single_metric_score[single_score][
+                                   "rougeL"]
+                        mean = mean / 3
+                        res.append(mean)
+                    else:
+                        res.append(single_metric_score[single_score]["score"])
+        scores[metric] = map_score_with_metric_bounds(metric, res)
 
     results = []
     # p_values = []

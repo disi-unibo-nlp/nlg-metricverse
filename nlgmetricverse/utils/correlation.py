@@ -10,23 +10,18 @@ def map_range(value, left_min, left_max, right_min, right_max):
     value_scaled = float(value - left_min) / float(left_span)
     return right_min + (value_scaled * right_span)
 
-
-def scores_single_metric(metric, predictions, references):
-    scores = []
-    res = []
-    scorer = NLGMetricverse(metrics=metric)
-    for i, pred in enumerate(predictions):
-        score = scorer(predictions=[pred], references=[references[i]])
-        scores.append(score)
-        for single_score in score:
-            if isinstance(score[single_score], dict):
-                if metric == "rouge":
-                    mean = score[single_score]["rouge1"] + score[single_score]["rouge2"] + score[single_score]["rougeL"]
-                    mean = mean / 3
-                    res.append(mean)
-                else:
-                    res.append(score[single_score]["score"])
-    return res
+def map_score_with_metric_bounds(metric, score):
+    mapped_score = []
+    for i, single_score in enumerate(score):
+        if metric == "bartscore":
+            mapped_score.append(map_range(single_score, -7, 0, 0, 1))
+        elif metric == "nist":
+            mapped_score.append(map_range(single_score, 0, 10, 0, 1))
+        elif metric == "perplexity":
+            mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
+        else:
+            mapped_score.append(single_score)
+    return mapped_score
 
 
 class CorrelationMeasures(Enum):
@@ -57,8 +52,8 @@ class CorrelationMeasures(Enum):
     Pearson correlations are highly sensitive to the magnitude of the differences between the gold and predicted values. As a result,
     they are also very sensitive to outliers.
 
-    The Spearman rank correlation coefficient between between two vectors $y$ and $\widehat{y}$ of dimension $N$ is the Pearson
-    coefficient with all of the data mapped to their ranks.
+    The Spearman rank correlation coefficient between two vectors $y$ and $\widehat{y}$ of dimension $N$ is the Pearson
+    coefficient with all the data mapped to their ranks.
 
     BOUNDS
     [-1, 1], where -1 is a complete negative linear correlation, +1 is a complete positive linear correlation, and 0 is no linear
