@@ -21,7 +21,6 @@ def times_correlation(
     for metric in metrics:
         scorer = NLGMetricverse(metrics=metric)
         results = scorer(predictions=predictions, references=references)
-        print(results)
         times[metric] = results["total_time_elapsed"]
 
     plt.bar(times.keys(), times.values(), color='b')
