@@ -1,6 +1,6 @@
 from nlgmetricverse.core import NLGMetricverse
 from nlgmetricverse.metrics import AutoMetric, list_metrics, filter_metrics, load_metric, Categories, ApplTasks, \
-    QualityDims
+    QualityDims, get_metric_bounds
 
 from nlgmetricverse.meta_eval.metric_human_correlation import metric_human_correlation
 from nlgmetricverse.meta_eval.metrics_correlation import metrics_correlation
