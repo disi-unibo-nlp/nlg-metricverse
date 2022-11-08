@@ -201,7 +201,7 @@ class MetricForTask(Metric, ABC):
     Default task will be language-generation for AutoMetric.
     All metrics extending :py:class:`nlgmetricverse.metrics._core.base.MetricForTask` must implement the following:
         - _task (``[str]``): Task name for the base task metric.
-        - _default_features() (``datasets.Features``): Task input as a :py:class:`evaluate.Features`.
+        - _default_features() (``evaluate.Features``): Task input as a :py:class:`evaluate.Features`.
     """
 
     _task = None
