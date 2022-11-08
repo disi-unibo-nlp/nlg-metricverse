@@ -6,7 +6,7 @@ import datasets
 from typing import Callable
 
 import numpy as np
-import syllables
+from textstat import textstat
 
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
@@ -70,7 +70,13 @@ class FleschKincaidPlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def __compute_flesch_kincaid(predictions):
-        total_words = 0
+        tot_pred = 0
+        result = 0
+        for prediction in predictions:
+            result += textstat.flesch_kincaid_grade(prediction)
+            tot_pred = tot_pred + 1
+        result = result / tot_pred
+        '''total_words = 0
         total_syllables = 0
 
         total_sentences = len(predictions)
@@ -78,6 +84,6 @@ class FleschKincaidPlanet(MetricForLanguageGeneration):
             total_words += len(sentence.split())
             total_syllables += syllables.estimate(sentence)
 
-        result = 206.835 - 1.015 * (total_words / total_sentences) - 86.6 * (total_syllables / total_words)
-        result = result / 100
+        result = 206.835 - 1.015 * (total_words / total_sentences) - 84.6 * (total_syllables / total_words)
+        result = result / 100'''
         return result
