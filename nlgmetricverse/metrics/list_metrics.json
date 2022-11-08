@@ -6,7 +6,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "accuracy",
@@ -14,7 +16,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "aun",
@@ -22,7 +26,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "bartscore",
@@ -30,7 +36,9 @@
       "appl_tasks": ["MT", "SUM", "D2T"],
       "trained": true,
       "unsupervised": true,
-      "quality_dims": ["INFO", "REL", "FLU", "COH", "FAC", "COV", "ADE"]
+      "quality_dims": ["INFO", "REL", "FLU", "COH", "FAC", "COV", "ADE"],
+      "upper_bound": 0,
+      "lower_bound": -7
     },
     {
       "name": "bertscore",
@@ -38,7 +46,9 @@
       "appl_tasks": [],
       "trained": true,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "bleu",
@@ -46,7 +56,9 @@
       "appl_tasks": ["MT", "IC", "DG", "QG", "RG"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": ["ADE", "FLU"]
+      "quality_dims": ["ADE", "FLU"],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "bleurt",
@@ -54,7 +66,9 @@
       "appl_tasks": ["MT", "D2T"],
       "trained": true,
       "unsupervised": false,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "cer",
@@ -62,7 +76,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "character",
@@ -70,7 +86,9 @@
       "appl_tasks": ["MT"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "chrf",
@@ -78,7 +96,9 @@
       "appl_tasks": ["MT", "IC", "SUM"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "coleman_liau",
@@ -86,7 +106,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "comet",
@@ -94,7 +116,9 @@
       "appl_tasks": ["MT"],
       "trained": true,
       "unsupervised": false,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "f1",
@@ -102,7 +126,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "flesch_kincaid",
@@ -110,7 +136,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "gunning_fog",
@@ -118,7 +146,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "meteor",
@@ -126,7 +156,9 @@
       "appl_tasks": ["MT", "IC", "DG"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "moverscore",
@@ -134,7 +166,9 @@
       "appl_tasks": ["MT", "SUM", "D2T", "IC"],
       "trained": true,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "nist",
@@ -142,7 +176,9 @@
       "appl_tasks": ["MT"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "nubia",
@@ -150,7 +186,9 @@
       "appl_tasks": ["MT", "IC"],
       "trained": true,
       "unsupervised": false,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "perplexity",
@@ -158,7 +196,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 0,
+      "lower_bound": 7
     },
     {
       "name": "precision",
@@ -166,7 +206,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "prism",
@@ -174,7 +216,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "repetitiveness",
@@ -182,7 +226,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "rouge",
@@ -190,7 +236,9 @@
       "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": ["COV"]
+      "quality_dims": ["COV"],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "sacrebleu",
@@ -198,7 +246,9 @@
       "appl_tasks": ["MT"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "ter",
@@ -206,7 +256,9 @@
       "appl_tasks": ["MT"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     },
     {
       "name": "wer",
@@ -214,7 +266,9 @@
       "appl_tasks": ["MT", "SR"],
       "trained": false,
       "unsupervised": true,
-      "quality_dims": []
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
     }
   ]
 }

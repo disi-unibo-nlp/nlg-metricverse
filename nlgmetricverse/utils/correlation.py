@@ -2,6 +2,7 @@ from enum import Enum
 from scipy.stats import pearsonr, spearmanr, kendalltau
 
 from nlgmetricverse import load_metric, NLGMetricverse
+from nlgmetricverse.metrics._core.utils import get_metric_bounds
 
 
 def map_range(value, left_min, left_max, right_min, right_max):
@@ -10,15 +11,13 @@ def map_range(value, left_min, left_max, right_min, right_max):
     value_scaled = float(value - left_min) / float(left_span)
     return right_min + (value_scaled * right_span)
 
+
 def map_score_with_metric_bounds(metric, score):
     mapped_score = []
     for i, single_score in enumerate(score):
-        if metric == "bartscore":
-            mapped_score.append(map_range(single_score, -7, 0, 0, 1))
-        elif metric == "nist":
-            mapped_score.append(map_range(single_score, 0, 10, 0, 1))
-        elif metric == "perplexity":
-            mapped_score.append(map_range(single_score, float('inf'), 1, 0, 1))
+        upper_bound, lower_bound = get_metric_bounds(metric)
+        if upper_bound != 1 or lower_bound != 0:
+            mapped_score.append(map_range(single_score, lower_bound, upper_bound, 0, 1))
         else:
             mapped_score.append(single_score)
     return mapped_score

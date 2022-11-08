@@ -213,3 +213,17 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
         res.append(metric["name"])
     f.close()
     return res
+
+
+def get_metric_bounds(metric):
+    assert isinstance(metric, str)
+    os.chdir("nlgmetricverse/metrics")
+    f = open('list_metrics.json')
+    data = json.load(f)
+    upper_bound = 0
+    lower_bound = 0
+    for metric in data['metrics']:
+        if metric['name'] == metric:
+            upper_bound = metric['upper_bound']
+            lower_bound = metric['lower_bound']
+    return upper_bound, lower_bound
