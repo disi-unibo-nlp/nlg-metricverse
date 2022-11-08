@@ -1,5 +1,5 @@
 import ctypes
-import datasets
+import evaluate
 import numpy as np
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
@@ -23,7 +23,7 @@ LIBRARY_URLS = {
     "libed": "https://github.com/rwth-i6/CharacTER/raw/master/libED.so",
     "ed":"https://github.com/rwth-i6/CharacTER/blob/master/ed.cpp"
 }
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CharacTERPlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -58,7 +58,7 @@ class CharacTERPlanet(MetricForLanguageGeneration):
             self.CTERScorer = self._get_external_resource("CharacTER", attr="cer")
         
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/rwth-i6/CharacTER",

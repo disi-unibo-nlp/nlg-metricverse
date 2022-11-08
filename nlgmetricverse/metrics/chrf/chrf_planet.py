@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 # limitations under the License.
 """
 ChrF(++) (Character n-gram F-score) metric. The part of this file is adapted from HuggingFace's
-datasets package implementation of CHRF metric. See
-https://github.com/huggingface/datasets/blob/master/metrics/chrf/chrf.py
+evaluate package implementation of CHRF metric. See
+https://github.com/huggingface/evaluate/blob/master/metrics/chrf/chrf.py
 """
 from typing import Callable, Dict, List, Tuple, Union
 
-import datasets
+import evaluate
 from packaging import version
 
 from nlgmetricverse.collator import Collator
@@ -85,7 +85,7 @@ considers word unigrams and bigrams in addition to character n-grams.
 We use the implementation that is already present in sacreBLEU.
 The implementation here is slightly different from sacreBLEU in terms of the required input format. The length of
 the references and hypotheses lists need to be the same, so you may need to transpose your references compared to
-sacrebleu's required input format. See https://github.com/huggingface/datasets/issues/3154#issuecomment-950746534.
+sacrebleu's required input format. See https://github.com/huggingface/evaluate/issues/3154#issuecomment-950746534.
 See the README.md file at https://github.com/mjpost/sacreBLEU#chrf--chrf for more information.
 """
 
@@ -123,7 +123,7 @@ Examples:
 """
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CHRFPlanet(MetricForLanguageGeneration):
     def _info(self):
         if version.parse(scb.__version__) < version.parse("1.4.12"):
@@ -131,7 +131,7 @@ class CHRFPlanet(MetricForLanguageGeneration):
                 "To use `sacrebleu`, the module `sacrebleu>=1.4.12` is required, and the current version of "
                 "`sacrebleu` doesn't match this condition.\nYou can install it with `pip install sacrebleu>=1.4.12`."
             )
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/mjpost/sacreBLEU#chrf--chrf",

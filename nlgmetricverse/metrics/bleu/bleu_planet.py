@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 # limitations under the License.
 """
 BLEU and ORANGE (smooth-BLEU, i.e., sentBLEU) metrics. The part of this file is adapted from HuggingFace's
-datasets package implementation of BLEU metric. See
-https://github.com/huggingface/datasets/blob/master/metrics/bleu/bleu.py
+evaluate package implementation of BLEU metric. See
+https://github.com/huggingface/evaluate/blob/master/metrics/bleu/bleu.py
 """
 
 import math
 from typing import Callable, Dict, Tuple
 
-import datasets
+import evaluate
 
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
@@ -121,7 +121,7 @@ Examples:
 """
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class BleuPlanet(MetricForLanguageGeneration):
     def __init__(self, resulting_name: str = None, compute_kwargs: Dict = None, **kwargs):
         self.should_change_resulting_name = resulting_name is None
@@ -129,14 +129,14 @@ class BleuPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
 
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            features=datasets.Features(
+            features=evaluate.Features(
                 {
-                    "predictions": datasets.Sequence(datasets.Value("string", id="tokens"), id="sequence"),
-                    "references": datasets.Sequence(datasets.Value("string", id="tokens"), id="sequence"),
+                    "predictions": evaluate.Sequence(evaluate.Value("string", id="tokens"), id="sequence"),
+                    "references": evaluate.Sequence(evaluate.Value("string", id="tokens"), id="sequence"),
                 }
             ),
             codebase_urls=[

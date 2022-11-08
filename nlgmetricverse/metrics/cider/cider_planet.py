@@ -3,7 +3,7 @@ The follow implementation supports python 3.x version. See
 https://github.com/vrama91/cider/blob/master/pyciderevalcap/cider/cider_scorer.py for the original version """
 
 
-import datasets
+import evaluate
 from collections import defaultdict
 import numpy as np
 import math
@@ -25,7 +25,7 @@ _KWARGS_DESCRIPTION = """
 
 """
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CiderPlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -42,7 +42,7 @@ class CiderPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
         
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/vrama91/cider",

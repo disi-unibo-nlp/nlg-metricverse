@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
 # limitations under the License.
 """
 Comet cross-lingual MT evaluation metric. The part of this file is adapted from
-Comet implementation of datasets package. See
-https://github.com/huggingface/datasets/blob/master/metrics/comet/comet.py
+Comet implementation of evaluate package. See
+https://github.com/huggingface/evaluate/blob/master/metrics/comet/comet.py
 """
 
 from typing import Callable, Union
 
-import datasets
+import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
@@ -105,7 +105,7 @@ Examples:
 """
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CometPlanet(MetricForLanguageGeneration):
     def _download_and_prepare(self, dl_manager):
         global comet
@@ -123,7 +123,7 @@ class CometPlanet(MetricForLanguageGeneration):
         self.scorer = comet.load_from_checkpoint(checkpoint_path)
 
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://unbabel.github.io/COMET/html/index.html",

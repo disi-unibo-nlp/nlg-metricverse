@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2020 Open Business Software Solutions, The HuggingFace Datasets Authors and the TensorFlow Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors and the TensorFlow evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import os
 import warnings
 from typing import Any, Dict, NamedTuple, Optional
 
-import datasets
+import evaluate
 
 from nlgmetricverse.metrics._core.base import Metric
 from nlgmetricverse.metrics._core.utils import import_module, list_metrics
@@ -36,20 +36,22 @@ def load_metric(
     use_nlgmetricverse_only: bool = False,
     **kwargs,
 ) -> Metric:
-    """
-    Load a :py:class:`nlgmetricverse.metrics.Metric`. Alias for :py:class:`nlgmetricverse.metrics.AutoMetric.load()`.
-
-    :param path: path to the metric processing script with the metric builder. Can be either:
-                    - a local absolute or relative path to processing script or the directory containing the script,
-                            e.g. ``'./metrics/rogue/rouge.py'``;
-                    - a metric identifier on the HuggingFace datasets repo (list all available metrics with
-                            ``nlgmetricverse.list_metrics()``) e.g. ``'rouge'`` or ``'bleu'``.
-    :param resulting_name: Resulting name of the computed score returned.
-    :param task: Task name for the metric. "language-generation" by default.
-    :param compute_kwargs: Arguments to be passed to `compute()` method of metric at computation.
-    :param use_nlgmetricverse_only: Whether to use nlgmetricverse metrics only or not. False by default.
-    :param kwargs: Additional keyword arguments to be passed to :py:func:`datasets.load_metric`.
-    :return: `datasets.Metric`
+    """Load a :py:class:`nlgmetricverse.metrics.Metric`. Alias for :py:class:`nlgmetricverse.metrics.AutoMetric.load()`.
+    Args:
+        path (``str``):
+            path to the metric processing script with the metric builder. Can be either:
+                - a local absolute or relative path to processing script or the directory containing the script,
+                    e.g. ``'./metrics/rogue/rouge.py'``
+                - a metric identifier on the HuggingFace evaluate repo (list all available metrics with
+                    ``nlgmetricverse.list_metrics()``) e.g. ``'rouge'`` or ``'bleu'``
+        resulting_name (Optional ``str``): Resulting name of the computed score returned.
+        task (Optional ``str``): Task name for the metric. "language-generation" by default.
+        compute_kwargs (Optional ``Dict[str, Any]``): Arguments to be passed to `compute()` method of metric at
+            computation.
+        use_nlgmetricverse_only (``bool``): Whether to use nlgmetricverse metrics only or not. False by default.
+        kwargs (Optional): Additional keyword arguments to be passed to :py:func:`evaluate.load_metric`.
+    Returns:
+        `evaluate.Metric`
     """
     return AutoMetric.load(
         path=path,
@@ -63,7 +65,7 @@ def load_metric(
 
 class AutoMetric:
     """
-    Instantiate the proper metric class from given parameters.
+    Instantiates the proper metric class from given parameters.
     """
 
     def __init__(
@@ -99,16 +101,15 @@ class AutoMetric:
             # Metric not in NLGMetricverse
             if use_nlgmetricverse_only:
                 raise ValueError(
-                    f"Metric {resolved_path.path} is not available on nlgmetricverse, set"
-                    f"use_nlgmetricverse_only=False to use"
-                    f"additional metrics (e.g datasets metrics)."
+                    f"Metric {resolved_path.path} is not available on nlgmetricverse, set use_nlgmetricverse_only=False to use"
+                    f"additional metrics (e.g evaluate metrics)."
                 )
             warnings.warn(
-                f"Metric {resolved_path.path} is not available on nlgmetricverse, falling back to datasets metric. "
+                f"Metric {resolved_path.path} is not available on nlgmetricverse, falling back to evaluate metric. "
                 f"You may not fully utilize this metric for different input types, e.g multiple predictions "
                 f"or multiple references."
             )
-            metric = datasets.load_metric(resolved_path.path, **kwargs)
+            metric = evaluate.load(resolved_path.path, **kwargs)
         else:
             # get the class, will raise AttributeError if class cannot be found
             factory_class = module.__main_class__
@@ -118,13 +119,6 @@ class AutoMetric:
 
     @staticmethod
     def resolve_metric_path(path: str):
-        """
-        Resolve the path to the metric given, that can be local absolute, local relative or a metric identifier on the
-        HuggingFace datasets repo.
-
-        :param path: path to the metric processing script with the metric builder.
-        :return: the resolved path.
-        """
         class ResolvedName(NamedTuple):
             path: str
             resolution: str
@@ -147,4 +141,4 @@ class AutoMetric:
                 raise FileNotFoundError(f"File {path} does not exists.")
             return ResolvedName(path=path, resolution="external-module")
         else:
-            return ResolvedName(path=path, resolution="datasets")
+            return ResolvedName(path=path, resolution="evaluate")

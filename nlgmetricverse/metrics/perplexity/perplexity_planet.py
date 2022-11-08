@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ Perplexity metric. The part of this file is adapted from Perplexity implementation
-of datasets package. See
-https://github.com/huggingface/datasets/blob/main/metrics/perplexity/perplexity.py """
+of evaluate package. See
+https://github.com/huggingface/evaluate/blob/main/metrics/perplexity/perplexity.py """
 
 import numpy as np
 import torch
 from torch.nn import CrossEntropyLoss
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from typing import Callable, Dict
-import datasets
-from datasets import logging
+import evaluate
+from evaluate import logging
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
@@ -39,7 +39,7 @@ _KWARGS_DESCRIPTION = """
 """
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class PerplexityPlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -60,7 +60,7 @@ class PerplexityPlanet(MetricForLanguageGeneration):
         Downloads and import the computation of Perplexity score from the implementation
         of Perplexity computation. The code is sourced from a specific
         commit on the master branch, in order to keep things stable. See
-        https://github.com/huggingface/datasets/blob/main/metrics/perplexity/perplexity.py
+        https://github.com/huggingface/evaluate/blob/main/metrics/perplexity/perplexity.py
 
         """
         if self.device is not None:
@@ -75,15 +75,15 @@ class PerplexityPlanet(MetricForLanguageGeneration):
         self.tokenizer =  AutoTokenizer.from_pretrained(self.model_id)
         
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
-            homepage="https://github.com/huggingface/datasets/blob/main/metrics/perplexity",
+            homepage="https://github.com/huggingface/evaluate/blob/main/metrics/perplexity",
             inputs_description=_KWARGS_DESCRIPTION,
             features=self._default_features,
-            codebase_urls=["https://github.com/huggingface/datasets/blob/main/metrics/perplexity"],
+            codebase_urls=["https://github.com/huggingface/evaluate/blob/main/metrics/perplexity"],
             reference_urls=[
-                "https://github.com/huggingface/datasets/blob/main/metrics/perplexity/",
+                "https://github.com/huggingface/evaluate/blob/main/metrics/perplexity/",
                 "https://huggingface.co/docs/transformers/perplexity",
             ],
             license=_LICENSE,

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ Nubia metric. The part of this file is adapted from metric implementations
-of datasets package. See
-https://github.com/huggingface/datasets/blob/master/metrics/ """
+of evaluate package. See
+https://github.com/huggingface/evaluate/blob/master/metrics/ """
 from typing import Callable, Dict, List
 
-import datasets
+import evaluate
 import numpy as np
 
 from nlgmetricverse.metrics import EvaluationInstance
@@ -63,7 +63,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE."""
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class NubiaPlanet(MetricForLanguageGeneration):
     def _download_and_prepare(self, dl_manager):
         global nubia_score
@@ -76,7 +76,7 @@ class NubiaPlanet(MetricForLanguageGeneration):
         self.scorer = nubia_score.Nubia()
 
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/wl-research/nubia",

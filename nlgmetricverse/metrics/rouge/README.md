@@ -24,7 +24,7 @@ ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
         - `"rouge2"`: bigram (2-gram) based scoring
         - `"rougeL"`: longest common subsequence based scoring
         - `"rougeLSum"`: splits text using `"\n"` (e.g., sentence/paragraph segments) and then calculates rougeL.
-        - See [here](https://github.com/huggingface/datasets/issues/617) for more information
+        - See [here](https://github.com/huggingface/evaluate/issues/617) for more information
 - **use_aggregator** (`boolean`): aggregation uses [bootstrap resampling](https://github.com/google-research/google-research/blob/master/rouge/scoring.py) to compute mid, high and low confidence intervals for precision, recall, and fmeasure as per the original ROUGE perl implementation. If `True`, aggregates the scores and returns the mid value for each rouge type. If `False` returns the selected metric(s) (`metric_to_select`) for each instance and rouge type. Defaults to `True`, forced to `True` in case of n-arity.
 - **use_stemmer** (`boolean`): if `True`, uses Porter stemmer to strip word suffixes. Defaults to `False`.
 - **metric_to_select** (`str`, optional): metric(s) to select between `precision`, `recall`, `fmeasure`. Defaults to `fmeasure`; if `None` returns all the three metrics.

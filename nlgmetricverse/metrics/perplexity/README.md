@@ -72,7 +72,7 @@ By using stride = 512 and thereby employing a striding window strategy, this jum
 This is not only a more favorable score, but is calculated in a way that is closer to the true autoregressive decomposition of a sequence likelihood.
 
 ## Limitations and bias
-- Note that the output value is based heavily on what text the model was trained on. This means that perplexity scores are not comparable between models or datasets.
+- Note that the output value is based heavily on what text the model was trained on. This means that perplexity scores are not comparable between models or evaluate.
 - Perplexity is heavily dependent on the nature of the underlying vocabulary in the following sense: one can artificially lower one's perplexity by having a lot of UNK tokens in the training and test sets.
   Consider the extreme case in which everything is mapped to UNK and perplexity is thus perfect on any test set.
   The more worrisome thing is that any amount of UNK usage side-steps the pervasive challenge of dealing with infrequent words.

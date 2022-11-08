@@ -1,4 +1,4 @@
-import datasets
+import evaluate
 import numpy as np
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
@@ -18,7 +18,7 @@ _KWARGS_DESCRIPTION = """
 
 """
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class MauvePlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -73,7 +73,7 @@ class MauvePlanet(MetricForLanguageGeneration):
           
         
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/krishnap25/mauve",

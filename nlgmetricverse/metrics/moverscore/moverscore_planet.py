@@ -3,7 +3,7 @@
 import os
 from collections.abc import Callable
 
-import datasets
+import evaluate
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
@@ -74,10 +74,10 @@ Returns:
 """
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class MoverscorePlanet(MetricForLanguageGeneration):
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,

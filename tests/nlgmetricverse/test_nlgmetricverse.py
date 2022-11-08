@@ -1,4 +1,4 @@
-import datasets
+import evaluate
 import numpy as np
 import pytest
 
@@ -138,7 +138,7 @@ def test_load_metric():
     from nlgmetricverse.metrics._core import Metric as NlgmetricverseMetric
 
     assert isinstance(load_metric("chrf"), NlgmetricverseMetric)
-    assert isinstance(load_metric("squad_v2"), datasets.Metric)
+    assert isinstance(load_metric("squad_v2"), evaluate.Metric)
 
     with pytest.raises(FileNotFoundError):
         load_metric("abcdefgh")

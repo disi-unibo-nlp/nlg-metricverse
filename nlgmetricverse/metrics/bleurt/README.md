@@ -4,7 +4,7 @@
 Bilingual Evaluation Understudy with Representations from Transformers (BLEURT) is a fully learned evaluation metric modeling human judgments for generated text, i.e., it is a regression model trained on ratings data.
 It takes a pair of sentences as input, a reference and a candidate, and it returns a score that indicates to what extent the candidate is fluent and conveys the mearning of the reference.
 BLEURT is based on [`BERT`](https://arxiv.org/abs/1810.04805) and a novel (additional) pre-training scheme based on millions of synthetic reference-candidate pairs, generated through perturbations (i.e., mask-filling, backtranslation, dropping words) and aimed to help the model generalize (greater robustness).
-Differently from existing sentence pairs datasets, synthetic data allow to capture the errors and alterations that NLG systems produce (e.g., omissions, repetitions, nonsensical substitutions).
+Differently from existing sentence pairs evaluate, synthetic data allow to capture the errors and alterations that NLG systems produce (e.g., omissions, repetitions, nonsensical substitutions).
 Extra BERT pre-training on such syntethic data considers several lexical- and semantic-level supervision signals with a multitask loss, i.e., a weighted sum aggregation of task-level regression or classification losses (BLEU/ROUGE/BERTScore emulation, backtranslation likelihood/flag, textual entailment).
 So, BLEURT models are trained in three steps: regular BERT pre-training (Devlin et al., 2019), pre-training on synthetic data, and fine-tuning on task-specific ratings (like translation and/or data-to-text using public WMT human annotations).
 Note: rating data prediction at the third step is done with a classification layer on top of BERT's [CLS].

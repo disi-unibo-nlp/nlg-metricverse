@@ -15,7 +15,7 @@ Popovic propose two enhanced versions of chrF: (i) chrF+, which also considers w
 We use the implementation that is already present in sacreBLEU.
 The implementation here is slightly different from sacreBLEU in terms of the required input format.
 The length of the references and hypotheses lists need to be the same, so you may need to transpose your references compared to sacrebleu's required input format.
-See [#3154 (comment)](https://github.com/huggingface/datasets/issues/3154#issuecomment-950746534).
+See [#3154 (comment)](https://github.com/huggingface/evaluate/issues/3154#issuecomment-950746534).
 
 ### Inputs
 - **predictions** (`list`): prediction/candidate sentences.

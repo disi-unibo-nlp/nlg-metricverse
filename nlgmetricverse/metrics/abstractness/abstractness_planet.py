@@ -2,7 +2,7 @@
 
 """ Abstractness metric. """
 
-import datasets
+import evaluate
 from typing import Callable
 from nltk import ngrams
 
@@ -30,10 +30,10 @@ CHECKPOINT_URLS = {
 }
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class AbstractnessPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,

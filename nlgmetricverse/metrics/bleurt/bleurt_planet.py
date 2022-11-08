@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2021 Open Business Software Solutions, The HuggingFace Datasets Authors.
+# Copyright 2021 Open Business Software Solutions, The HuggingFace evaluate Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 # limitations under the License.
 """
 BLEURT metric. The part of this file is adapted from BLEURT implementation
-of datasets package. See
-https://github.com/huggingface/datasets/blob/master/metrics/bleurt/bleurt.py
+of evaluate package. See
+https://github.com/huggingface/evaluate/blob/master/metrics/bleurt/bleurt.py
 """
 
 import os
 from typing import Callable
 
-import datasets
+import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
@@ -30,7 +30,7 @@ from nlgmetricverse.utils.sys import log
 # `import bleurt` placeholder
 bleurt = PackagePlaceholder(version="1.2.2")
 
-logger = datasets.logging.get_logger(__name__)
+logger = evaluate.logging.get_logger(__name__)
 
 
 _CITATION = """\
@@ -48,7 +48,7 @@ Bilingual Evaluation Understudy with Representations from Transformers (BLEURT) 
 metric modeling human judgments for generated text. BLEURT is based on BERT (Devlin et al. 2018) and a novel
 (additional) pre-training scheme based on millions of synthetic reference-candidate pairs, generated through
 perturbations (i.e., mask-filling, backtranslation, dropping words) and aimed to help the model generalize
-(greater robustness). Differently from existing sentence pairs datasets, synthetic data allow to capture the
+(greater robustness). Differently from existing sentence pairs evaluate, synthetic data allow to capture the
 errors and alterations that NLG systems produce (e.g., omissions, repetitions, nonsensical substitutions).
 Extra BERT pre-training on such syntethic data considers several lexical- and semantic-level supervision
 signals with a multitask loss, i.e., a weighted sum aggregation of task-level regression or classification
@@ -114,10 +114,10 @@ CHECKPOINT_URLS = {
 }
 
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class BleurtPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/google-research/bleurt",

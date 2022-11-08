@@ -3,7 +3,7 @@ https://github.com/rwth-i6/ExtendedEditDistance/blob/master/EED.py for the origi
 
 
 import ctypes
-import datasets
+import evaluate
 import numpy as np
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
@@ -27,7 +27,7 @@ LIBRARY_URLS = {
     "libed": "https://github.com/rwth-i6/ExtendedEditDistance/raw/master/libEED.so",
     "ed":"https://github.com/rwth-i6/CharacTER/blob/master/ed.cpp"
 }
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class EEDPlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -44,7 +44,7 @@ class EEDPlanet(MetricForLanguageGeneration):
         self.ed_wrapper.wrapper.restype = ctypes.c_float
     
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/rwth-i6/ExtendedEditDistance",

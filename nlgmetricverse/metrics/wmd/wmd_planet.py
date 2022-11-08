@@ -1,7 +1,7 @@
 
 """ WMD metric. The part of this file is adapted from Gensim's WMD implementation. See
 https://radimrehurek.com/gensim/auto_examples/tutorials/run_wmd.html """
-import datasets
+import evaluate
 import numpy as np
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
@@ -21,7 +21,7 @@ _KWARGS_DESCRIPTION = """
 
 """
 
-@datasets.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
+@evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class WMDPlanet(MetricForLanguageGeneration):
     def __init__(
             self,
@@ -56,7 +56,7 @@ class WMDPlanet(MetricForLanguageGeneration):
                     download('stopwords')  # Download stopwords list.
                 self.stop_words = stopwords.words('english') 
     def _info(self):
-        return datasets.MetricInfo(
+        return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/mkusner/wmd",

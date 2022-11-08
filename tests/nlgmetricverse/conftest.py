@@ -44,7 +44,7 @@ _LIST_MIXED_TEST_METRICS = [
     {"path": "sacrebleu"}
 ]
 
-_DATASETS_METRICS = "competition_math"
+_HF_METRICS = "competition_math"
 
 
 @pytest.fixture(scope="package")
@@ -150,8 +150,8 @@ def nlgmetricverse_list_mixed():
 
 
 @pytest.fixture(scope="function")
-def nlgmetricverse_datasets():
-    return NLGMetricverse(metrics=_DATASETS_METRICS)
+def nlgmetricverse_hf():
+    return NLGMetricverse(metrics=_HF_METRICS)
 
 
 def get_expected_output(prefix: Optional[str] = None):
