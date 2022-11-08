@@ -19,9 +19,9 @@ def times_correlation(
         raise Exception("predictions and references must be of type list")
     times = {}
     for metric in metrics:
-        checked_metric = check_metric(metric)
-        scorer = NLGMetricverse(metrics=checked_metric)
+        scorer = NLGMetricverse(metrics=metric)
         results = scorer(predictions=predictions, references=references)
+        print(results)
         times[metric] = results["total_time_elapsed"]
 
     plt.bar(times.keys(), times.values(), color='b')

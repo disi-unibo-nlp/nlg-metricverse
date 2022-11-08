@@ -11,19 +11,10 @@ def map_range(value, left_min, left_max, right_min, right_max):
     return right_min + (value_scaled * right_span)
 
 
-def check_metric(metric):
-    if metric == "bleu":
-        METRIC = [load_metric("bleu", resulting_name="bleu1", compute_kwargs={"max_order": 1})]
-    else:
-        METRIC = [load_metric(metric)]
-    return METRIC
-
-
 def scores_single_metric(metric, predictions, references):
     scores = []
     res = []
-    checked_metric = check_metric(metric)
-    scorer = NLGMetricverse(metrics=checked_metric)
+    scorer = NLGMetricverse(metrics=metric)
     for i, pred in enumerate(predictions):
         score = scorer(predictions=[pred], references=[references[i]])
         scores.append(score)
