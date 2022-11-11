@@ -200,7 +200,8 @@ def __apply_quality_filter(metrics, quality_dim: ApplTasks = None):
 
 def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
                    trained: bool = None, unsupervised: bool = None, quality_dim: QualityDims = None):
-    os.chdir("nlgmetricverse/metrics")
+    root = os.getcwd()
+    os.chdir('nlgmetricverse/metrics/_core/')
     f = open('list_metrics.json')
     data = json.load(f)
     metrics = __apply_category_filter(data['metrics'], category)
@@ -212,18 +213,22 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
     for metric in metrics:
         res.append(metric["name"])
     f.close()
+    os.chdir(root)
     return res
 
 
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
-    os.chdir("nlgmetricverse/metrics")
+    root = os.getcwd()
+    os.chdir('nlgmetricverse/metrics/_core/')
     f = open('list_metrics.json')
     data = json.load(f)
     upper_bound = 0
     lower_bound = 0
-    for metric in data['metrics']:
-        if metric['name'] == metric:
-            upper_bound = metric['upper_bound']
-            lower_bound = metric['lower_bound']
+    for metric_object in data['metrics']:
+        if metric_object['name'] == metric:
+            upper_bound = metric_object['upper_bound']
+            lower_bound = metric_object['lower_bound']
+    f.close()
+    os.chdir(root)
     return upper_bound, lower_bound

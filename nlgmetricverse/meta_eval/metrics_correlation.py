@@ -59,8 +59,8 @@ def metrics_correlation(
 
         results.append(np.tril(matrix_res, -1))
         # p_values.append()
+
         plt.title("Metric scores correlation")
         plt.tight_layout()
-        plt.show()
-
+        # plt.show()
     return results

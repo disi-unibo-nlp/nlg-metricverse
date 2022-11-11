@@ -138,4 +138,4 @@ def similarity_word_matching(
     if fname != "":
         plt.savefig(fname, dpi=100)
         print("Saved figure to file: ", fname)
-    plt.show()
+    # plt.show()

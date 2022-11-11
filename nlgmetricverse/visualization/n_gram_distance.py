@@ -80,7 +80,7 @@ def n_gram_distance_visualization(reference, translation, is_flow=True, device='
         #            text = ax.text(j, i, '{:.2f}'.format(res[i, j].item()),
         #                           ha="center", va="center", color="k" if res[i, j].item() < 0.6 else "w")
         fig.tight_layout()
-        plt.show()
+        # plt.show()
 
 
 def get_bert_embedding(all_sens, model, tokenizer, idf_dict,

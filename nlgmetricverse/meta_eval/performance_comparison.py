@@ -27,6 +27,6 @@ def times_correlation(
     plt.title("Time correlation between metrics")
     plt.xlabel("Metrics")
     plt.ylabel("Time [sec]")
-    plt.show()
+    # plt.show()
 
     return times

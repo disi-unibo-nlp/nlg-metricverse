@@ -78,5 +78,5 @@ def metric_human_correlation(
             plt.ylabel("Scores")
             plt.title("Metric-human correlation")
             plt.legend()
-            plt.show()
+            # plt.show()
         return results
