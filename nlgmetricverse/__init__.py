@@ -8,5 +8,6 @@ from nlgmetricverse.utils.correlation import CorrelationMeasures, Benchmarks
 from nlgmetricverse.data_loader import DataLoaderStrategies, DataLoader
 from nlgmetricverse.visualization.n_gram_distance import n_gram_distance_visualization
 from nlgmetricverse.meta_eval.performance_comparison import times_correlation
+from nlgmetricverse.visualization.similarity_word_matching import similarity_word_matching
 
 __version__ = "0.1.0"
