@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.utils.correlation import *
 
 
@@ -48,19 +49,20 @@ def metrics_correlation(
         scores[metric] = map_score_with_metric_bounds(metric, res)
 
     results = []
-    # p_values = []
+    pvalues = []
+    pvalue_results = np.zeros((len(metrics), len(metrics)))
     for correlation_measure in correlation_measures:
         for i, metricA in enumerate(metrics):
             for j, metricB in enumerate(metrics):
-                matrix_res[i][j] = compute_correlation(scores[metricA], scores[metricB], correlation_measure)
+                matrix_res[i][j], pvalue_results[i][j] = compute_correlation(scores[metricA], scores[metricB], correlation_measure)
         mask = np.triu(np.ones_like(matrix_res, dtype=bool))
         sns.heatmap(np.tril(matrix_res, -1), xticklabels=metrics, yticklabels=metrics, annot=True, mask=mask,
                            cmap="Blues")
 
         results.append(np.tril(matrix_res, -1))
-        # p_values.append()
+        pvalues.append(np.tril(pvalue_results, -1))
 
         plt.title("Metric scores correlation")
         plt.tight_layout()
         # plt.show()
-    return results
+    return results, pvalues

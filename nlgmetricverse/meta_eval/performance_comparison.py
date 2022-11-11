@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.utils.correlation import *
 
 

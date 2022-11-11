@@ -2,6 +2,7 @@ import random
 
 import matplotlib.pyplot as plt
 
+from nlgmetricverse import NLGMetricverse
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse.utils.benchmarks.get_wmt17_sys_results import *
 
@@ -60,6 +61,7 @@ def metric_human_correlation(
             scores[metric] = map_score_with_metric_bounds(metric, res)
 
         results = []
+        pvalues = []
         for correlation_measure in correlation_measures:
             correlation_results = {}
             pvalue_results = {}
@@ -67,18 +69,25 @@ def metric_human_correlation(
                 correlation_results[metric], pvalue_results[metric] = compute_correlation(scores[metric], human_scores, correlation_measure)
                 correlation_results[metric], pvalue_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
             bar_list = plt.bar(list(correlation_results.keys()), correlation_results.values(), label=correlation_measure)
-            
+            bar_list_pvalue = plt.bar(list(pvalue_results.keys()), pvalue_results.values(), label=correlation_measure)
             for bar in bar_list:
                 r = random.random()
                 b = random.random()
                 g = random.random()
                 color = (r, g, b)
                 bar.set_color(color)
+            for bar in bar_list_pvalue:
+                r = random.random()
+                b = random.random()
+                g = random.random()
+                color = (r, g, b)
+                bar.set_color(color)
             results.append(correlation_results)
+            pvalues.append(pvalue_results)
             plt.xticks(np.arange(len(correlation_measures)), correlation_measures)
             plt.xlabel("Correlation measure")
             plt.ylabel("Scores")
             plt.title("Metric-human correlation")
             plt.legend()
             # plt.show()
-        return results
+        return results, pvalues
