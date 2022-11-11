@@ -75,10 +75,13 @@ class Benchmarks(Enum):
 
 def compute_correlation(x, y, correlation_measure):
     if correlation_measure == CorrelationMeasures.Pearson:
-        return pearsonr(x, y)[0]
+        statistic, pvalue = pearsonr(x, y)[0]
     elif correlation_measure == CorrelationMeasures.Spearman:
-        return spearmanr(x, y)[0]
+        statistic, pvalue = spearmanr(x, y)[0]
     elif correlation_measure == CorrelationMeasures.KendallTau:
-        return kendalltau(x, y)[0]
+        statistic, pvalue = kendalltau(x, y)[0]
     elif correlation_measure == CorrelationMeasures.daRR:
-        return kendalltau(x, y, variant="c")[0]
+        statistic, pvalue = kendalltau(x, y, variant="c")[0]
+    else:
+        statistic, pvalue = pearsonr(x, y)[0]
+    return statistic, pvalue

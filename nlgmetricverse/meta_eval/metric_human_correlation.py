@@ -62,10 +62,12 @@ def metric_human_correlation(
         results = []
         for correlation_measure in correlation_measures:
             correlation_results = {}
+            pvalue_results = {}
             for i, metric in enumerate(metrics):
-                correlation_results[metric] = compute_correlation(scores[metric], human_scores, correlation_measure)
-                correlation_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
+                correlation_results[metric], pvalue_results[metric] = compute_correlation(scores[metric], human_scores, correlation_measure)
+                correlation_results[metric], pvalue_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
             bar_list = plt.bar(list(correlation_results.keys()), correlation_results.values(), label=correlation_measure)
+            
             for bar in bar_list:
                 r = random.random()
                 b = random.random()
