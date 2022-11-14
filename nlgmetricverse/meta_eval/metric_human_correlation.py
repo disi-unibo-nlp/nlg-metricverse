@@ -1,10 +1,11 @@
 import random
 
 import matplotlib.pyplot as plt
+import numpy as np
 
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse.utils.benchmarks.get_wmt17_sys_results import *
-from nlgmetricverse import NLGMetricverse
+from nlgmetricverse import NLGMetricverse, load_metric
 
 
 def metric_human_correlation(
@@ -44,7 +45,7 @@ def metric_human_correlation(
                 raise Exception("predictions and references must be of type list")
             single_metric_scores = []
             res = []
-            single_metric_scorer = NLGMetricverse(metrics=metric)
+            single_metric_scorer = NLGMetricverse(metrics=load_metric(metric))
             for i, pred in enumerate(predictions):
                 single_metric_score = single_metric_scorer(predictions=[pred], references=[references[i]])
                 single_metric_scores.append(single_metric_score)
@@ -53,22 +54,24 @@ def metric_human_correlation(
                         if metric == "rouge":
                             mean = single_metric_score[single_score]["rouge1"] + \
                                    single_metric_score[single_score]["rouge2"] + single_metric_score[single_score][
-                                "rougeL"]
+                                       "rougeL"]
                             mean = mean / 3
                             res.append(mean)
                         else:
                             res.append(single_metric_score[single_score]["score"])
             scores[metric] = map_score_with_metric_bounds(metric, res)
 
-        correlation_results = {}
-        for correlation_measure in correlation_measures:
-            pvalue = {}
-            for metric in metrics:
-                correlation_results[metric], pvalue[metric] = compute_correlation(scores[metric], human_scores, correlation_measure)
-                correlation_results[metric] = map_range(correlation_results[metric], -1, 1, 0, 1)
+        results = []
+        for metric in metrics:
+            metric_scores = []
+            for correlation_measure in correlation_measures:
+                statistic, pvalue = compute_correlation(scores[metric], human_scores, correlation_measure)
+                statistic = map_range(statistic, -1, 1, 0, 1)
+                metric_scores.append(statistic)
+            results.append(np.mean(metric_scores))
 
-        bar_list = plt.bar(list(correlation_results.keys()), correlation_results.values(), label=metrics)
-        
+        bar_list = plt.bar(metrics, results)
+
         for bar in bar_list:
             r = random.random()
             b = random.random()
@@ -77,9 +80,9 @@ def metric_human_correlation(
             bar.set_color(color)
 
         plt.xticks(np.arange(len(metrics)), metrics)
-        plt.xlabel("Correlation measure")
+        plt.xlabel("Metrics")
         plt.ylabel("Scores")
         plt.title("Metric-human correlation")
         plt.legend()
         # plt.show()'''
-        return correlation_results
+        return results
