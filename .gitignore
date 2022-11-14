@@ -142,3 +142,7 @@ wmt17_log.csv
 
 # codecarbon
 emissions.csv
+
+# MacOS
+.DS_Store
+
