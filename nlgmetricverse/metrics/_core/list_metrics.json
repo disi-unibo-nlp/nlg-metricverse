@@ -101,6 +101,16 @@
       "lower_bound": 0
     },
     {
+      "name": "cider",
+      "category": "",
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
+    },
+    {
       "name": "coleman_liau",
       "category": "",
       "appl_tasks": [],
@@ -152,6 +162,16 @@
     },
     {
       "name": "gunning_fog",
+      "category": "",
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
+    },
+    {
+      "name": "mauve",
       "category": "",
       "appl_tasks": [],
       "trained": false,
@@ -274,6 +294,16 @@
       "name": "wer",
       "category": "n-gram overlap",
       "appl_tasks": ["MT", "SR"],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
+    },
+    {
+      "name": "wmd",
+      "category": "",
+      "appl_tasks": [],
       "trained": false,
       "unsupervised": true,
       "quality_dims": [],
