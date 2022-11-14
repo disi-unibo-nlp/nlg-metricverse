@@ -121,6 +121,16 @@
       "lower_bound": 0
     },
     {
+      "name": "eed",
+      "category": "",
+      "appl_tasks": [],
+      "trained": false,
+      "unsupervised": true,
+      "quality_dims": [],
+      "upper_bound": 1,
+      "lower_bound": 0
+    },
+    {
       "name": "f1",
       "category": "",
       "appl_tasks": [],
