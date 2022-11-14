@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-from nlgmetricverse import NLGMetricverse
+from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.utils.correlation import *
 
 
@@ -32,7 +32,7 @@ def metrics_correlation(
     for metric in metrics:
         single_metric_scores = []
         res = []
-        single_metric_scorer = NLGMetricverse(metrics=metric)
+        single_metric_scorer = NLGMetricverse(metrics=load_metric(metric))
         for i, pred in enumerate(predictions):
             single_metric_score = single_metric_scorer(predictions=[pred], references=[references[i]])
             single_metric_scores.append(single_metric_score)
