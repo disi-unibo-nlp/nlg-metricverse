@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from nlgmetricverse import NLGMetricverse
+from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.utils.correlation import *
 
 
@@ -20,7 +20,7 @@ def times_correlation(
         raise Exception("predictions and references must be of type list")
     times = {}
     for metric in metrics:
-        scorer = NLGMetricverse(metrics=metric)
+        scorer = NLGMetricverse(metrics=load_metric(metric))
         results = scorer(predictions=predictions, references=references)
         times[metric] = results["total_time_elapsed"]
 
