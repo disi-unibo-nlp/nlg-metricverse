@@ -39,7 +39,28 @@ Any deviation from the reference content can then lead to a reduced score, e.g.,
 
 ## Examples
 ```python
-TODO
+scorer = NLGMetricverse(metrics=load_metric("moverscore"))
+predictions = [
+    ["Evaluating artificial text has never been so simple", "The evaluation of automatically generated text is simple."],
+    ["the cat is on the mat", "the cat likes playing on the mat"]
+]
+references = [
+    ["Evaluating artificial text is not difficult", "Evaluating artificial text is simple"],
+    ["The cat is playing on the mat.", "The cat plays on the mat."]
+]
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+```
+```json
+{
+    "total_items": 2,
+    "empty_items": 0,
+    "total_time_elapsed": 1.9486117362976074,
+    "moverscore": {
+        "score": 0.5148001048996513,
+        "time_elapsed": 1.9486117362976074
+    }
+}
 ```
 
 ## Limitations and bias
