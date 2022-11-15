@@ -113,9 +113,6 @@ Example ignoring punctuation and capitalization, but with an extra (incorrect) s
 ```
 
 
-## Limitations and Bias
-
-
 ## Citation
 ```bibtex
 @inproceedings{snover-etal-2006-study,

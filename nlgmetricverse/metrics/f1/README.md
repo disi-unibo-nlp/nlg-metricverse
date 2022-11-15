@@ -97,10 +97,6 @@ Example 4-A multiclass example, with different values for the `average` input.
 ```
 
 
-## Limitations and Bias
-
-
-
 ## Citation(s)
 ```bibtex
 @article{scikit-learn,
@@ -115,6 +111,3 @@ Example 4-A multiclass example, with different values for the `average` input.
     year={2011}
 }
 ```
-
-
-## Further References

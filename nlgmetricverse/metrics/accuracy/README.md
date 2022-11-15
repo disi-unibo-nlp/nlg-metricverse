@@ -4,12 +4,14 @@
 ## Metric Description
 
 Accuracy is the proportion of correct predictions among the total number of cases processed. It can be computed with:
-Accuracy = (TP + TN) / (TP + TN + FP + FN)
- Where:
-TP: True positive
-TN: True negative
-FP: False positive
-FN: False negative
+
+$Accuracy = (TP + TN) / (TP + TN + FP + FN)$
+
+Where:
+- $TP$: True positive
+- $TN$: True negative
+- $FP$: False positive
+- $FN$: False negative
 
 
 ## How to Use

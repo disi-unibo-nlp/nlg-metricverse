@@ -9,8 +9,7 @@ Extended Edit Distance (EED) is based on an extension of the Levenshtein distanc
 
 One aspect of each metric is its input which usu- ally comes in tokenized form. Punctuation marks are separated from words via a white space and abbreviation dots are kept next to the word e.g. *“e.g.”*. EED additionally adds a white space at both beginning and end of each sentence.
 
-EED utilises the idea of jumps as an extension of the edit distance. It operates at character level
-and is defined as follows:
+EED utilises the idea of jumps as an extension of the edit distance. It operates at character level and is defined as follows:
 
 $EED = min(\frac{
     (e + \alpha \cdot j) + \rho \cdot v
