@@ -112,6 +112,7 @@ requirements = [
     "seaborn>=0.12.0",
     "torch>=1.12.0",
     "transformers>=4.24.0",
+    "bert_score==0.3.11",
     "tqdm>=4.64.1",
     "evaluate>=0.2.2,<=0.3",
     "pyemd>=0.5.1",
@@ -148,7 +149,6 @@ _PRISM_REQUIREMENTS = ["validators"]
 
 _METRIC_REQUIREMENTS = [
     "sacrebleu>=2.0.0",
-    "bert_score==0.3.11",
     "jiwer>=2.3.0",
     "seqeval==1.2.2",
     "sentencepiece==0.1.96",
