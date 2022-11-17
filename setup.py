@@ -1,5 +1,9 @@
 # Lint as: python3
-""" NLG Metricverse is an open library of metrics for evaluating artificial text.
+""" NLG Metricverse is an end-to-end Python library for NLG evaluation, devised to provide
+a living unified codebase for fast application, analysis, comparison, visualization, and
+prototyping of automatic metrics [COLING22].
+
+
 The setup.py file contains information about the package that PyPi needs, like its name, a description, the current version, etc.
 
 Note:
