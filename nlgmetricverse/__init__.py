@@ -11,4 +11,4 @@ from nlgmetricverse.meta_eval.performance_comparison import times_correlation
 from nlgmetricverse.visualization.similarity_word_matching import similarity_word_matching
 from nlgmetricverse.visualization.bert_neuron_factors import bert_neuron_factors
 
-__version__ = "0.9.2"
+__version__ = "0.9.3"
