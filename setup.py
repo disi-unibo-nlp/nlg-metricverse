@@ -71,11 +71,6 @@ def get_long_description():
         return f.read()
 
 
-def get_requirements():
-    with open("requirements.txt") as f:
-        return f.read().splitlines()
-
-
 def get_version():
     current_dir = os.path.abspath(os.path.dirname(__file__))
     version_file = os.path.join(current_dir, "nlgmetricverse", "__init__.py")
@@ -90,6 +85,39 @@ def add_pywin(reqs: List[str]) -> None:
     else:
         ext_package = []
     reqs.extend(ext_package)
+
+
+"""
+Mandatory requirements.
+"""
+
+requirements = [
+    "datasets>=2.0.0",
+    "fire>=0.4.0",
+    "nltk>=3.6.6,<3.7.1",
+    "numpy>=1.21.0",
+    "pandas>=1.1.5",
+    "rouge-score==0.1.2",
+    "setuptools>=65.5.1",
+    "requests>=2.27.1",
+    "click==8.1.3",
+    "syllables>=1.0.3",
+    "typing>=3.7.4.3",
+    "packaging>=21.3",
+    "scipy>=1.7.3",
+    "matplotlib>=3.5.1",
+    "textstat>=0.7.3",
+    "codecarbon==2.1.4",
+    "validators>=0.20.0",
+    "seaborn>=0.12.0",
+    "torch>=1.12.0",
+    "transformers>=4.24.0",
+    "tqdm>=4.64.1",
+    "evaluate>=0.2.2,<=0.3",
+    "pyemd>=0.5.1",
+    "ipython>=7.16.1",
+    "ecco>=0.1.2"
+]
 
 
 """
@@ -148,10 +176,10 @@ setuptools.setup(
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     url='https://github.com/disi-unibo-nlp/nlg-metricverse',
-    download_url='https://github.com/disi-unibo-nlp/nlg-metricverse/archive/refs/tags/0.9.3.tar.gz',
+    download_url='https://github.com/disi-unibo-nlp/nlg-metricverse/archive/refs/tags/0.9.4.tar.gz',
     packages=setuptools.find_packages(exclude=["tests"]),
     python_requires=">=3.7",
-    install_requires=get_requirements(), # dependencies NECESSARY to run the project
+    install_requires=requirements, # dependencies NECESSARY to run the project
     extras_require=extras, # OPTIONAL dependencies (installed as needed)
     include_package_data=True,
     entry_points={
