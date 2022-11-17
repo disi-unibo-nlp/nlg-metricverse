@@ -112,7 +112,7 @@ requirements = [
     "seaborn>=0.12.0",
     "torch>=1.12.0",
     "transformers>=4.24.0",
-    "bert_score==0.3.11",
+    "bert_score>=0.3.11",
     "tqdm>=4.64.1",
     "evaluate>=0.2.2,<=0.3",
     "pyemd>=0.5.1",
