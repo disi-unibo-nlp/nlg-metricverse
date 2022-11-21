@@ -200,11 +200,7 @@ def __apply_quality_filter(metrics, quality_dim: ApplTasks = None):
 
 def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
                    trained: bool = None, unsupervised: bool = None, quality_dim: QualityDims = None):
-    root = os.getcwd()
-    os.chdir('nlgmetricverse/metrics/_core/')
-    f = open('list_metrics.json')
-    data = json.load(f)
-    metrics = __apply_category_filter(data['metrics'], category)
+    metrics = __apply_category_filter(metrics_list, category)
     metrics = __apply_task_filter(metrics, appl_task)
     metrics = __apply_trained_filter(metrics, trained)
     metrics = __apply_unsupervised_filter(metrics, unsupervised)
@@ -212,8 +208,6 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
     res = []
     for metric in metrics:
         res.append(metric["name"])
-    f.close()
-    os.chdir(root)
     return res
 
 
@@ -232,3 +226,317 @@ def get_metric_bounds(metric):
     f.close()
     os.chdir(root)
     return upper_bound, lower_bound
+
+
+metrics_list = [
+    {
+        "name": "abstractness",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "accuracy",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "aun",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "bartscore",
+        "category": "embedding-based",
+        "appl_tasks": ["MT", "SUM", "D2T"],
+        "trained": True,
+        "unsupervised": True,
+        "quality_dims": ["INFO", "REL", "FLU", "COH", "FAC", "COV", "ADE"],
+        "upper_bound": 0,
+        "lower_bound": -7
+    },
+    {
+        "name": "bertscore",
+        "category": "embedding-based",
+        "appl_tasks": [],
+        "trained": True,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "bleu",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT", "IC", "DG", "QG", "RG"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": ["ADE", "FLU"],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "bleurt",
+        "category": "embedding-based",
+        "appl_tasks": ["MT", "D2T"],
+        "trained": True,
+        "unsupervised": False,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "cer",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "character",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "chrf",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT", "IC", "SUM"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "cider",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "coleman_liau",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "comet",
+        "category": "embedding-based",
+        "appl_tasks": ["MT"],
+        "trained": True,
+        "unsupervised": False,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "eed",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "f1",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "flesch_kincaid",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "gunning_fog",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "mauve",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "meteor",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT", "IC", "DG"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "moverscore",
+        "category": "embedding-based",
+        "appl_tasks": ["MT", "SUM", "D2T", "IC"],
+        "trained": True,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "nist",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "nubia",
+        "category": "embedding-based",
+        "appl_tasks": ["MT", "IC"],
+        "trained": True,
+        "unsupervised": False,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "perplexity",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 0,
+        "lower_bound": 7
+    },
+    {
+        "name": "precision",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "prism",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "repetitiveness",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "rouge",
+        "category": "n-gram overlap",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": ["COV"],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "sacrebleu",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "ter",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "wer",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT", "SR"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "wmd",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    }
+]
