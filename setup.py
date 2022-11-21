@@ -60,7 +60,6 @@ import io
 import os
 import platform
 import re
-from typing import List
 
 import setuptools
 
@@ -78,7 +77,7 @@ def get_version():
         return re.search(r'^__version__ = [\'"]([^\'"]*)[\'"]', f.read(), re.M).group(1)
 
 
-def add_pywin(reqs: List[str]) -> None:
+def add_pywin(reqs):
     if platform.system() == "Windows":
         # Latest PyWin32 build (301) fails, required for sacrebleu
         ext_package = ["pywin32==302"]
