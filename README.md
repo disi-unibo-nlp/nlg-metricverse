@@ -255,3 +255,8 @@ This research work has been conducted within the Department of Computer Science 
 ## License
 
 The code is released under the [MIT License](LICENSE). It should not be used to promote or profit from violence, hate, and division, environmental destruction, abuse of human rights, or the destruction of people's physical and mental health.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=disi-unibo-nlp/nlg-metricverse&type=Date)](https://star-history.com/#disi-unibo-nlp/nlg-metricverse&Date)
+
