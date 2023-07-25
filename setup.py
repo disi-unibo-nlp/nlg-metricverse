@@ -91,21 +91,15 @@ Mandatory requirements.
 """
 
 requirements = [
-    "datasets>=2.0.0",
+    "datasets>=2.9,<2.10",
     "fire>=0.4.0",
-    "nltk>=3.6.6,<3.7.1",
     "numpy>=1.21.0",
     "pandas>=1.1.5",
-    "rouge-score==0.1.2",
     "setuptools>=65.5.1",
     "requests>=2.27.1",
-    "click==8.1.3",
-    "syllables>=1.0.3",
     "typing>=3.7.4.3",
-    "packaging>=21.3",
-    "scipy>=1.7.3",
+    "scipy>=1.9",
     "matplotlib>=3.5.1",
-    "textstat>=0.7.3",
     "codecarbon==2.1.4",
     "validators>=0.20.0",
     "seaborn>=0.12.0",
@@ -152,7 +146,7 @@ _METRIC_REQUIREMENTS = [
     "seqeval==1.2.2",
     "sentencepiece==0.1.96",
     "bleurt @ git+https://github.com/google-research/bleurt.git",
-    "unbabel-comet>=1.1.0",
+    "unbabel-comet>=1.1.2,<2",
 ]
 
 _METRIC_REQUIREMENTS.extend(_PRISM_REQUIREMENTS)
