@@ -19,6 +19,7 @@ https://github.com/huggingface/evaluate/blob/master/metrics/comet/comet.py
 """
 
 from typing import Callable, Union
+from packaging import version
 
 import evaluate
 
@@ -28,6 +29,7 @@ from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_m
 
 # `import comet` placeholder
 comet = PackagePlaceholder(version="1.0.1")
+logger = evaluate.logging.get_logger(__name__)
 
 _CITATION = """\
 @inproceedings{rei-EtAl:2020:WMT,
@@ -117,7 +119,11 @@ class CometPlanet(MetricForLanguageGeneration):
             super(CometPlanet, self)._download_and_prepare(dl_manager)
 
         if self.config_name == "default":
-            checkpoint_path = comet.download_model("wmt20-comet-da")
+            if version.parse(comet.__version__) >= version.parse("2.0.0"):
+                checkpoint_path = comet.download_model("Unbabel/wmt22-comet-da")
+            else:
+                checkpoint_path = comet.download_model("wmt20-comet-da")
+            #checkpoint_path = comet.download_model("wmt20-comet-da")
         else:
             checkpoint_path = comet.download_model(self.config_name)
         self.scorer = comet.load_from_checkpoint(checkpoint_path)
@@ -132,6 +138,7 @@ class CometPlanet(MetricForLanguageGeneration):
             codebase_urls=["https://github.com/Unbabel/COMET"],
             reference_urls=[
                 "https://github.com/Unbabel/COMET",
+                "https://aclanthology.org/2022.wmt-1.52/",
                 "https://www.aclweb.org/anthology/2020.emnlp-main.213/",
                 "http://www.statmt.org/wmt20/pdf/2020.wmt-1.101.pdf6",
             ],
@@ -153,16 +160,29 @@ class CometPlanet(MetricForLanguageGeneration):
     ):
         data = {"src": sources, "mt": predictions, "ref": references}
         data = [dict(zip(data, t)) for t in zip(*data.values())]
-        scores, samples = self.scorer.predict(
-            data,
-            batch_size=batch_size,
-            gpus=gpus,
-            mc_dropout=mc_dropout,
-            progress_bar=progress_bar,
-            accelerator=accelerator,
-            num_workers=num_workers,
-            length_batching=length_batching,
-        )
+        if version.parse(comet.__version__) >= version.parse("2.0.0"):
+            output = self.scorer.predict(
+                 data,
+                batch_size=batch_size,
+                gpus=gpus,
+                mc_dropout=mc_dropout,
+                progress_bar=progress_bar,
+                accelerator=accelerator,
+                num_workers=num_workers,
+                length_batching=length_batching,
+            )
+            scores, samples = output.scores, output.system_score
+        else:
+            scores, samples = self.scorer.predict(
+                data,
+                batch_size=batch_size,
+                gpus=gpus,
+                mc_dropout=mc_dropout,
+                progress_bar=progress_bar,
+                accelerator=accelerator,
+                num_workers=num_workers,
+                length_batching=length_batching,
+            )
         return {"scores": scores, "samples": samples}
 
     def _compute_single_pred_multi_ref(
