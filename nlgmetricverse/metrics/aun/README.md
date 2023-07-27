@@ -11,6 +11,33 @@ $Uniq\_ngram\_ratio=\frac{count(uniq\_ngram)}{count(ngram)}$
 
 When we compare the redundancy of long vs. short documents with respect to this metric on four popular datasets for summarization, we observe that long documents are sub- stantially more redundant than short ones.
 
+# Inputs
+-  **predictions** (`list`): An instance of EvaluationInstance containing the predicted text.
+-  **references** (`list`): An instance of EvaluationInstance containing the reference text.
+-  **n** (int): The size of the n-grams to use for computing abstractness. Defaults to 1 (unigrams).
+
+# Outputs
+-  **aun** (`float`): The average unique n-gram ratio.
+
+# Examples
+```python
+predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+references = ["Peace at home, peace in th world.", "The cat is playing on the mat."]
+
+scorer = NLGMetricverse(metrics=load_metric("accuracy"))
+scores = scorer(predictions=predictions, references=references, reduce_fn=REDUCTION_FUNCTION)
+print(json.dumps(scores, indent=4))
+{
+    "total_items": 2,
+    "empty_items": 0,
+    "total_time_elapsed": 0.007993459701538086,
+    "aun": {
+        "score": 0.9310344827586207,
+        "time_elapsed": 0.007993459701538086
+    }
+}
+```
+
 ## Citation(s)
 ```bibtex
 @inproceedings{xiao-carenini-2020-systematically,
@@ -27,4 +54,3 @@ When we compare the redundancy of long vs. short documents with respect to this 
     abstract = "Our analysis of large summarization datasets indicates that redundancy is a very serious problem when summarizing long documents. Yet, redundancy reduction has not been thoroughly investigated in neural summarization. In this work, we systematically explore and compare different ways to deal with redundancy when summarizing long documents. Specifically, we organize existing methods into categories based on when and how the redundancy is considered. Then, in the context of these categories, we propose three additional methods balancing non-redundancy and importance in a general and flexible way. In a series of experiments, we show that our proposed methods achieve the state-of-the-art with respect to ROUGE scores on two scientific paper datasets, Pubmed and arXiv, while reducing redundancy significantly.",
 }
 ```
-
