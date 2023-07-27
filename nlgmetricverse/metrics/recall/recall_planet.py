@@ -38,7 +38,7 @@ _CITATION = """\
 }
 """
 
-_DESCRIPTION = """
+_DESCRIPTION = """\
 This metric is derived from Modified Unigram Precision as a recall metric so that
 it will compute across references and not across predictions unlike precision. The computation is similar, however,
 we call this recall since there is no measure called "modified unigram recall".
@@ -47,7 +47,7 @@ and the references among the reference tokens. It can be computed with:
 Recall = # of matching tokens / # of reference tokens
 """
 
-_KWARGS_DESCRIPTION = """
+_KWARGS_DESCRIPTION = """\
 Args:
     predictions: list of predictions to score. Each predictions
         should be a string with tokens separated by spaces.
