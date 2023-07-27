@@ -1,0 +1,23 @@
+{
+    "basic": {
+        "empty_items": 0,
+        "total_items": 2,
+        "aun": {
+            "score": 1.0
+        }
+    },
+    "multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "aun": {
+            "score": 1.0
+        }
+    },
+    "multiple_pred_multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "aun": {
+            "score": 0.9583333333333334
+        }
+    }
+}
