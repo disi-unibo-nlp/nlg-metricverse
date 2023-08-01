@@ -14,3 +14,24 @@ Scores can be interpreted as shown in the table below.
 <p align="center">
   <img src="../../../figures/metrics/flesch_kincaid/flesch_kincaid.png" width="80%" title="Scores interpretation for Flesch-Kincaid index" alt="">
 </p>
+
+### Inputs
+-  **prepredictions** (`list`): list of predictions to score. Each predictions should be a string with tokens separated by spaces.
+-  **references** (`list`): list of references to score. Each reference should be a string with tokens separated by spaces.
+
+### Output
+- **flesh_kincaid** (`float`): Flesch-Kincaid index score.
+
+### Example
+```python
+predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
+references = ["The cat is playing on the mat.", "Today is a wonderful day"]
+scorer = FleschKincaidPlanet()
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+{
+  "flesch_kincaid": { 
+    "score": 1.25 
+  }
+}
+```

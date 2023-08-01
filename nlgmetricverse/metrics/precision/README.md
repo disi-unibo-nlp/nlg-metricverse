@@ -49,12 +49,6 @@ Output Example(s):
 {'precision': array([0.66666667, 0.0, 0.0])}
 ```
 
-
-
-
-#### Values from Popular Papers
-
-
 ### Examples
 
 Example 1-A simple binary example

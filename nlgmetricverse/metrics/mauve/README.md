@@ -46,22 +46,14 @@ It also has several optional arguments:
 `verbose`: If `True` (default), running the metric will print running time updates.
 
 `seed`: random seed to initialize k-means cluster assignments, randomly assigned by default.
-    
 
+### Inputs
+- **predictions** (`list`): list of predictions to score. Each prediction should be a string with tokens separated by spaces.
+- **references** (`list`): list of reference for each prediction. Each reference should be a string with tokens separated by spaces.
 
-## Output values
-
-This metric outputs a dictionary with 5 key-value pairs:
-
-`mauve`: MAUVE score, which ranges between 0 and 1. **Larger** values indicate that P and Q are closer.
-
-`frontier_integral`: Frontier Integral, which ranges between 0 and 1. **Smaller** values indicate that P and Q are closer.
-
-`divergence_curve`: a numpy.ndarray of shape (m, 2); plot it with `matplotlib` to view the divergence curve.
-
-`p_hist`: a discrete distribution, which is a quantized version of the text distribution `p_text`.
- 
-`q_hist`: same as above, but with `q_text`.
+### Outputs
+- **mauve** : MAUVE score, which ranges between 0 and 1. **Larger** values indicate that P and Q are closer.
+- **reduced_scores** : a list of the MAUVE scores for each of the 5 reduced dimensions.
 
 
 ### Values from popular papers

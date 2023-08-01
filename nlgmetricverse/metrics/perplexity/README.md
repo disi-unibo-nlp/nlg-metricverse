@@ -50,6 +50,10 @@ Setting the stride length equal to the max input length is equivalent to the sub
 </p>
 
 ### Inputs
+- **predictions** (`list`): list of predictions to score. Each prediction
+        should be a string with tokens separated by spaces.
+- **references** (`list`): list of reference for each prediction. Each
+        reference should be a string with tokens separated by spaces.
 - **model_id** (`str`): hugging face model used for calculating Perplexity. Note: perplexity can only be calculated for classical causal (or autoregressive) language models.
   - This includes models such as GPT-2, causal variations of BERT, causal versions of T5, and more (the full list can be found in the [AutoModelForCausalLM documentation](https://huggingface.co/docs/transformers/master/en/model_doc/auto#transformers.AutoModelForCausalLM).
 - **input_texts** (`list of str`): input text, each separate text snippet is one list entry. Perplexity returned will be an average of the perplexity for each list entry.
@@ -65,7 +69,27 @@ The perplexity range is <img src="https://render.githubusercontent.com/render/ma
 
 ## Examples
 ```python
-TODO
+import json # Just for pretty printing the output metric dicts
+from nlgmetricverse import NLGMetricverse, load_metric
+predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
+
+scorer = NLGMetricverse(metrics=load_metric("perplexity"))
+scores = scorer(predictions=predictions, references=references)
+print(json.dumps(scores, indent=4))
+{
+    "total_items": 2,
+    "empty_items": 0,
+    "total_time_elapsed": 0.3003244400024414,
+    "perplexity": {
+        "perplexities": [
+            16.518978118896484,
+            16.501928329467773
+        ],
+        "mean_perplexity": 16.51045322418213,
+        "time_elapsed": 0.3003244400024414
+    }
+}
 ```
 When we run the above with stride = 1024, i.e. no overlap, the resulting PPL is 19.64, which is about the same as the 19.93 reported in the GPT-2 paper.
 By using stride = 512 and thereby employing a striding window strategy, this jumps down to 16.53.

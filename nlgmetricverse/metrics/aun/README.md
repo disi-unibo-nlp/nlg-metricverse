@@ -24,7 +24,7 @@ When we compare the redundancy of long vs. short documents with respect to this 
 predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
 references = ["Peace at home, peace in th world.", "The cat is playing on the mat."]
 
-scorer = NLGMetricverse(metrics=load_metric("accuracy"))
+scorer = NLGMetricverse(metrics=load_metric("aun"))
 scores = scorer(predictions=predictions, references=references, reduce_fn=REDUCTION_FUNCTION)
 print(json.dumps(scores, indent=4))
 {

@@ -2,18 +2,12 @@
 
 
 ## Metric Description
-Prism is an automatic MT metric which uses a sequence-to-sequence
-paraphraser to score MT system outputs conditioned on their respective
-human references.  Prism uses a multilingual NMT model as a zero-shot
-paraphraser, which negates the need for synthetic paraphrase data and
+Prism is an automatic MT metric which uses a sequence-to-sequence paraphraser to score MT system outputs conditioned on their respective
+human references.  Prism uses a multilingual NMT model as a zero-shot paraphraser, which negates the need for synthetic paraphrase data and
 results in a single model which works in many languages.
+Prism outperforms or statistically ties with all metrics submitted to the [WMT 2019 metrics shared task](https://www.aclweb.org/anthology/W19-5302/) as segment-level human correlation.
 
-Prism outperforms or statistically ties with all metrics submitted to
-the [WMT 2019 metrics shared task](https://www.aclweb.org/anthology/W19-5302/) as
-segment-level human correlation.
-
-The official library provides a large, pre-trained multilingual NMT model which is used as a multilingual paraphraser, 
-but the model may also be of use to the research community beyond MT metrics.
+The official library provides a large, pre-trained multilingual NMT model which is used as a multilingual paraphraser, but the model may also be of use to the research community beyond MT metrics.
 
 Prism scores raw, untokenized text; all preprocessing is applied internally.
 
@@ -70,7 +64,7 @@ Swedish (sv), Turkish (tr), Ukrainian (uk), Vietnamese (vi)
 
 The data filtering scripts used to train the Prism model can be found [here](https://github.com/thompsonb/prism_bitext_filter).
 
-## Citation(s)
+## Citation
 ```bibtex
 @inproceedings{thompson-post-2020-automatic,
     title={Automatic Machine Translation Evaluation in Many Languages via Zero-Shot Paraphrasing},

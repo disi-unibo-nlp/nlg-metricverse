@@ -17,6 +17,24 @@ An illustration of the word mover’s distance. All non-stop words (**bold**) of
 
 (Top:) The components of the WMD metric between a query $D_0$ and two sentences $D_1$ , $D_2$ (with equal BOW distance). The arrows represent flow between two words and are labeled with their distance contribution. (Bottom:) The flow between two sentences $D_3$ and $D_0$ with different numbers of words. This mismatch causes the WMD to move words to multiple similar words.
 
+### Inputs
+- **predictions** (`list` of `str`): The system stream (a sequence of segments).
+- **references** (`list` of `list` of `str`): A list of one or more reference streams (each a sequence of segments).
+
+### Outputs
+- **avg_distance**: average distance between predictions and references
+- **distances**: distances between predictions and references
+
+## Example
+```python
+from nlgmetricverse import NLGMetricverse, load_metric
+predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
+references = ["The cat is playing on the mat.", "Today is a wonderful day"]
+scorer = NLGMetricverse(metrics=load_metric("wmd"))
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+{ "wmd": {'avg_distance': 0.677252958947389, 'distances': [0.6383760813815303, 0.7161298365132478]} }
+
 ## Citation(s)
 ```bibtex
 @inproceedings{kusner2015doc, 

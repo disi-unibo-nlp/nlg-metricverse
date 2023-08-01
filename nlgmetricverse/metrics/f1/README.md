@@ -50,8 +50,6 @@ This metric outputs a dictionary, with either a single f1 score, of type `float`
 #### Values from Popular Papers
 
 
-
-
 ### Examples
 
 Example 1-A simple binary example

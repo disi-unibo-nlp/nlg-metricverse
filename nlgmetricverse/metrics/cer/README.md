@@ -30,16 +30,14 @@ from datasets import load_metric
 cer = load_metric("cer")
 cer_score = cer.compute(predictions=predictions, references=references)
 ```
-## Output values
+### Inputs
+-  **predictions** (`list`): list of transcribtions to score.
+-  **references** (`list`): list of references for each speech input.
+-  **concatenate_texts** (`boolean`): Whether or not to concatenate sentences before evaluation, set to True for more accurate result.
 
-This metric outputs a float representing the character error rate.
-
-```
-print(cer_score)
-0.34146341463414637
-```
-
-The **lower** the CER value, the **better** the performance of the ASR system, with a CER of 0 being a perfect score. 
+### Output
+-  **cer_score** (`float`): Character error rate. This metric outputs a float representing the character error rate.The **lower** the 
+                            CER value, the **better** the performance of the ASR system, with a CER of 0 being a perfect score. 
 
 However, CER's output is not always a number between 0 and 1, in particular when there is a high number of insertions (see [Examples](#Examples) below).
 

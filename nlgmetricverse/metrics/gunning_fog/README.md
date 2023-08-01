@@ -20,3 +20,26 @@ Scores can be interpreted as shown in the table below.
 <p align="center">
   <img src="../../../figures/metrics/gunning_fog/gunning_fog.png" width="40%" title="Scores interpretation for Gunning_Fog index" alt="">
 </p>
+
+### Inputs
+- **predictions** (`list`): list of predictions to score. Each prediction should be a string with tokens separated by spaces.
+- **references** (`list`): list of reference for each prediction. Each reference should be a string with tokens separated by spaces.
+- **n** (`int`): number of words to consider for the Gunning-Fog index. Defaults to `1`.
+
+### Outputs
+- **score** (`float`): the Gunning-Fog index score for the text input in the list.
+
+## Examples
+```python
+from nlgmetricverse import NLGMetricverse, load_metric
+predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
+scorer = NLGMetricverse(metrics=load_metric("gunning_fog"))
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+{
+  "gunning_fog": {
+    "score": 2.2 
+  }
+}
+```

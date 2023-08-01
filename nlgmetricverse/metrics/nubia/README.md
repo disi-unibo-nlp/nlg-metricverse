@@ -12,6 +12,19 @@ Nubia is composed of three modules.
 - The second module is the **aggregator**. This module is trained to approximate a function mapping input neural features to a quality score that reflects how interchangeable the sentences are. The objective is to come as close as possible to human evaluation.
 - The final module is **calibration**. This is necessary because the aggregator is not bound between 0 and 1, nor does a regressed score comparing a reference sentence with itself always ouput 1. So to calibrate, the output is normalized against the score of the reference sentence compared with itself, and bound between 0 and 1.
 
+### Inputs
+- **predictions** (`list`): list of predictions to score. Each prediction should be a string with tokens separated by spaces.
+- **references** (`list`): list of reference for each prediction. Each reference should be a string with tokens separated by spaces.
+- **segment_scores** (`bool`): whether to return the scores for each segment of the input text. Defaults to `False`.
+
+### Outputs
+- **score** (`float`): the average Nubia score for the text input in the list.
+- **semantic_relation** (`float`): the average semantic relation score for the text input in the list.
+- **contradiction** (`float`): the average contradiction score for the text input in the list.
+- **irrelevancy** (`float`): the average irrelevancy score for the text input in the list.
+- **logical_agreement** (`float`): the average logical agreement score for the text input in the list.
+- **segment_scores** (`list`): the scores for each segment of the input text. Only returned if `segment_scores` is set to `True`.
+
 ## Example
 ```Python
 s1, s2 = "He agreed to a proposal of mine.","He gave his agreement to my proposal."

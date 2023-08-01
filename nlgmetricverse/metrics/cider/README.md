@@ -16,6 +16,30 @@ $CIDer_n(c_i, S_i) = \frac{1}{m} \sum_j{\frac{
 
 where $g^n(c_i)$ is a vector formed by $g_k(c_i)$ (the TF-IDF weighting) corresponding to all n-grams of length $n$ and $||g^n(c_i)||$ is the magnitude of the vector $g^n(c_i)$. Similarity for $g^n(s_{ij})$.
 
+### Inputs
+-  **predictions** (`list`): A EvaluationInstance containing a single text sample for prediction.
+-  **references** (`list`): A EvaluationInstance containing a single text sample for reference.
+
+### Outputs
+-  **score** (`float`): The CIDEr score.
+-  **scores** (`list`): The CIDEr score for each individual prediction-reference pair.
+
+### Examples
+```python
+predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
+references = ["The cat is playing on the mat.", "Today is a wonderful day"]
+scorer = NLGMetricverse(metrics=load_metric("cider"))
+scores = scorer(predictions=predictions, references=references)
+print((scores, indent=4))
+{
+  "empty_items": 0,
+  "total_items": 2,
+  "cider": {
+    "score": 2.2006311045157565
+  }
+}
+```
+
 ## Citation(s)
 ```bibtex
 @inproceedings{DBLP:conf/cvpr/VedantamZP15,

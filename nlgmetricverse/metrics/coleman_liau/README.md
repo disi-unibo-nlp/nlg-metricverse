@@ -12,3 +12,20 @@ The Coleman–Liau index is calculated with the following formula:
 $CLI = 0.0588L - 0.296S - 15.8$
 
 where $L$ is the average number of letters per 100 words and $S$ is the average number of sentences per 100 words.
+
+### Inputs
+- **predictions** (`list`): A list of strings containing the predicted sentences.
+- **references** (`list`): A list of strings containing the reference sentences.
+
+### Outputs
+- **score** (`float`): The Coleman-Liau index.
+
+### Examples
+```python
+predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
+references = ["The cat is playing on the mat.", "Today is a wonderful day"]
+scorer = NLGMetricverse(metrics=load_metric("coleman_liau"))
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+"coleman_liau": { "score": 6.0925 }
+```
