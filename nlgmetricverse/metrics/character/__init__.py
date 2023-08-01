@@ -1,1 +1,0 @@
-from nlgmetricverse.metrics.character.character import CharacTER
