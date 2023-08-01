@@ -1,0 +1,31 @@
+{
+    "basic": {
+        "empty_items": 0,
+        "total_items": 2,
+        "cider": {
+            "score": 2.2006311045157565
+        }
+    },
+    "multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "cider": {
+            "score": 2.083547865047269,
+            "scores": [
+                3.194849441924075,
+                0.9722462881704631
+            ]
+        }
+    },
+    "multiple_pred_multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "cider": {
+            "score": 1.0669855864395312,
+            "scores": [
+                2.1339711728790625,
+                0.0
+            ]
+        }
+    }
+}

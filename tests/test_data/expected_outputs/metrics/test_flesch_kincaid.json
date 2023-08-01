@@ -1,0 +1,23 @@
+{
+    "basic": {
+        "empty_items": 0,
+        "total_items": 2,
+        "flesch_kincaid": {
+            "score": 1.25
+        }
+    },
+    "multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "flesch_kincaid": {
+            "score": 1.25
+        }
+    },
+    "multiple_pred_multiple_ref": {
+        "empty_items": 0,
+        "total_items": 2,
+        "flesch_kincaid": {
+            "score": 2.1
+        }
+    }
+}
