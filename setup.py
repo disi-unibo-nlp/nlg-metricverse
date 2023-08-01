@@ -137,7 +137,10 @@ _DEV_REQUIREMENTS = [
     "wget==3.2"
 ]
 
-_PRISM_REQUIREMENTS = ["validators"]
+_PRISM_REQUIREMENTS = [
+    'numpy>=1.23,<1.24;python_version>="3.8"',
+    'numpy==1.21.6;python_version<"3.8"',
+]
 
 _METRIC_REQUIREMENTS = [
     "sacrebleu>=2.0.0",
