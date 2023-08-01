@@ -150,6 +150,17 @@ class TERPlanet(MetricForLanguageGeneration):
         asian_support: bool = False,
         case_sensitive: bool = False,
     ):
+        """
+        Compute the ter score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            normalized (bool, optional): Whether to apply basic tokenization to sentences.
+            no_punct (bool, optional): Whether to remove punctuations from sentences.
+            asian_support (bool, optional): Whether to support Asian character processing.
+            case_sensitive (bool, optional): Whether to disable lowercasing.
+        """
         return self._compute_ter_score(
             predictions=predictions,
             references=references,
@@ -169,6 +180,17 @@ class TERPlanet(MetricForLanguageGeneration):
         asian_support: bool = False,
         case_sensitive: bool = False,
     ):
+        """
+        Compute the ter score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            normalized (bool, optional): Whether to apply basic tokenization to sentences.
+            no_punct (bool, optional): Whether to remove punctuations from sentences.
+            asian_support (bool, optional): Whether to support Asian character processing.
+            case_sensitive (bool, optional): Whether to disable lowercasing.
+        """
         # SacreBleu inherently supports multiple references.
         return self._compute_ter_score(
             predictions=predictions,
@@ -189,6 +211,17 @@ class TERPlanet(MetricForLanguageGeneration):
         asian_support: bool = False,
         case_sensitive: bool = False,
     ):
+        """
+        Compute the ter score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            normalized (bool, optional): Whether to apply basic tokenization to sentences.
+            no_punct (bool, optional): Whether to remove punctuations from sentences.
+            asian_support (bool, optional): Whether to support Asian character processing.
+            case_sensitive (bool, optional): Whether to disable lowercasing.
+        """
         scores = []
         avg_num_edits = 0
         avg_ref_length = 0

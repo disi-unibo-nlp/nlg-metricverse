@@ -143,6 +143,16 @@ class MeteorPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, alpha=0.9, beta=3, gamma=0.5
     ):
+        """
+        Compute the meteor score for a single prediction and a single reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            alpha (float): parameter for controlling relative weights of precision and recall. Default: 0.9
+            beta (float): parameter for controlling shape of penalty as a function of fragmentation. Default: 3
+            gamma (float): relative weight assigned to fragmentation penalty. Default: 0.5
+        """
         scores = [
             meteor_score.single_meteor_score(ref, pred, alpha=alpha, beta=beta, gamma=gamma)
             for ref, pred in zip(references, predictions)
@@ -152,6 +162,16 @@ class MeteorPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, alpha=0.9, beta=3, gamma=0.5
     ):
+        """
+        Compute the meteor score for a single prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            alpha (float): parameter for controlling relative weights of precision and recall. Default: 0.9
+            beta (float): parameter for controlling shape of penalty as a function of fragmentation. Default: 3
+            gamma (float): relative weight assigned to fragmentation penalty. Default: 0.5
+        """
         scores = [
             meteor_score.meteor_score(references=ref, hypothesis=pred, alpha=alpha, beta=beta, gamma=gamma)
             for ref, pred in zip(references, predictions)
@@ -161,6 +181,16 @@ class MeteorPlanet(MetricForLanguageGeneration):
     def _compute_multi_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, alpha=0.9, beta=3, gamma=0.5
     ):
+        """
+        Compute the meteor score for multiple prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing a multiple text sample for prediction.
+            references (Collator): A Collator containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            alpha (float): parameter for controlling relative weights of precision and recall. Default: 0.9
+            beta (float): parameter for controlling shape of penalty as a function of fragmentation. Default: 3
+            gamma (float): relative weight assigned to fragmentation penalty. Default: 0.5
+        """
         scores = []
         for pred, ref in zip(predictions, references):
             score = [

@@ -172,6 +172,13 @@ class BleurtPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs,
     ):
+        """
+        Compute the bleurt score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = self.scorer.score(references=references, candidates=predictions)
         return {"score": sum(scores) / len(scores), "scores": scores, "checkpoint": self.config_name}
 
@@ -182,6 +189,13 @@ class BleurtPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs,
     ):
+        """
+        Compute the bleurt score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for pred, refs in zip(predictions, references):
             pred = [pred] * len(refs)
@@ -197,6 +211,13 @@ class BleurtPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs,
     ):
+        """
+        Compute the bleurt score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = []

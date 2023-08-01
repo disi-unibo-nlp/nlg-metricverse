@@ -11,14 +11,36 @@ try:
     from itertools import izip as zip
 except ImportError:
     pass
+
 _LICENSE= """ """
-_DESCRIPTION = """ """
+
+_DESCRIPTION = """\
+Word Mover’s Distance (WMD), a special case of Earth Mover’s Distance, measures semantic distance between texts by aligning semantically similar 
+words and finding the amount of flow traveling between these words. It was shown useful for text classification and textual similarity tasks. 
+MOVERScore generalizes WMD by working on n-grams.
+The WMD distance measures the dissimilarity between two text documents as the minimum amount of distance that the embedded words of one document 
+need to “travel” to reach the embedded words of another document.
+"""
+
 _CITATION = """ """
 
-
-
 _KWARGS_DESCRIPTION = """
+Args:
+    `predictions` (list): List of generated text predictions.
+    `references` (list): List of reference texts for comparison.
+    `segment_scores` (bool): Whether to return the scores for each segment.
+Returns:
+    'score': A dictionary containing the computed WMD metric score, with avg_distance as key and the average distance as value and distances as
+             key and the distances for each prediction-reference pair as value.
 
+Examples:
+    >>> from nlgmetricverse import NLGMetricverse, load_metric
+    >>> predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
+    >>> references = ["The cat is playing on the mat.", "Today is a wonderful day"]
+    >>> scorer = NLGMetricverse(metrics=load_metric("wmd"))
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    { "wmd": {'avg_distance': 0.677252958947389, 'distances': [0.6383760813815303, 0.7161298365132478]} }
 """
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
@@ -90,6 +112,14 @@ class WMDPlanet(MetricForLanguageGeneration):
             segment_scores: bool = False,
             **kwargs,
     ):
+        """
+        Compute the wmd score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): Whether to return the scores for each segment.
+        """
         distances = self.wmd_scorer(predictions, references)
         return {
             "avg_distance":  float(np.mean(distances)), "distances": distances
@@ -103,6 +133,14 @@ class WMDPlanet(MetricForLanguageGeneration):
             segment_scores: bool = False,
             **kwargs,
     ):
+        """
+        Compute the wmd score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): Whether to return the scores for each segment.
+        """
         reduced_distances = []
         for refs, pred in zip(references, predictions):
             extended_preds = [pred for _ in range(len(refs))]
@@ -120,7 +158,14 @@ class WMDPlanet(MetricForLanguageGeneration):
             segment_scores: bool = False,
             **kwargs,
     ):
-
+        """
+        Compute the wmd score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): Whether to return the scores for each segment.
+        """
         reduced_distances = []
         for preds, refs in zip(predictions, references):
             scores= []

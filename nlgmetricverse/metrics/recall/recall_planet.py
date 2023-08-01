@@ -88,6 +88,13 @@ class RecallPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the recall score for a single prediction and a single reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         predictions, references = self._tokenize(predictions, references)
         for pred, ref in zip(predictions, references):
@@ -102,6 +109,13 @@ class RecallPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the recall score for a single prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for pred, refs in zip(predictions, references):
             pred_score = [
@@ -116,6 +130,13 @@ class RecallPlanet(MetricForLanguageGeneration):
     def _compute_multi_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the recall score for multiple prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing multiple text sample for prediction.
+            references (Collator): A Collator containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = []

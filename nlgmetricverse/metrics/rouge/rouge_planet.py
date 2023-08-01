@@ -54,7 +54,7 @@ ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
   consecutiveness of the matches as long as the word order is the same. It hence cannot differentiate between
   hypotheses that could have different semantic implications, as long as they have the same LCS even with different
   spatial positions of the words w.r.t the reference.
-  $P_{LCS} = frac{|LCS|}{#words\_in\_hypothesis}$
+  $P_{LCS= frac{|LCS|}{#words\_in\_hypothesis}$
   $R_{LCS} = frac{|LCS|}{#words\_in\_reference}$
   $ROUGE-L = F_{LCS} = \frac{(1 + \beta^2)R_{LCS}P_{LCS}}{R_{LCS} + \beta^2 P_{LCS}}$
 - ROUGE-W addresses this by using a weighted LCS matching that adds a gap penalty to reduce weight on each
@@ -117,6 +117,7 @@ class RougePlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _get_aggregator(use_aggregator: bool) -> Union[List, scoring.BootstrapAggregator]:
+        # If use_aggregator is True, use BootstrapAggregator to aggregate scores
         if use_aggregator:
             aggregator = scoring.BootstrapAggregator()
         else:
@@ -128,6 +129,7 @@ class RougePlanet(MetricForLanguageGeneration):
         aggregator: Union[List, scoring.BootstrapAggregator],
         score: Union[Dict[str, float], Dict[str, scoring.BootstrapAggregator]],
     ) -> Union[List, scoring.BootstrapAggregator]:
+        # If aggregator is BootstrapAggregator, add score to it
         if isinstance(aggregator, scoring.BootstrapAggregator):
             aggregator.add_scores(score)
         else:
@@ -136,6 +138,7 @@ class RougePlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _aggregate(aggregator) -> Union[Dict[str, float], Dict[str, scoring.AggregateScore]]:
+        # If aggregator is BootstrapAggregator, aggregate scores
         if isinstance(aggregator, scoring.BootstrapAggregator):
             result = aggregator.aggregate()
         else:
@@ -148,6 +151,7 @@ class RougePlanet(MetricForLanguageGeneration):
     def _normalize_score_list(
         score_list: List[Dict[str, scoring.BootstrapAggregator]], metric_to_select: str
     ) -> List[Dict[str, scoring.BootstrapAggregator]]:
+        # Normalize the score list by selecting the metric_to_select
         for score_dict in score_list:
             for metric, score in score_dict.items():
                 score_dict[metric] = getattr(score, metric_to_select)
@@ -155,10 +159,12 @@ class RougePlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _reduce_dict(score_list: List[Dict[str, scoring.BootstrapAggregator]], reduce_fn: callable) -> Dict[str, float]:
+        # Reduce the score list by applying reduce_fn
         return pd.DataFrame(score_list).apply(reduce_fn, axis=0).to_dict()
 
     @staticmethod
     def _select_mid_from_aggregation(aggregated_scores: Dict[str, scoring.AggregateScore]) -> Dict[str, float]:
+        # Select the mid score from the aggregation
         return {metric: score.mid for metric, score in aggregated_scores.items()}
 
     def evaluate(
@@ -173,6 +179,7 @@ class RougePlanet(MetricForLanguageGeneration):
         metric_to_select: Optional[str] = "fmeasure",
         **kwargs
     ):
+        
         if rouge_types is None:
             rouge_types = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
 
@@ -211,6 +218,16 @@ class RougePlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
         self, predictions, references, reduce_fn: Callable = None, scorer=None, aggregator=None, metric_to_select=None
     ):
+        """
+        Compute the rouge score for a single prediction and a single reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            scorer: A rouge scorer object.
+            aggregator: A rouge aggregator object.
+            metric_to_select: A metric to select from the aggregation.
+        """
         for ref, pred in zip(references, predictions):
             score = scorer.score(target=ref, prediction=pred)
             if metric_to_select is not None:
@@ -221,6 +238,16 @@ class RougePlanet(MetricForLanguageGeneration):
     def _compute_single_pred_multi_ref(
         self, predictions, references, reduce_fn: Callable = None, scorer=None, aggregator=None, metric_to_select=None
     ):
+        """
+        Compute the rouge score for a single prediction and multiple reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            scorer: A rouge scorer object.
+            aggregator: A rouge aggregator object.
+            metric_to_select: A metric to select from the aggregation.
+        """
         for pred, refs in zip(predictions, references):
             pred_scores = [scorer.score(target=ref, prediction=pred) for ref in refs]
             pred_scores = self._normalize_score_list(pred_scores, metric_to_select)
@@ -231,6 +258,16 @@ class RougePlanet(MetricForLanguageGeneration):
     def _compute_multi_pred_multi_ref(
         self, predictions, references, reduce_fn: Callable = None, scorer=None, aggregator=None, metric_to_select=None
     ):
+        """
+        Compute the rouge score for multiple prediction and multiple reference.
+        Args:
+            predictions: A parameter containing multiple text sample for prediction.
+            references: A parameter containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            scorer: A rouge scorer object.
+            aggregator: A rouge aggregator object.
+            metric_to_select: A metric to select from the aggregation.
+        """
         for preds, refs in zip(predictions, references):
             multi_aggregator = self._get_aggregator(use_aggregator=True)
             for pred in preds:

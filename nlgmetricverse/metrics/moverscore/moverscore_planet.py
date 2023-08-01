@@ -109,6 +109,19 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             remove_subwords=True,
             model="distilbert-base-uncased"
     ):
+        """
+        Compute the moverscore score for a single prediction and a single reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            idf_dict_ref (Any, optional): idf dictionary extracted from the reference corpus.
+            idf_dict_hyp (Any, optional): idf dictionary extracted from the system hypothesis corpus.
+            stop_words (Any, optional): a set of functional words to ignore.
+            n_gram (int, optional): unigram-based MoverScore (n-gram=1), bigram-based MoverScore (n-gram=2).
+            remove_subwords (bool, optional): if `True`, remove the specified stopwords.
+            model (str, optional): the pre-trained model to use. Default: `distilbert-base-uncased`.
+        """
         os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []
@@ -133,6 +146,19 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             remove_subwords=True,
             model="distilbert-base-uncased"
     ):
+        """
+        Compute the moverscore score for a single prediction and multiple reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            idf_dict_ref (Any, optional): idf dictionary extracted from the reference corpus.
+            idf_dict_hyp (Any, optional): idf dictionary extracted from the system hypothesis corpus.
+            stop_words (Any, optional): a set of functional words to ignore.
+            n_gram (int, optional): unigram-based MoverScore (n-gram=1), bigram-based MoverScore (n-gram=2).
+            remove_subwords (bool, optional): if `True`, remove the specified stopwords.
+            model (str, optional): the pre-trained model to use. Default: `distilbert-base-uncased`.
+        """
         os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []
@@ -161,6 +187,19 @@ class MoverscorePlanet(MetricForLanguageGeneration):
             remove_subwords=True,
             model="distilbert-base-uncased"
     ):
+        """
+        Compute the moverscore score for multiple prediction and multiple reference.
+        Args:
+            predictions: A parameter containing a multiple text sample for prediction.
+            references: A parameter containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            idf_dict_ref (Any, optional): idf dictionary extracted from the reference corpus.
+            idf_dict_hyp (Any, optional): idf dictionary extracted from the system hypothesis corpus.
+            stop_words (Any, optional): a set of functional words to ignore.
+            n_gram (int, optional): unigram-based MoverScore (n-gram=1), bigram-based MoverScore (n-gram=2).
+            remove_subwords (bool, optional): if `True`, remove the specified stopwords.
+            model (str, optional): the pre-trained model to use. Default: `distilbert-base-uncased`.
+        """
         os.environ['MOVERSCORE_MODEL'] = model
         if stop_words is None:
             stop_words = []

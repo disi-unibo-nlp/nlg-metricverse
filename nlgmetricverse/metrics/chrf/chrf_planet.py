@@ -155,6 +155,12 @@ class CHRFPlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _validate_references(references: Collator) -> None:
+        """
+        The purpose of this method is to validate the references for a given prediction using the SacreBLEU metric.
+        The method first determines the number of references per prediction by getting the length of the first reference in the
+        references parameter. It then checks if the length of each reference in the references parameter is equal to the 
+        references_per_prediction value.
+        """
         references_per_prediction = len(references[0])
         if any(len(refs) != references_per_prediction for refs in references):
             raise ValueError("Sacrebleu requires the same number of references for each prediction")
@@ -163,6 +169,10 @@ class CHRFPlanet(MetricForLanguageGeneration):
     def _compute_chrf_score(
             predictions: Union[str, List[str]], references: Union[str, List[str]], **kwargs
     ) -> Tuple[float, int, int, int]:
+        """
+        This function takes in two parameters: predictions and references, both of which can be either a string or a list of strings. 
+        The function also accepts additional keyword arguments that can be used to configure the CHRF scorer.
+        """
         if kwargs.get("char_order") is None:
             kwargs["char_order"] = CHRFScorer.CHAR_ORDER
         if kwargs.get("word_order") is None:
@@ -191,6 +201,19 @@ class CHRFPlanet(MetricForLanguageGeneration):
         whitespace: bool = False,
         eps_smoothing: bool = False,
     ):
+        """
+        Compute the chrf score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            char_order (int, optional): Character n-gram order.
+            word_order (int, optional): Word n-gram order. If equals to 2, the metric is referred to as chrF++.
+            beta (int, optional): Determine the importance of recall w.r.t precision.
+            lowercase (bool, optional): Enable case-insensitivity.
+            whitespace (bool, optional): If `True`, include whitespaces when extracting character n-grams.
+            eps_smoothing (bool, optional): If `True`, applies epsilon smoothing similar
+        """
         score, c_ord, w_ord, beta = self._compute_chrf_score(
             predictions,
             references,
@@ -215,6 +238,19 @@ class CHRFPlanet(MetricForLanguageGeneration):
         whitespace: bool = False,
         eps_smoothing: bool = False,
     ):
+        """
+        Compute the chrf score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            char_order (int, optional): Character n-gram order.
+            word_order (int, optional): Word n-gram order. If equals to 2, the metric is referred to as chrF++.
+            beta (int, optional): Determine the importance of recall w.r.t precision.
+            lowercase (bool, optional): Enable case-insensitivity.
+            whitespace (bool, optional): If `True`, include whitespaces when extracting character n-grams.
+            eps_smoothing (bool, optional): If `True`, applies epsilon smoothing similar
+        """
         # SacreBleu inherently supports multiple references.
         return self._compute_single_pred_single_ref(
             predictions=predictions,
@@ -240,6 +276,19 @@ class CHRFPlanet(MetricForLanguageGeneration):
         whitespace: bool = False,
         eps_smoothing: bool = False,
     ):
+        """
+        Compute the chrf score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            char_order (int, optional): Character n-gram order.
+            word_order (int, optional): Word n-gram order. If equals to 2, the metric is referred to as chrF++.
+            beta (int, optional): Determine the importance of recall w.r.t precision.
+            lowercase (bool, optional): Enable case-insensitivity.
+            whitespace (bool, optional): If `True`, include whitespaces when extracting character n-grams.
+            eps_smoothing (bool, optional): If `True`, applies epsilon smoothing similar
+        """
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = []
@@ -267,6 +316,10 @@ class CHRFPlanet(MetricForLanguageGeneration):
     def evaluate(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ) -> Dict[str, float]:
+        """
+        This function takes in three parameters: predictions, references, and reduce_fn, as well as additional keyword arguments. 
+        The purpose of this method is to evaluate the predictions against the references using the metric implemented by the class.
+        """
         if predictions.can_collapse() and references.can_collapse():
             predictions = predictions.collapse()
             eval_fn = self._compute_single_pred_single_ref

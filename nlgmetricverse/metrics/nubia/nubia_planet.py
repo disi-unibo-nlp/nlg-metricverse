@@ -13,8 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """ Nubia metric. The part of this file is adapted from metric implementations
-of evaluate package. See
-https://github.com/huggingface/evaluate/blob/master/metrics/ """
+of evaluate package. See https://github.com/huggingface/evaluate/blob/master/metrics/ """
 from typing import Callable, Dict, List
 
 import evaluate
@@ -23,7 +22,7 @@ import numpy as np
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
-_CITATION = """
+_CITATION = """\
 @misc{kane2020nubia,
     title={NUBIA: NeUral Based Interchangeability Assessor for Text Generation},
     author={Hassan Kane and Muhammed Yusuf Kocyigit and Ali Abdalla and Pelkins Ajanoh and Mohamed Coulibali},
@@ -34,15 +33,45 @@ _CITATION = """
 }
 """
 
-_DESCRIPTION = """
-
+_DESCRIPTION = """\
+NUBIA is a SoTA evaluation metric for text generation. It stands for NeUral Based Interchangeability Assessor. In addition to returning 
+an interchangeability score, NUBIA also returns scores for semantic relation, contradiction, irrelevancy, logical 
+agreement, and grammaticality.
+Nubia is composed of three modules.
+- The first is **neural feature extraction**. The three main neural features that power the metric are semantic similarity, 
+  logical inference, and sentence legibility. These are extracted by exposing layers from powerful (pretrained) language 
+  models: RoBERTa STS for semantic similarity, RoBERTa MNLI for logical inference, and GPT-2 for sentence legibility.
+- The second module is the **aggregator**. This module is trained to approximate a function mapping input neural features to 
+  a quality score that reflects how interchangeable the sentences are. The objective is to come as close as possible to human evaluation.
+- The final module is **calibration**. This is necessary because the aggregator is not bound between 0 and 1, nor does a regressed 
+  score comparing a reference sentence with itself always ouput 1. So to calibrate, the output is normalized against the score of the 
+  reference sentence compared with itself, and bound between 0 and 1.
 """
 
-_KWARGS_DESCRIPTION = """
+_KWARGS_DESCRIPTION = """\
+Args:
+    predictions: list of predictions to score. Each prediction should be a string with tokens separated by spaces.
+    references: list of reference for each prediction. Each reference should be a string with tokens separated by spaces.
+    segment_scores: If True, return scores for each segment.
+Returns:
+    'nubia_score': nubia score.
+    'semantic_relation': semantic relation score.
+    'irrelevancy': irrelevancy score.
+    'contradiction': contradiction score.
+    'logical_agreement': logical agreement score.
+    'segment_scores': segment scores.
 
+Examples:
+    >>> from nlgmetricverse import NLGMetricverse, load_metric
+    >>> predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+    >>> references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
+    >>> scorer = NLGMetricverse(metrics=load_metric("nubia"))
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    {"nubia: {'nubia_score': 0.9504227034094436, 'semantic_relation': 4.672990322113037/5.0, 'irrelevancy': 0.5306123290210962, 'contradiction': 0.26220036670565605, 'logical_agreement': 99.20719265937805, 'segment_scores': False}}
 """
 
-_LICENSE = """
+_LICENSE = """\
 Copyright (c) 2020 wl-research
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -75,6 +104,7 @@ class NubiaPlanet(MetricForLanguageGeneration):
             super(NubiaPlanet, self)._download_and_prepare(dl_manager)
         self.scorer = nubia_score.Nubia()
 
+    # Method to provide information about the Nubia metric.
     def _info(self):
         return evaluate.MetricInfo(
             description=_DESCRIPTION,
@@ -98,6 +128,14 @@ class NubiaPlanet(MetricForLanguageGeneration):
             segment_scores: bool = False,
          
     ):
+        """
+        Compute the nubia score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): Whether to return scores per instance. Defaults to False.
+        """
         scores=[] 
         irrelevancy_scores=[]
         semantic_relation=[]
@@ -140,8 +178,6 @@ class NubiaPlanet(MetricForLanguageGeneration):
         """
         We combine our prediction/reference pairs and use their single prediction/reference function.
         """
-      
-        
         final_scores=[]
         irrelevancy_scores=[]
         semantic_relation=[]

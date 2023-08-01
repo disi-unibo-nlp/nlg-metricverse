@@ -38,7 +38,22 @@ _DESCRIPTION = """\
 """
 
 _KWARGS_DESCRIPTION = """
+Args:
+    predictions: An instance of EvaluationInstance containing the predicted text.
+    references: An instance of EvaluationInstance containing the reference text.
 
+Returns:
+    'score': Aun score.
+Examples:
+    >>> score = nlgmetricverse.load_metric("accuracy")
+    >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+    >>> references = [
+        ["the cat is playing on the mat.", "The cat plays on the mat."], 
+        ["Today is a wonderful day", "The weather outside is wonderful."]
+    ]
+    >>> results = score.compute(predictions=predictions, references=references)
+    >>> print(results)
+    {'aun': {'score': 0.9310344827586207}}
 """
 
 _LICENSE = """

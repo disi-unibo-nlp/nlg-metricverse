@@ -9,11 +9,12 @@ try:
     from itertools import izip as zip
 except ImportError:
     pass
+
 _LICENSE= """ """
+
 _DESCRIPTION = """ """
+
 _CITATION = """ """
-
-
 
 _KWARGS_DESCRIPTION = """
 
@@ -50,7 +51,7 @@ class CharacTERPlanet(MetricForLanguageGeneration):
             characTER_source = (
                 "https://raw.githubusercontent.com/rwth-i6/CharacTER/master/CharacTER.py"
             )
-            libED_path = dl_manager.download(LIBRARY_URLS["libed"])
+            libED_path = dl_manager.download(LIBRARY_URLS["ed"])
             print(libED_path)
             self.ed_wrapper = ctypes.CDLL(libED_path)
             self.ed_wrapper.wrapper.restype = ctypes.c_float

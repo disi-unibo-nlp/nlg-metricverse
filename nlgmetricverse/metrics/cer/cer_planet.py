@@ -60,16 +60,16 @@ Args:
     predictions: list of transcribtions to score.
     concatenate_texts: Whether or not to concatenate sentences before evaluation, set to True for more accurate result.
 Returns:
-    (float): the character error rate
+    'score' (float): the character error rate
 Examples:
     >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
     >>> references = [
         ["the cat is playing on the mat.", "The cat plays on the mat."], 
         ["Today is a wonderful day", "The weather outside is wonderful."]
     ]
-    >>> cer = nlgmetricverse.load_metric("cer")
-    >>> cer_score = cer.compute(predictions=predictions, references=references)
-    >>> print(cer_score)
+    >>> score = nlgmetricverse.load_metric("cer")
+    >>> score = cer.compute(predictions=predictions, references=references)
+    >>> print(score)
     {
       "cer": {
         "score": 0.7272727272727273,
@@ -147,6 +147,14 @@ class CERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         concatenate_texts: bool = False,
     ):
+        """
+        Compute the cer_score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            concatenate_texts (bool, optional): Whether or not to concatenate sentences before evaluation, set to True for more accurate result.
+        """
         if concatenate_texts:
             score, total_substitutions, total_deletions, total_insertions, total_hits = self._compute_cer_score(
                 predictions, references
@@ -185,6 +193,13 @@ class CERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs
     ):
+        """
+        Compute the cer_score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         if "concatenate_texts" in kwargs:
             warnings.warn("Option 'concatenate_texts' is only available in single-pred & single-ref setting.")
 
@@ -226,6 +241,13 @@ class CERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs
     ):
+        """
+        Compute the cer_score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         if "concatenate_texts" in kwargs:
             warnings.warn("Option 'concatenate_texts' is only available in single-pred & single-ref setting.")
 

@@ -27,17 +27,53 @@ from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
 
-
-_LICENSE= """ """
-_DESCRIPTION = """ """
-_CITATION = """ """
-
-
-
-_KWARGS_DESCRIPTION = """
-
+_CITATION = """\
+@article{jelinek1977perplexity,
+  title={Perplexity—a measure of the difficulty of speech recognition tasks},
+  author={Jelinek, Fred and Mercer, Robert L and Bahl, Lalit R and Baker, James K},
+  journal={The Journal of the Acoustical Society of America},
+  volume={62},
+  number={S1},
+  pages={S63--S63},
+  year={1977},
+  publisher={Acoustical Society of America}
+}
 """
 
+_DESCRIPTION = """
+Given a model and an input text sequence, perplexity measures how likely the model is to generate the input text sequence.
+So, perplexity is a common metric for directly assessing how well a selection of text matches the distribution of text that the 
+input model was trained on.
+Perplexity is defined as the exponentiated average negative log-likelihood of a sequence. If we have a tokenized sequence 
+X = (x_0, x_1, ..., x_t) then, the perplexity of X is, PPL(X)=exp( (1/t)summation{t}and{i} log p_{theta}(x_i|x_{<i}))
+where log p_{theta}(x_i|x_{<i}) is the log-likelihood of the ith token conditioned on the preceding tokens x_{<i} according to our model.
+So, the final perplexity is obtained by averaging all the obtained log-likelihoods (geometric mean).
+
+Intuitively, it can be thought of as an evaluation of the model's ability to predict uniformly among the set of specified tokens in a corpus.
+Importantly, this means that the tokenization procedure has a direct impact on a model's perplexity which should always be taken into consideration when comparing different models.
+"""
+
+_KWARGS_DESCRIPTION = """
+Args:
+    predictions: List of str or List of List of str. Each prediction should be a string with tokens separated by spaces.
+    references: List of str or List of List of str. Each prediction should be a string with tokens separated by spaces.
+    batch_size: int, default 16. The batch size to use for computing perplexity.
+
+Returns:
+    'perplexities': List of float. The perplexity score for each prediction.
+    'mean_perplexity': float. The mean perplexity score for all predictions.
+
+Examples:
+    >>> from nlgmetricverse import NLGMetricverse, load_metric
+    >>> predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+    >>> references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
+    >>> scorer = NLGMetricverse(metrics=load_metric("perplexity"))
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    {"perplexity": {"perplexities": [16.518978118896484, 16.501928329467773], "mean_perplexity": 16.51045322418213 }}
+"""
+
+_LICENSE= """ """
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class PerplexityPlanet(MetricForLanguageGeneration):
@@ -170,6 +206,14 @@ class PerplexityPlanet(MetricForLanguageGeneration):
             batch_size: int = 16,
             **kwargs,
     ):
+        """
+        Compute the perplexity score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            batch_size (int, optional): The batch size to use for computing perplexity.
+        """
         scores = self.perplexity_score(predictions=predictions, batch_size=batch_size)
         return scores
 
@@ -181,6 +225,14 @@ class PerplexityPlanet(MetricForLanguageGeneration):
             reduce_fn: Callable = None,
             **kwargs,
     ):  
+        """
+        Compute the perplexity score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            batch_size (int, optional): The batch size to use for computing perplexity.
+        """
         scores = self.perplexity_score(predictions=predictions, batch_size=batch_size)
         return scores
 
@@ -193,7 +245,14 @@ class PerplexityPlanet(MetricForLanguageGeneration):
             segment_scores: bool = False,
             **kwargs,
     ):
-        
+        """
+        Compute the perplexity score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            batch_size (int, optional): The batch size to use for computing perplexity.
+        """
         inputList = []
         for prediction in predictions:
             inputList += prediction

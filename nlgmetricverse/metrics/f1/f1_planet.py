@@ -83,6 +83,13 @@ class F1Planet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the f1 score for a single prediction and a single reference.
+        Args:
+            predictions (Collator): A collator containing a single text sample for prediction.
+            references (Collator): A collator containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         recall = load_metric("recall", task="language-generation")
         precision = load_metric("precision", task="language-generation")
         predictions, references = predictions.nested(), references.nested()
@@ -101,6 +108,13 @@ class F1Planet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs
     ):
+        """
+        Compute the f1 score for a single prediction and multiple reference.
+        Args:
+            predictions (Collator): A collator containing a single text sample for prediction.
+            references (Collator): A collator containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for pred, refs in zip(predictions, references):
             pred_score = [
@@ -115,6 +129,13 @@ class F1Planet(MetricForLanguageGeneration):
     def _compute_multi_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the f1 score for multiple prediction and multiple reference.
+        Args:
+            predictions (Collator): A collator containing a multiple text sample for prediction.
+            references (Collator): A collator containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+        """
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = []

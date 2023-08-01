@@ -42,18 +42,20 @@ _DESCRIPTION = """
 Prism is an automatic MT metric which uses a sequence-to-sequence paraphraser to score MT system outputs 
 conditioned on their respective human references. Prism uses a multilingual NMT model as a zero-shot paraphraser, 
 which negates the need for synthetic paraphrase data and results in a single model which works in many languages.
+
 See the `README.md` file at [https://github.com/thompsonb/prism](https://github.com/thompsonb/prism) for more
 information.
 """
 
 _KWARGS_DESCRIPTION = """
 Prism metric arguments.
+
 Construction Args:
     model_path_or_url (str): Path to the model directory or a URL of model file (tar).
     lang (str): Language of the sentences; required (e.g. 'en').
     temperature (float): Softmax temperature, where values >1.0 produce more uniform samples 
         and values <1.0 produce sharper samples.
-
+    
 Computation Args:
     predictions (list of str): Prediction/candidate sentences.
     references (list of str or list of list of str): Reference sentences.
@@ -61,8 +63,10 @@ Computation Args:
         average score is returned.
     normalized (bool): If True, resulting score/scores are normalized with exponentiation by log base,
         which bounds the score range within [0,1] (still higher is better). 
+
 Returns:
     'score': Prism score.
+
 Examples:
     >>> prism = nlgmetricverse.load_metric("prism")
     >>> predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
@@ -92,17 +96,22 @@ Examples:
 """
 
 _LICENSE = """MIT License
+
 Copyright (c) Brian Thompson
+
 Portions of this software are copied from fairseq (https://github.com/pytorch/fairseq),
 which is released under the MIT License and Copyright (c) Facebook, Inc. and its affiliates.
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -123,13 +132,13 @@ CHECKPOINT_URLS = {
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class PrismPlanet(MetricForLanguageGeneration):
     def __init__(
-            self,
-            resulting_name: str = None,
-            compute_kwargs: Dict = None,
-            model_path_or_url: str = "default",
-            lang: str = "en",
-            temperature: float = 1.0,
-            **kwargs,
+        self,
+        resulting_name: str = None,
+        compute_kwargs: Dict = None,
+        model_path_or_url: str = "default",
+        lang: str = "en",
+        temperature: float = 1.0,
+        **kwargs,
     ):
         self.model_path_or_url = model_path_or_url
         self.lang = lang
@@ -145,9 +154,9 @@ class PrismPlanet(MetricForLanguageGeneration):
 
     def _download_model(self, dl_manager):
         if (
-                self.model_path_or_url not in CHECKPOINT_URLS
-                and not os.path.isdir(self.model_path_or_url)
-                and not validators.url(self.model_path_or_url)
+            self.model_path_or_url not in CHECKPOINT_URLS
+            and not os.path.isdir(self.model_path_or_url)
+            and not validators.url(self.model_path_or_url)
         ):
             raise ValueError("Provided 'model_path_or_url' neither points to an existing directory nor a valid URL.")
         elif os.path.isdir(self.model_path_or_url):
@@ -225,6 +234,17 @@ class PrismPlanet(MetricForLanguageGeneration):
             normalize: bool = False,
             **kwargs,
     ):
+        """
+        Compute the prism score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): If True, then score for each instance are returned separately. Otherwise,
+                                             average score is returned. Defaults to False.
+            normalize (bool, optional): If True, resulting score/scores are normalized with exponentiation by log base,
+                                        which bounds the score range within [0,1] (still higher is better). Defaults to False.
+        """
         score = self._compute_prism_score(predictions, references, segment_scores=segment_scores, **kwargs)
         if normalize:
             score = self._normalize_score(score, self.model_identifier["log_base"])
@@ -247,6 +267,17 @@ class PrismPlanet(MetricForLanguageGeneration):
             normalize: bool = False,
             **kwargs,
     ):
+        """
+        Compute the prism score for a single prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): If True, then score for each instance are returned separately. Otherwise,
+                                             average score is returned. Defaults to False.
+            normalize (bool, optional): If True, resulting score/scores are normalized with exponentiation by log base,
+                                        which bounds the score range within [0,1] (still higher is better). Defaults to False.
+        """
         self._load_scorer()
         scores = []
         for pred, refs in zip(predictions, references):
@@ -279,6 +310,17 @@ class PrismPlanet(MetricForLanguageGeneration):
             normalize: bool = False,
             **kwargs,
     ):
+        """
+        Compute the prism score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): If True, then score for each instance are returned separately. Otherwise,
+                                             average score is returned. Defaults to False.
+            normalize (bool, optional): If True, resulting score/scores are normalized with exponentiation by log base,
+                                        which bounds the score range within [0,1] (still higher is better). Defaults to False.
+        """
         self._load_scorer()
         scores = []
         for preds, refs in zip(predictions, references):

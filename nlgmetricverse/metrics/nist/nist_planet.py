@@ -82,6 +82,14 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
+        """
+        Compute the nist score for a single prediction and a single reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            n (int): length of n-grams. default: 5.
+        """
         newRefs = []
         scores = []
         for reference in references:
@@ -101,6 +109,14 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
+        """
+        Compute the nist score for a single prediction and multiple reference.
+        Args:
+            predictions: A parameter containing a single text sample for prediction.
+            references: A parameter containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            n (int): length of n-grams. default: 5.
+        """
         scores = []
         predScores = []
         for refList in references:
@@ -123,6 +139,14 @@ class NistPlanet(MetricForLanguageGeneration):
             reduce_fn=None,
             n=5
     ):
+        """
+        Compute the nist score for multiple prediction and multiple reference.
+        Args:
+            predictions: A parameter containing a multiple text sample for prediction.
+            references: A paramter containing a multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            n (int): length of n-grams. default: 5.
+        """
         scores = []
         for prediction in predictions:
             score = self._compute_single_pred_multi_ref(predictions=prediction, references=references,

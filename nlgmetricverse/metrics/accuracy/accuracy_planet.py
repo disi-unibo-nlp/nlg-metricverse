@@ -86,6 +86,15 @@ class AccuracyPlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _tokenize(predictions: Collator, references: Collator):
+        """ 
+        Tokenize the input predictions and references for scoring.
+        Args:
+            predictions (Collator): A collator containing a list of text samples for predictions.
+            references (Collator): A collator containing a list of text samples for references.
+
+        Returns:
+            list, list: Tokenized versions of predictions and references as separate lists.
+        """
         predictions = [normalize_text(p).split() for p in predictions]
         references = [normalize_text(r).split() for r in references]
         return predictions, references
@@ -93,6 +102,16 @@ class AccuracyPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_single_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the accuracy score for a single prediction and a single reference.
+        Args:
+            predictions (Collator): A collator containing a single text sample for prediction.
+            references (Collator): A collator containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+
+        Returns:
+            dict: A dictionary containing the computed accuracy score.
+        """
         scores = []
         predictions, references = self._tokenize(predictions, references)
         for pred, ref in zip(predictions, references):
@@ -109,6 +128,16 @@ class AccuracyPlanet(MetricForLanguageGeneration):
     def _compute_single_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the accuracy score for a single prediction and multiple references.
+        Args:
+            predictions (Collator): A collator containing a single text sample for prediction.
+            references (Collator): A collator containing a list of text samples for references.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+
+        Returns:
+            dict: A dictionary containing the computed accuracy score.
+        """
         scores = []
         for pred, refs in zip(predictions, references):
             pred_score = [
@@ -123,6 +152,16 @@ class AccuracyPlanet(MetricForLanguageGeneration):
     def _compute_multi_pred_multi_ref(
         self, predictions: Collator, references: Collator, reduce_fn: Callable = None, **kwargs
     ):
+        """
+        Compute the accuracy score for multiple predictions and multiple references.
+        Args:
+            predictions (Collator): A collator containing multiple text samples for predictions.
+            references (Collator): A collator containing multiple lists of text samples for references.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+
+        Returns:
+            dict: A dictionary containing the computed accuracy score.
+        """
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = []

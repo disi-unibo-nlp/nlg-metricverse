@@ -173,6 +173,14 @@ class WERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         concatenate_texts: bool = False,
     ):
+        """
+        Compute the wer score for a single prediction and a single reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            concatenate_texts (bool, default=False): Whether to concatenate all input texts or compute WER iteratively.
+        """
         if concatenate_texts:
             score, total_substitutions, total_deletions, total_insertions, total_hits = self._compute_wer_score(
                 predictions, references
@@ -211,6 +219,14 @@ class WERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs
     ):
+        """
+        Compute the wer score for a single prediction and multiplw reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            concatenate_texts (bool, default=False): Whether to concatenate all input texts or compute WER iteratively.
+        """
         if "concatenate_texts" in kwargs:
             warnings.warn("Option 'concatenate_texts' is only available in single-pred & single-ref setting.")
 
@@ -252,6 +268,14 @@ class WERPlanet(MetricForLanguageGeneration):
         reduce_fn: Callable = None,
         **kwargs
     ):
+        """
+        Compute the wer score for multiple prediction and multiple reference.
+        Args:
+            predictions (EvaluationInstance): A EvaluationInstance containing multiple text sample for prediction.
+            references (EvaluationInstance): A EvaluationInstance containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            concatenate_texts (bool, default=False): Whether to concatenate all input texts or compute WER iteratively.
+        """
         if "concatenate_texts" in kwargs:
             warnings.warn("Option 'concatenate_texts' is only available in single-pred & single-ref setting.")
 

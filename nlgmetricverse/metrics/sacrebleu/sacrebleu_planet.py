@@ -183,6 +183,20 @@ class SacrebleuPlanet(MetricForLanguageGeneration):
         tokenize=None,
         use_effective_order=False,
     ):
+        """
+        Compute the sacrebleu score for a single prediction and a single reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing a single text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            smooth_method (str, optional): The smoothing method to use. (Default: 'exp').
+            smooth_value (float, optional): The smoothing value. Only valid for 'floor' and 'add-k'. (Defaults: floor: 0.1, add-k: 1).
+            force (bool, optional): Insist that your tokenized input is actually detokenized.
+            lowercase (bool, optional): Lowercase the data. If True, enables case-insensitivity. (Default: False).
+            tokenize (str, optional): Tokenization method to use for BLEU. If not provided, defaults to 'zh' for Chinese, 'ja-mecab' for
+                                      Japanese and '13a' (mteval) otherwise.
+            use_effective_order (bool, optional): Use effective order when computing BLEU score.
+        """
         output = scb.corpus_bleu(
             predictions,
             references,
@@ -216,6 +230,20 @@ class SacrebleuPlanet(MetricForLanguageGeneration):
         tokenize=None,
         use_effective_order=False,
     ):
+        """
+        Compute the sacrebleu score for a single prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing a single text sample for prediction.
+            references (Collator): A Collator containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            smooth_method (str, optional): The smoothing method to use. (Default: 'exp').
+            smooth_value (float, optional): The smoothing value. Only valid for 'floor' and 'add-k'. (Defaults: floor: 0.1, add-k: 1).
+            force (bool, optional): Insist that your tokenized input is actually detokenized.
+            lowercase (bool, optional): Lowercase the data. If True, enables case-insensitivity. (Default: False).
+            tokenize (str, optional): Tokenization method to use for BLEU. If not provided, defaults to 'zh' for Chinese, 'ja-mecab' for
+                                      Japanese and '13a' (mteval) otherwise.
+            use_effective_order (bool, optional): Use effective order when computing BLEU score.
+        """
         # SacreBleu inherently supports multiple references.
         return self._compute_single_pred_single_ref(
             predictions=predictions,
@@ -241,6 +269,20 @@ class SacrebleuPlanet(MetricForLanguageGeneration):
         tokenize=None,
         use_effective_order=False,
     ):
+        """
+        Compute the sacrebleu score for multiple prediction and multiple reference.
+        Args:
+            predictions (Collator): A Collator containing multiple text sample for prediction.
+            references (Collator): A Collator containing multiple text sample for reference.
+            reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            smooth_method (str, optional): The smoothing method to use. (Default: 'exp').
+            smooth_value (float, optional): The smoothing value. Only valid for 'floor' and 'add-k'. (Defaults: floor: 0.1, add-k: 1).
+            force (bool, optional): Insist that your tokenized input is actually detokenized.
+            lowercase (bool, optional): Lowercase the data. If True, enables case-insensitivity. (Default: False).
+            tokenize (str, optional): Tokenization method to use for BLEU. If not provided, defaults to 'zh' for Chinese, 'ja-mecab' for
+                                      Japanese and '13a' (mteval) otherwise.
+            use_effective_order (bool, optional): Use effective order when computing BLEU score.
+        """
         flattened_predictions = []
         matched_references = []
         adjusted_prediction_length = 0

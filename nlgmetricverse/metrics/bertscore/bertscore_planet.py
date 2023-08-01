@@ -163,6 +163,7 @@ class BertscorePlanet(MetricForLanguageGeneration):
         use_fast_tokenizer=False,
         return_average_scores=False,
     ):
+        """ Method to compute metric score for a single prediction and single reference"""
         get_hash = bert_score.utils.get_hash
         scorer = bert_score.BERTScorer
 
@@ -251,6 +252,7 @@ class BertscorePlanet(MetricForLanguageGeneration):
         use_fast_tokenizer=False,
         return_average_scores=False,
     ):
+        """Method to compute metric score for a single prediction and multiple references"""
         # BERTScore inherently supports multiple references
         return self._compute_single_pred_single_ref(
             predictions=predictions,
@@ -289,6 +291,7 @@ class BertscorePlanet(MetricForLanguageGeneration):
         baseline_path=None,
         use_fast_tokenizer=False,
     ):
+        """Method to compute metric score for multiple predictions and multiple references"""
         scores = []
         for preds, refs in zip(predictions, references):
             pred_scores = [
@@ -321,6 +324,7 @@ class BertscorePlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _reduce_multi_pred_scores(results: List[Dict], reduce_fn, **kwargs) -> Dict:
+        """Helper method to reduce scores from multiple predictions"""
         df = pd.DataFrame(results)
         if "hashcode" in df:
             df.drop("hashcode", axis=1, inplace=True)
