@@ -27,7 +27,7 @@ from rouge_score import rouge_scorer, scoring
 from nlgmetricverse.collator import Collator
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
-_CITATION = """\
+_CITATION = """
 @inproceedings{lin-2004-rouge,
     title = "{ROUGE}: A Package for Automatic Evaluation of Summaries",
     author = "Lin, Chin-Yew",

@@ -23,7 +23,7 @@ def map_score_with_metric_bounds(metric, score):
 
 
 class CorrelationMeasures(Enum):
-    """\
+    """
     The Pearson correlation coefficient $\rho$ between two vectors $y$ and $\widehat{y}$ of dimension $N$ is:
     $$
     pearsonr(y, \widehat{y}) =

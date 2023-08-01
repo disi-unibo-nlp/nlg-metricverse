@@ -58,11 +58,11 @@ _CITATION = """\
 }
 """
 
-_DESCRIPTION = """\
+_DESCRIPTION = """
 BLEU (bilingual evaluation understudy) scores were originally developed in the context of machine translation, but
-they are applied in other generation tasks as well. Quality is considered to be the correspondence between a 
-machine's output and that of a human: "the closer a machine translation is to a professional human translation, the 
-better it is" – this is the central idea behind BLEU. BLEU was one of the first metrics to claim a high correlation 
+they are applied in other generation tasks as well. Quality is considered to be the correspondence between a
+machine's output and that of a human: "the closer a machine translation is to a professional human translation, the
+better it is" – this is the central idea behind BLEU. BLEU was one of the first metrics to claim a high correlation
 with human judgements of quality, and remains one of the most popular automated and inexpensive metrics.
 For BLEU scoring, we require a dataset $Y$ consisting of instances $(a, B)$ where $a$ is a candidate (a model
 prediction) and $B$ is a set of gold texts. The metric has two main components.

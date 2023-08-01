@@ -21,7 +21,7 @@ _CITATION = """\
 }
 """
 
-_DESCRIPTION = """\
+_DESCRIPTION = """
 NIST is a method for evaluating the quality of text which has been translated using machine translation. Its name comes 
 from the US National Institute of Standards and Technology. The NIST metric was designed to improve BLEU by rewarding
 the translation of infrequently used words. It is based on the BLEU metric, but with some alterations. 

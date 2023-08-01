@@ -63,8 +63,7 @@ evaluation (semantic coverage).
 (iv) F-score ($r \leftrightarrow h$): consider both directions and use the arithmetic average of Precision and
 Recall ones. This version can be broadly used to evaluate the semantic overlap (informativeness, adequacy)
 between reference texts and generated texts.
-See the `README.md` file at [https://github.com/neulab/BARTScore](https://github.com/neulab/BARTScore) for more
-information.
+See the `README.md` file at [https://github.com/neulab/BARTScore](https://github.com/neulab/BARTScore) for more information.
 """
 
 _KWARGS_DESCRIPTION = """
