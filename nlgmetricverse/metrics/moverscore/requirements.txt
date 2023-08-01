@@ -1,0 +1,2 @@
+git+https://github.com/AIPHES/emnlp19-moverscore.git
+transformers==1.2.0
