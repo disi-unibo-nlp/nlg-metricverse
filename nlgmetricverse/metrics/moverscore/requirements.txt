@@ -1,1 +1,0 @@
-git+https://github.com/AIPHES/emnlp19-moverscore.git
