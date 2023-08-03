@@ -1,13 +1,46 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Zammarchi"
-  given-names: "Andrea"
-  orcid: "https://orcid.org/0000-0002-1112-9497"
 - family-names: "Frisoni"
   given-names: "Giacomo"
   orcid: "https://orcid.org/0000-0002-9845-0231"
-title: "nlg-metricverse"
-version: 1.0.0
-date-released: 2022-05-XX
-url: "https://github.com/disi-unibo-nlp/nlg-metricverse"
+- family-names: "Carbonaro"
+  given-names: "Antonella"
+  orcid: "https://orcid.org/0000-0002-3890-4852"
+- family-names: "Moro"
+  given-names: "Gianluca"
+  orcid: "https://orcid.org/0000-0002-3663-7877"
+- family-names: "Zammarchi"
+  given-names: "Andrea"
+  orcid: "https://orcid.org/0000-0002-1112-9497"
+- family-names: "Avagnano"
+  given-names: "Marco"
+title: "NLG-Metricverse: An End-to-End Library for Evaluating Natural Language Generation"
+version: 0.9.7
+doi: ""
+date-released: 2022-10-17
+url: "https://aclanthology.org/2022.coling-1.306/"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Frisoni"
+    given-names: "Giacomo"
+    orcid: "https://orcid.org/0000-0002-9845-0231"
+  - family-names: "Carbonaro"
+    given-names: "Antonella"
+    orcid: "https://orcid.org/0000-0002-3890-4852"
+  - family-names: "Moro"
+    given-names: "Gianluca"
+    orcid: "https://orcid.org/0000-0002-3663-7877"
+  - family-names: "Zammarchi"
+    given-names: "Andrea"
+    orcid: "https://orcid.org/0000-0002-1112-9497"
+  - family-names: "Avagnano"
+    given-names: "Marco"
+  doi: ""
+  conference-paper: "Proceedings of the 29th International Conference on Computational Linguistics"
+  month: 10
+  start: 3465 # First page number
+  end: 3479 # Last page number
+  title: "NLG-Metricverse: An End-to-End Library for Evaluating Natural Language Generation"
+  year: 2022
