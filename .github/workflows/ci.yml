@@ -63,3 +63,11 @@ jobs:
         run: |
           # version
           nlgmetricverse version
+
+      - name: Delete cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/setup.py')}}
+          restore-keys: ${{ matrix.os }}-${{ matrix.python-version }}-
+          delete: true
