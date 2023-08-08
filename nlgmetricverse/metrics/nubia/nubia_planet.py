@@ -68,7 +68,7 @@ Examples:
     >>> scorer = NLGMetricverse(metrics=load_metric("nubia"))
     >>> scores = scorer(predictions=predictions, references=references)
     >>> print(scores)
-    {"nubia: {'nubia_score': 0.9504227034094436, 'semantic_relation': 4.672990322113037/5.0, 'irrelevancy': 0.5306123290210962, 'contradiction': 0.26220036670565605, 'logical_agreement': 99.20719265937805, 'segment_scores': False}}
+    {"nubia": {'nubia_score': 0.9504227034094436, 'semantic_relation': 4.672990322113037/5.0, 'irrelevancy': 0.5306123290210962, 'contradiction': 0.26220036670565605, 'logical_agreement': 99.20719265937805, 'segment_scores': False}}
 """
 
 _LICENSE = """\

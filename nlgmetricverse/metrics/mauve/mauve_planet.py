@@ -47,8 +47,8 @@ Optional Args:
     verbose: If True (default), print running time updates
     seed: random seed to initialize k-means cluster assignments.
 Returns:
-    mauve: MAUVE score, a number between 0 and 1. Larger values indicate that P and Q are closer,
-    frontier_integral: Frontier Integral, a number between 0 and 1. Smaller values indicate that P and Q are closer,
+    mauve: MAUVE score, a number between 0 and 1. Larger values indicate that P and Q are closer
+    frontier_integral: Frontier Integral, a number between 0 and 1. Smaller values indicate that P and Q are closer
     reduced_scores: list of MAUVE scores for each prediction-reference pair
 Examples:
     >>> from nlgmetricverse import NLGMetricverse, load_metric
@@ -179,6 +179,7 @@ class MauvePlanet(MetricForLanguageGeneration):
             predictions (EvaluationInstance): A EvaluationInstance containing a single text sample for prediction.
             references (EvaluationInstance): A EvaluationInstance containing a single text sample for reference.
             reduce_fn (Callable, optional): A function to apply reduction to computed scores.
+            segment_scores (bool, optional): Whether to return scores per instance.
         """
         scores = self.compute_mauve(predictions=predictions, references=references)
         return {

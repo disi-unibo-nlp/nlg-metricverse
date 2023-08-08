@@ -36,7 +36,13 @@ _DESCRIPTION = """ A metric for measuring the abstractness of generated text. Th
 """
 
 _KWARGS_DESCRIPTION = """
+Args:
+    predictions: List of predictions to score. Each prediction should be a string.
+    references: List of references for each prediction. Each reference should be a string.
+    n (int): The size of the n-grams to use for computing abstractness. Defaults to 1.
 
+Returns:
+    score: The abstractness score for the predicted texts.
 """
 
 _LICENSE = """
@@ -79,9 +85,6 @@ class AbstractnessPlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference text.
             reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
             n (int): The size of the n-grams to use for computing abstractness.
-
-        Returns:
-            Dict[str, float]: A dictionary containing the abstractness score.
         """
         result = self.__compute_abstractness(references, predictions, n)
         return {"score": result}
@@ -97,9 +100,6 @@ class AbstractnessPlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference texts.
             reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
             n (int): The size of the n-grams to use for computing abstractness.
-
-        Returns:
-            Dict[str, float]: A dictionary containing the abstractness score.
         """
         result = self.__compute_abstractness(references, predictions, n)
         return {"score": result}
@@ -115,9 +115,6 @@ class AbstractnessPlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference texts.
             reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
             n (int): The size of the n-grams to use for computing abstractness.
-
-        Returns:
-            Dict[str, float]: A dictionary containing the abstractness score.
         """
         predList = []
         refList = []
