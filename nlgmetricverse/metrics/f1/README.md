@@ -1,23 +1,8 @@
 # Metric Card for F1
 
-
 ## Metric Description
-
 The F1 score is the harmonic mean of the precision and recall. It can be computed with the equation:
 F1 = 2 * (precision * recall) / (precision + recall)
-
-
-## How to Use
-
-At minimum, this metric requires predictions and references as input
-
-```python
->>> f1_metric = datasets.load_metric("f1")
->>> results = f1_metric.compute(predictions=[0, 1], references=[0, 1])
->>> print(results)
-["{'f1': 1.0}"]
-```
-
 
 ### Inputs
 - **predictions** (`list` of `int`): Predicted labels.
@@ -32,68 +17,72 @@ At minimum, this metric requires predictions and references as input
     - 'samples': Calculate metrics for each instance, and find their average (only meaningful for multilabel classification).
 - **sample_weight** (`list` of `float`): Sample weights Defaults to None.
 
-
 ### Output Values
-- **f1**(`float` or `array` of `float`): F1 score or list of f1 scores, depending on the value passed to `average`. Minimum possible value is 0. Maximum possible value is 1. Higher f1 scores are better.
-
-Output Example(s):
-```python
-{'f1': 0.26666666666666666}
-```
-```python
-{'f1': array([0.8, 0.0, 0.0])}
-```
-
+- **f1**(`float` or `array` of `float`): F1 score or list of f1 scores, depending on the value passed to `average`. Minimum possible value  is 0. Maximum possible value is 1. Higher f1 scores are better.
 This metric outputs a dictionary, with either a single f1 score, of type `float`, or an array of f1 scores, with entries of type `float`.
 
+### Results from Popular Papers
 
-#### Values from Popular Papers
+## Bounds
+The F1 score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">.
 
-
-### Examples
-
+## Examples
 Example 1-A simple binary example
 ```python
->>> f1_metric = datasets.load_metric("f1")
->>> results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
->>> print(results)
-{'f1': 0.5}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("f1"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
+print(scores)
+{
+    "f1": {
+        'score': 0.5
+    }
+}
 ```
 
 Example 2-The same simple binary example as in Example 1, but with `pos_label` set to `0`.
 ```python
->>> f1_metric = datasets.load_metric("f1")
->>> results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
->>> print(round(results['f1'], 2))
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("f1"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
+print(round(scores['f1'], 2))
 0.67
 ```
 
 Example 3-The same simple binary example as in Example 1, but with `sample_weight` included.
 ```python
->>> f1_metric = datasets.load_metric("f1")
->>> results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
->>> print(round(results['f1'], 2))
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("f1"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
+print(round(results['f1'], 2))
 0.35
 ```
 
 Example 4-A multiclass example, with different values for the `average` input.
 ```python
->>> predictions = [0, 2, 1, 0, 0, 1]
->>> references = [0, 1, 2, 0, 1, 2]
->>> results = f1_metric.compute(predictions=predictions, references=references, average="macro")
->>> print(round(results['f1'], 2))
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("f1"))
+predictions = [0, 2, 1, 0, 0, 1]
+references = [0, 1, 2, 0, 1, 2]
+scores = scorer(predictions=predictions, references=references, average="macro")
+print(round(scores['f1'], 2))
 0.27
->>> results = f1_metric.compute(predictions=predictions, references=references, average="micro")
->>> print(round(results['f1'], 2))
+scores = scorer(predictions=predictions, references=references, average="micro")
+print(round(scores['f1'], 2))
 0.33
->>> results = f1_metric.compute(predictions=predictions, references=references, average="weighted")
->>> print(round(results['f1'], 2))
+scores = scorer(predictions=predictions, references=references, average="weighted")
+print(round(scores['f1'], 2))
 0.27
->>> results = f1_metric.compute(predictions=predictions, references=references, average=None)
->>> print(results)
-{'f1': array([0.8, 0. , 0. ])}
+scores = scorer(predictions=predictions, references=references, average=None)
+print(scores)
+{
+    "f1": {
+        array( [ 0.8, 0. , 0. ])
+    }
+}
 ```
 
+## Limitations and Bias
 
 ## Citation(s)
 ```bibtex
@@ -109,3 +98,5 @@ Example 4-A multiclass example, with different values for the `average` input.
     year={2011}
 }
 ```
+
+## Further References

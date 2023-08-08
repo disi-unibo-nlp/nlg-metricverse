@@ -31,14 +31,13 @@ ROUGE metric variants are: ROUGE-N, ROUGE-L, ROUGE-W, and ROUGE-S.
 
 **Note**: many papers says to use `rougeL` after a "\n"-splitting as a preprocessing step; this is equivalent to `rougeLsum` and generally produce higher scores.
 
-
 ### Outputs
 ROUGE outputs a dictionary with one entry for each rouge type in the input list `rouge_types`. If `use_aggregator=False`, each dictionary entry is a list of float scores representing the selected metrics (see `metric_to_select`) for each rouge type.
 
+### Results from popular papers
 
 ## Bounds
 The `precision`, `recall`, and `fmeasure` values all have a <img src="https://render.githubusercontent.com/render/math?math={[0,1]}"> range.
-
 
 ## Examples
 ```python
@@ -50,7 +49,11 @@ scores = scorer(predictions=predictions, references=references,
                 use_aggregator=False, use_stemmer=False,
                 metric_to_select="fmeasure")
 print(scores)
-{ "total_items": 1, "empty_items": 0, "rouge": { "rougeL": 0.8 } }
+{ 
+        "rouge": { 
+                "rougeL": 0.8 
+        } 
+}
 ```
 
 ## Limitations and Bias

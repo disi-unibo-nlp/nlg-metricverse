@@ -13,68 +13,60 @@ Where:
 - $FP$: False positive
 - $FN$: False negative
 
-
-## How to Use
-
-At minimum, this metric requires predictions and references as inputs.
-
-```python
->>> accuracy_metric = datasets.load_metric("accuracy")
->>> results = accuracy_metric.compute(references=[0, 1], predictions=[0, 1])
->>> print(results)
-{'accuracy': 1.0}
-```
-
-
 ### Inputs
 - **predictions** (`list` of `int`): Predicted labels.
 - **references** (`list` of `int`): Ground truth labels.
 - **normalize** (`boolean`): If set to False, returns the number of correctly classified samples. Otherwise, returns the fraction of correctly classified samples. Defaults to True.
 - **sample_weight** (`list` of `float`): Sample weights Defaults to None.
 
-
 ### Output Values
 - **accuracy**(`float` or `int`): Accuracy score. Minimum possible value is 0. Maximum possible value is 1.0, or the number of examples input, if `normalize` is set to `True`.. A higher score means higher accuracy.
 
-Output Example(s):
-```python
-{'accuracy': 1.0}
-```
-
-This metric outputs a dictionary, containing the accuracy score.
-
-
-#### Values from Popular Papers
-
+### Results from popular papers
 Top-1 or top-5 accuracy is often used to report performance on supervised classification tasks such as image classification (e.g. on [ImageNet](https://paperswithcode.com/sota/image-classification-on-imagenet)) or sentiment analysis (e.g. on [IMDB](https://paperswithcode.com/sota/text-classification-on-imdb)). 
 
+## Bounds
+Accuracy is a number between 0 and 1, or the number of examples input, if `normalize` is set to `True`.
 
-### Examples
-
+## Examples
 Example 1-A simple example
 ```python
->>> accuracy_metric = datasets.load_metric("accuracy")
->>> results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0])
->>> print(results)
-{'accuracy': 0.5}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("accuracy"))
+scores = scorer(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0])
+print(scores)
+{
+  "accuracy":{
+    'score': 0.5
+  }
+}
 ```
 
 Example 2-The same as Example 1, except with `normalize` set to `False`.
 ```python
->>> accuracy_metric = datasets.load_metric("accuracy")
->>> results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], normalize=False)
->>> print(results)
-{'accuracy': 3.0}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("accuracy"))
+scores = scorer(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], normalize=False)
+print(scores)
+{
+  "accuracy":{
+    'score': 3.0
+  }
+}
 ```
 
 Example 3-The same as Example 1, except with `sample_weight` set.
 ```python
->>> accuracy_metric = datasets.load_metric("accuracy")
->>> results = accuracy_metric.compute(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], sample_weight=[0.5, 2, 0.7, 0.5, 9, 0.4])
->>> print(results)
-{'accuracy': 0.8778625954198473}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("accuracy"))
+scores = scorer(references=[0, 1, 2, 0, 1, 2], predictions=[0, 1, 1, 2, 1, 0], sample_weight=[0.5, 2, 0.7, 0.5, 9, 0.4])
+print(scores)
+{
+  "accuracy":{
+    'score': 0.8778625954198473
+  }
+}
 ```
-
 
 ## Limitations and Bias
 This metric can be easily misleading, especially in the case of unbalanced classes. For example, a high accuracy might be because a model is doing well, but if the data is unbalanced, it might also be because the model is only accurately labeling the high-frequency class. In such cases, a more detailed analysis of the model's behavior, or the use of a different metric entirely, is necessary to determine how well the model is actually performing.
@@ -94,6 +86,5 @@ This metric can be easily misleading, especially in the case of unbalanced class
   year={2011}
 }
 ```
-
 
 ## Further References

@@ -7,24 +7,6 @@ The implementation here is slightly different from sacrebleu in terms of the req
 
 See the README.md file at https://github.com/mjpost/sacreBLEU#ter for more information.
 
-
-## How to Use
-This metric takes, at minimum, predicted sentences and reference sentences:
-```python
->>> predictions = ["does this sentence match??",
-...                     "what about this sentence?",
-...                     "What did the TER metric user say to the developer?"]
->>> references = [["does this sentence match", "does this sentence match!?!"],
-...             ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"],
-...             ["Your jokes are...", "...TERrible"]]
->>> ter = datasets.load_metric("ter")
->>> results = ter.compute(predictions=predictions,
-...                         references=references,
-...                         case_sensitive=True)
->>> print(results)
-{'score': 150.0, 'num_edits': 15, 'ref_length': 10.0}
-```
-
 ### Inputs
 This metric takes the following as input:
 - **`predictions`** (`list` of `str`): The system stream (a sequence of segments).
@@ -40,78 +22,106 @@ This metric returns the following:
 - **`num_edits`** (`int`): The cumulative number of edits
 - **`ref_length`** (`float`): The cumulative average reference length
 
-The output takes the following form:
-```python
-{'score': ter_score, 'num_edits': num_edits, 'ref_length': ref_length}
-```
-
 The metric can take on any value `0` and above. `0` is a perfect score, meaning the predictions exactly match the references and no edits were necessary. Higher scores are worse. Scores above 100 mean that the cumulative number of edits, `num_edits`, is higher than the cumulative length of the references, `ref_length`.
 
-#### Values from Popular Papers
+### Results from Popular Papers
 
+## Bounds
+TER scores can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0, \infty)}##gh-light-mode-only">, 0 is a perfect score. For `num_edits` and `ref_length`, the minimum possible value is 0.
 
-### Examples
+## Examples
 Basic example with only predictions and references as inputs:
 ```python
->>> predictions = ["does this sentence match??",
-...                     "what about this sentence?"]
->>> references = [["does this sentence match", "does this sentence match!?!"],
-...             ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]]
->>> ter = datasets.load_metric("ter")
->>> results = ter.compute(predictions=predictions, 
-...                         references=references,
-...                         case_sensitive=True)
->>> print(results)
-{'score': 62.5, 'num_edits': 5, 'ref_length': 8.0}
+from nlgmetrcverse import NLGmetricverse, load_metric
+predictions = ["does this sentence match??", "what about this sentence?"]
+references = [
+  ["does this sentence match", "does this sentence match!?!"], 
+  ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]
+]
+scorer = NLGmetricverse(metrics=load_metric("ter"))
+scores = scorer(predictions=predictions, references=references, case_sensitive=True)
+print(scores)
+{
+  "ter": {
+    "score": 62.5,
+    "num_edits": 5,
+    "ref_length": 8.0
+  }
+}
 ```
 
 Example with `normalization = True`:
 ```python
->>> predictions = ["does this sentence match??",
-...                     "what about this sentence?"]
->>> references = [["does this sentence match", "does this sentence match!?!"],
-...             ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]]
->>> ter = datasets.load_metric("ter")
->>> results = ter.compute(predictions=predictions, 
-...                         references=references, 
-...                         normalized=True,
-...                         case_sensitive=True)
->>> print(results)
-{'score': 57.14285714285714, 'num_edits': 6, 'ref_length': 10.5}
+from nlgmetrcverse import NLGmetricverse, load_metric
+predictions = ["does this sentence match??", "what about this sentence?"]
+references = [
+  ["does this sentence match", "does this sentence match!?!"],
+  ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]
+]
+scorer = NLGmetricverse(metrics=load_metric("ter"))
+scores = scorer(predictions=predictions, 
+     references=references, 
+     normalized=True,
+     case_sensitive=True)
+print(scores)
+{
+  "ter": {
+    "score": 57.14285714285714,
+    "num_edits": 6,
+    "ref_length": 10.5
+  }
+}
 ```
 
 Example ignoring punctuation and capitalization, and everything matches:
 ```python
->>> predictions = ["does this sentence match??",
-...                     "what about this sentence?"]
->>> references = [["does this sentence match", "does this sentence match!?!"],
-...             ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]]
->>> ter = datasets.load_metric("ter")
->>> results = ter.compute(predictions=predictions, 
-...                         references=references, 
-...                         ignore_punct=True,
-...                         case_sensitive=False)
->>> print(results)
-{'score': 0.0, 'num_edits': 0, 'ref_length': 8.0}
+from nlgmetrcverse import NLGmetricverse, load_metric
+predictions = ["does this sentence match??", "what about this sentence?"]
+references = [
+  ["does this sentence match", "does this sentence match!?!"],
+  ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"]
+]
+scorer = NLGmetricverse(metrics=load_metric("ter"))
+scores = scorer(predictions=predictions, 
+     references=references, 
+     ignore_punct=True,
+     case_sensitive=False)
+print(scores)
+{
+  "ter": {
+    "score": 0.0,
+    "num_edits": 0,
+    "ref_length": 8.0
+  }
+}
 ```
 
 Example ignoring punctuation and capitalization, but with an extra (incorrect) sample:
 ```python
->>> predictions = ["does this sentence match??",
-...                    "what about this sentence?",
-...                    "What did the TER metric user say to the developer?"]
->>> references = [["does this sentence match", "does this sentence match!?!"],
-...             ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"],
-...             ["Your jokes are...", "...TERrible"]]
->>> ter = datasets.load_metric("ter")
->>> results = ter.compute(predictions=predictions, 
-...                         references=references,
-...                         ignore_punct=True,
-...                         case_sensitive=False)
->>> print(results)
-{'score': 100.0, 'num_edits': 10, 'ref_length': 10.0}
+from nlgmetrcverse import NLGmetricverse, load_metric
+predictions = ["does this sentence match??",
+...            "what about this sentence?",
+...            "What did the TER metric user say to the developer?"]
+references = [
+  ["does this sentence match", "does this sentence match!?!"],
+  ["wHaT aBoUt ThIs SeNtEnCe?", "wHaT aBoUt ThIs SeNtEnCe?"],
+  ["Your jokes are...", "...TERrible"]]
+scorer = NLGmetricverse(metrics=load_metric("ter"))
+scores = scorer(predictions=predictions, 
+     references=references,
+     ignore_punct=True,
+     case_sensitive=False)
+print(scores)
+{
+  "ter": {
+    "score": 100.0,
+    "num_edits": 10,
+    "ref_length": 10.0
+  }
+}
 ```
 
+## Limitations and Bias
 
 ## Citation
 ```bibtex

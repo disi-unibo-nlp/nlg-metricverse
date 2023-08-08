@@ -12,25 +12,27 @@ Recall = # of matching tokens / # of reference tokens
 ### Outputs
 -  **recall**: A dictionary containing the computed recall metric score, that is stored under the key "score".
 
-### Examples
-```python
-import json # Just for pretty printing the output metric dicts
-from nlgmetricverse import NLGMetricverse, load_metric
+### Results from popular papers
 
+## Bounds
+Recall scores can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0, 1]}##gh-light-mode-only">.
+
+## Examples
+```python
+from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
 references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
-
 scorer = NLGMetricverse(metrics=load_metric("recall"))
 scores = scorer(predictions=predictions, references=references)
-print(json.dumps(scores, indent=4))
+print(scores)
 {
-      "empty_items": 0,
-      "total_items": 2,
-      "recall": {
-        "score": 0.6571428571428571,
-      }
+  "recall": {
+    'score': 0.6571428571428571,
+  }
 }
 ```
+
+## Limitations and bias
 
 ## Citation
 ```bibtex
@@ -42,3 +44,5 @@ print(json.dumps(scores, indent=4))
   year={2002}
 }
 ```
+
+## Further References

@@ -64,30 +64,26 @@ Setting the stride length equal to the max input length is equivalent to the sub
 Perplixity outputs a dictionary with the following values:
 - **score** (`float`): the average perplexity score for the text input in the list.
 
+### Results from popular papers
+
 ## Bounds
 The perplexity range is <img src="https://render.githubusercontent.com/render/math?math={[0, +inf[}">, where a lower score is better.
 
 ## Examples
 ```python
-import json # Just for pretty printing the output metric dicts
 from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
 references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
-
 scorer = NLGMetricverse(metrics=load_metric("perplexity"))
 scores = scorer(predictions=predictions, references=references)
-print(json.dumps(scores, indent=4))
+print(scores)
 {
-    "total_items": 2,
-    "empty_items": 0,
-    "total_time_elapsed": 0.3003244400024414,
     "perplexity": {
         "perplexities": [
             16.518978118896484,
             16.501928329467773
         ],
         "mean_perplexity": 16.51045322418213,
-        "time_elapsed": 0.3003244400024414
     }
 }
 ```

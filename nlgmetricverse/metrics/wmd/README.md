@@ -25,6 +25,11 @@ An illustration of the word mover’s distance. All non-stop words (**bold**) of
 - **avg_distance**: average distance between predictions and references
 - **distances**: distances between predictions and references
 
+### Results from popular papers
+
+## Bounds
+The WMD `avg_distance` and `distances` can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0, 1)}##gh-light-mode-only">.
+
 ## Example
 ```python
 from nlgmetricverse import NLGMetricverse, load_metric
@@ -33,9 +38,19 @@ references = ["The cat is playing on the mat.", "Today is a wonderful day"]
 scorer = NLGMetricverse(metrics=load_metric("wmd"))
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{ "wmd": {'avg_distance': 0.677252958947389, 'distances': [0.6383760813815303, 0.7161298365132478]} }
+{ 
+  "wmd": {
+    'avg_distance': 0.677252958947389, 
+    'distances': [
+      0.6383760813815303, 
+      0.7161298365132478
+    ]
+  } 
+}
+```
+## Limitations and bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @inproceedings{kusner2015doc, 
    title={From Word Embeddings To Document Distances}, 
@@ -45,3 +60,4 @@ print(scores)
 }
 ```
 
+## Further References

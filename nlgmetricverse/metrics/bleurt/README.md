@@ -24,6 +24,9 @@ BLEURT outputs a dictionary with the following values:
 - **scores** (`list`): list of individual BLEURT scores.
 - **checkpoint** (`string`): selected BLEURT checkpoint.
 
+### Results from popular papers
+The [original BLEURT paper](https://arxiv.org/abs/2004.04696) reported average BLEURT scores ranging from 0.4 to 0.6, depending on the language pairs used for evaluating translation models.
+
 ## Bounds
 Different BLEURT checkpoints yield different scores.
 The currently recommended checkpoint [`BLEURT-20`](https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip) generates scores which are roughly between 0 and 1 (sometimes less than 0, sometimes more than 1), where 0 indicates a random output and 1 a perfect one.
@@ -37,6 +40,7 @@ In practice however, the answers tend to be very correlated with *fluency* ("Is 
 ## Examples
 ```python
 # Example with BLEURT-tiny checkpoint, which is very light but also very inaccurate
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric(
     base_path + "bleurt",
     config_name="bleurt-tiny-128"))
@@ -50,8 +54,19 @@ references = [
 ]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{'total_items': 2, 'empty_items': 0, 'bleurt': {'score': 0.6418270468711853, 'scores': [0.47344332933425903, 0.8102107644081116], 'checkpoint': 'bleurt-tiny-128'}}
+{
+  "bleurt": {
+    'score': 0.6418270468711853, 
+    'scores': [
+      0.47344332933425903, 
+      0.8102107644081116
+    ], 
+    'checkpoint': 'bleurt-tiny-128'
+  }
+}
 ```
+
+## Limitations and bias
 
 ## Citation
 ```bibtex

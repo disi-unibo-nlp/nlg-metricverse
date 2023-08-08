@@ -29,7 +29,6 @@ COMET outputs a dictionary with the following values:
 - **scores** (`list`): list of COMET scores for each of the input sentences.
 
 ### Results from popular papers
-
 The [original COMET paper](https://arxiv.org/pdf/2009.09025.pdf) reported average COMET scores ranging from 0.4 to 0.6, depending on the language pairs used for evaluating translation models.
 They also illustrate that COMET correlates well with human judgements compared to other metrics such as [BLEU](https://huggingface.co/metrics/bleu) and [CHRF](https://huggingface.co/metrics/chrf).
 
@@ -38,13 +37,22 @@ COMET scores approximately belong to <img src="https://render.githubusercontent.
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("comet"))
 sources = ["Dem Feuer konnte Einhalt geboten werden", "Schulen und Kindergärten wurden eröffnet."]
 predictions = ["The fire could be stopped", "Schools and kindergartens were open"]
 references = ["They were able to control the fire", "Schools and kindergartens opened"]
 scores = scorer(sources=sources, predictions=predictions, references=references)
 print(scores)
-{ "total_items": 2, "empty_items": 0, "comet": { "scores": [ 0.1506408303976059, 0.915494441986084 ], "samples": 0.5330676361918449 } }
+{
+   "comet": { 
+      'scores': [
+          0.1506408303976059, 
+          0.915494441986084
+      ], 
+      'samples': 0.5330676361918449 
+   } 
+}
 ```
 
 ## Limitations and bias

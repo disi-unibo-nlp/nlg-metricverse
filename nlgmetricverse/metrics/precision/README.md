@@ -1,24 +1,9 @@
 # Metric Card for Precision
 
-
 ## Metric Description
-
 Precision is the fraction of correctly labeled positive examples out of all of the examples that were labeled as positive. It is computed via the equation:
 Precision = TP / (TP + FP)
 where TP is the True positives (i.e. the examples correctly labeled as positive) and FP is the False positive examples (i.e. the examples incorrectly labeled as positive).
-
-
-## How to Use
-
-At minimum, precision takes as input a list of predicted labels, `predictions`, and a list of output labels, `references`.
-
-```python
->>> precision_metric = datasets.load_metric("precision")
->>> results = precision_metric.compute(references=[0, 1], predictions=[0, 1])
->>> print(results)
-{'precision': 1.0}
-```
-
 
 ### Inputs
 - **predictions** (`list` of `int`): Predicted class labels.
@@ -37,65 +22,87 @@ At minimum, precision takes as input a list of predicted labels, `predictions`, 
     - 1: Returns 1 when there is a zero division.
     - 'warn': Raises warnings and then returns 0 when there is a zero division.
 
-
 ### Output Values
 - **precision**(`float` or `array` of `float`): Precision score or list of precision scores, depending on the value passed to `average`. Minimum possible value is 0. Maximum possible value is 1. Higher values indicate that fewer negative examples were incorrectly labeled as positive, which means that, generally, higher scores are better.
 
-Output Example(s):
-```python
-{'precision': 0.2222222222222222}
-```
-```python
-{'precision': array([0.66666667, 0.0, 0.0])}
-```
+### Results from Popular Papers
+
+## Bounds
+Precision scores can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0, 1]}##gh-light-mode-only">.
 
 ### Examples
-
 Example 1-A simple binary example
 ```python
->>> precision_metric = datasets.load_metric("precision")
->>> results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
->>> print(results)
-{'precision': 0.5}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("precision"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
+print(scores)
+{
+    "precision": {
+        'score': 0.5
+    }
+}
 ```
 
 Example 2-The same simple binary example as in Example 1, but with `pos_label` set to `0`.
 ```python
->>> precision_metric = datasets.load_metric("precision")
->>> results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
->>> print(round(results['precision'], 2))
-0.67
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("precision"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
+print(round(scores, 2))
+{
+    "precision": {
+        'score': 0.67
+    }
+}
 ```
 
 Example 3-The same simple binary example as in Example 1, but with `sample_weight` included.
 ```python
->>> precision_metric = datasets.load_metric("precision")
->>> results = precision_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
->>> print(results)
-{'precision': 0.23529411764705882}
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("precision"))
+scores = scorer(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
+print(scores)
+{
+    "precision": {
+        'score': 0.23529411764705882
+    }
+}
 ```
 
 Example 4-A multiclass example, with different values for the `average` input.
 ```python
->>> predictions = [0, 2, 1, 0, 0, 1]
->>> references = [0, 1, 2, 0, 1, 2]
->>> results = precision_metric.compute(predictions=predictions, references=references, average='macro')
->>> print(results)
-{'precision': 0.2222222222222222}
->>> results = precision_metric.compute(predictions=predictions, references=references, average='micro')
->>> print(results)
-{'precision': 0.3333333333333333}
->>> results = precision_metric.compute(predictions=predictions, references=references, average='weighted')
->>> print(results)
-{'precision': 0.2222222222222222}
->>> results = precision_metric.compute(predictions=predictions, references=references, average=None)
->>> print([round(res, 2) for res in results['precision']])
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("precision"))
+predictions = [0, 2, 1, 0, 0, 1]
+references = [0, 1, 2, 0, 1, 2]
+scores = scorer(predictions=predictions, references=references, average='macro')
+print(scores)
+{
+    "precision": {
+        'score': 0.2222222222222222
+    }
+}
+scores = scorer(predictions=predictions, references=references, average='micro')
+print(scores)
+{
+    "precision": {
+        'score': 0.3333333333333333
+    }
+}
+scores = scorer(predictions=predictions, references=references, average='weighted')
+print(scores)
+{
+    "precision": {
+        'score': 0.2222222222222222
+    }
+}
+scores = scorer(predictions=predictions, references=references, average=None)
+print([round(res, 2) for res in scores['precision']])
 [0.67, 0.0, 0.0]
 ```
 
-
 ## Limitations and Bias
-
 [Precision](https://huggingface.co/metrics/precision) and [recall](https://huggingface.co/metrics/recall) are complementary and can be used to measure different aspects of model performance -- using both of them (or an averaged measure like [F1 score](https://huggingface.co/metrics/F1) to better represent different aspects of performance. See [Wikipedia](https://en.wikipedia.org/wiki/Precision_and_recall) for more information.
 
 ## Citation(s)
@@ -112,7 +119,6 @@ Example 4-A multiclass example, with different values for the `average` input.
     year={2011}
 }
 ```
-
 
 ## Further References
 - [Wikipedia -- Precision and recall](https://en.wikipedia.org/wiki/Precision_and_recall)

@@ -1,27 +1,9 @@
 # Metric Card for SacreBLEU
 
-
 ## Metric Description
 SacreBLEU provides hassle-free computation of shareable, comparable, and reproducible BLEU scores. Inspired by Rico Sennrich's `multi-bleu-detok.perl`, it produces the official Workshop on Machine Translation (WMT) scores but works with plain text. It also knows all the standard test sets and handles downloading, processing, and tokenization.
 
 See the [README.md] file at https://github.com/mjpost/sacreBLEU for more information.
-
-## How to Use
-This metric takes a set of predictions and a set of references as input, along with various optional parameters.
-
-
-```python
->>> predictions = ["hello there general kenobi", "foo bar foobar"]
->>> references = [["hello there general kenobi", "hello there !"],
-...                 ["foo bar foobar", "foo bar foobar"]]
->>> sacrebleu = datasets.load_metric("sacrebleu")
->>> results = sacrebleu.compute(predictions=predictions, 
-...                             references=references)
->>> print(list(results.keys()))
-['score', 'counts', 'totals', 'precisions', 'bp', 'sys_len', 'ref_len']
->>> print(round(results["score"], 1))
-100.0
-```
 
 ### Inputs
 - **predictions** (`list` of `str`): list of translations to score. Each translation should be tokenized into a list of tokens.
@@ -52,29 +34,64 @@ This metric takes a set of predictions and a set of references as input, along w
 - **sys_len**: predictions length
 - **ref_len**: reference length
 
-The output is in the following format:
-```python
-{'score': 39.76353643835252, 'counts': [6, 4, 2, 1], 'totals': [10, 8, 6, 4], 'precisions': [60.0, 50.0, 33.333333333333336, 25.0], 'bp': 1.0, 'sys_len': 10, 'ref_len': 7}
-```
+### Results from Popular Papers
+
+## Bounds
 The score can take any value between `0.0` and `100.0`, inclusive.
 
-#### Values from Popular Papers
-
-
-### Examples
-
+## Examples
 ```python
->>> predictions = ["hello there general kenobi", 
-...                 "on our way to ankh morpork"]
->>> references = [["hello there general kenobi", "hello there !"],
-...                 ["goodbye ankh morpork", "ankh morpork"]]
->>> sacrebleu = datasets.load_metric("sacrebleu")
->>> results = sacrebleu.compute(predictions=predictions, 
-...                             references=references)
->>> print(list(results.keys()))
+from nlgmetricverse import NLGMetricverse, load_metric
+scorer = NLGMetricverse(metrics=load_metric("sacrebleu"))
+predictions = [["the cat is on the mat", "There is cat playing on the mat"], ["Look! a wonderful day."]]
+references = [
+    ["the cat is playing on the mat.", "The cat plays on the mat."], 
+    ["Today is a wonderful day", "The weather outside is wonderful."]
+]
+scores = scorer(predictions=predictions, references=references)
+print(scores)
+{
+    "sacrebleu": {
+    "score": 0.32377227131456443,
+    "counts": [
+        11,
+        6,
+        3,
+        0
+    ],
+    "totals": [
+        13,
+        11,
+        9,
+        7
+    ],
+    "precisions": [
+        0.8461538461538461,
+        0.5454545454545454,
+        0.33333333333333337,
+        0.07142857142857144
+    ],
+    "bp": 1.0,
+    "sys_len": 11,
+    "ref_len": 12,
+    "adjusted_precisions": [
+        0.8461538461538461,
+        0.5454545454545454,
+        0.33333333333333337,
+        0.07142857142857144
+    ]
+    }
+}
+
+from nlgmetricverse import NLGMetricverse, load_metric
+predictions = ["hello there general kenobi", "foo bar foobar"]
+references = [["hello there general kenobi", "hello there !"], ["foo bar foobar", "foo bar foobar"]]
+scorer = NLGMetricverse(metrics=load_metric("sacrebleu"))
+scores = scorer(predictions=predictions, references=references)
+print(list(scores.keys()))
 ['score', 'counts', 'totals', 'precisions', 'bp', 'sys_len', 'ref_len']
->>> print(round(results["score"], 1))
-39.8
+print(round(scores["score"], 1))
+100.0
 ```
 
 ## Limitations and Bias

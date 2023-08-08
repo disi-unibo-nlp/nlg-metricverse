@@ -25,18 +25,32 @@ Nubia is composed of three modules.
 - **logical_agreement** (`float`): the average logical agreement score for the text input in the list.
 - **segment_scores** (`list`): the scores for each segment of the input text. Only returned if `segment_scores` is set to `True`.
 
+### Results from popular papers
+
+## Bounds
+Nubia's scores can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">, apart from `semantic_relation`, which can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,5]}##gh-light-mode-only">, `logical_agreement`, which can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,100]}##gh-light-mode-only"> and `segment_scores`, which can be True or False.
+
 ## Example
-```Python
-s1, s2 = "He agreed to a proposal of mine.","He gave his agreement to my proposal."
-nubia.score(s1, s2, True)
+```python
+from nlgmetricverse import NLGMetricverse, load_metric
+predictions=["He agreed to a proposal of mine."]
+references=["He gave his agreement to my proposal."]
+scorer = NLGMetricverse(metrics=load_metric("nubia"))
+scores = scorer(predictions=predictions, references=references, reduce_fn=REDUCTION_FUNCTION)
+print(scores)
+{
+  "nubia": {
+    'nubia_score': 0.9504227034094436,
+    'semantic_relation': 4.672990322113037/5.0,
+    'irrelevancy': 0.5306123290210962,
+    'contradiction': 0.26220036670565605,
+    'logical_agreement': 99.20719265937805,
+    'segment_scores': False
+  }
+}
 ```
-```json
-Nubia Score: 0.9504227034094436
-Semantic relation: 4.672990322113037/5.0
-Percent chance of contradiction: 0.26220036670565605%
-Percent chance of irrelevancy or new information: 0.5306123290210962%
-Percent chance of logical agreement: 99.20719265937805%
-```
+
+## Limitations and bias
 
 ## Citation(s)
 ```bibtex
@@ -50,3 +64,4 @@ Percent chance of logical agreement: 99.20719265937805%
 }
 ```
 
+## Further References

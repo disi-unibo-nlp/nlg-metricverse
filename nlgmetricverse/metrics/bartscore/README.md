@@ -36,6 +36,8 @@ BARTScore outputs a dictionary with the following values:
 - **model_weights** (`str`): selected BARTScore weights.
 - **segment_scores** (`bool`): selected BARTScore final aggregation strategy.
 
+### Results from popular papers
+
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={]-inf,0[}##gh-light-mode-only"><br>
 Since BARTScore uses the average log-likelihood for target tokens, the calculated scores will be smaller than 0 (the probability is between 0 and 1, so the log of it should be negative). The higher the
@@ -43,6 +45,7 @@ log-likelihood, the higher the probability. To give an example, if SummaryA gets
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["I'm super happy today.", "This is a good idea."]
 references = [
   ["I feel good today.", "I feel sad today."],
@@ -51,7 +54,14 @@ references = [
 scorer = NLGMetricverse(metrics=load_metric(base_path + "bartscore"))
 scores = scorer(predictions=auth_predictions, references=auth_references) # max aggregation (default)
 print(scores) # score = avg(single_scores)
-{'total_items': 2, 'empty_items': 0, 'bartscore': {'score': -2.0635241270065308, 'model_checkpoint': 'bartscore-large-cnn', 'model_weights': None, 'segment_scores': False}}
+{
+  "bartscore": {
+    'score': -2.0635241270065308, 
+    'model_checkpoint': 'bartscore-large-cnn', 
+    'model_weights': None, 
+    'segment_scores': False
+  }
+}
 ```
 
 ## Citation

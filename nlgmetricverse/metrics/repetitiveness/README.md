@@ -12,18 +12,27 @@ The Repetitiveness metric evaluates how many n-grams are repeated on average in 
 ### Outputs
 -  **repetitiveness**: A dictionary containing the computed Repetitiveness metric score. The score is stored under the key "score".
 
-### Example
+### Results from popular papers
+
+## Bounds
+The Repetitiveness score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">.
+
+## Example
 ```python
 from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
 references = ["Peace at home, peace in the world.", "The cat is playing on the mat."]
-
 scorer = NLGMetricverse(metrics=load_metric("repetitiveness"))
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-
->> {'repetitiveness': {'score': 0.85}}
+{
+  "repetitiveness": {
+    'score': 0.85
+  }
+}
 ```
+
+## Limitations and bias
 
 ## Citation
 ```bibtex
@@ -34,3 +43,5 @@ print(scores)
   year={2021}
 }
 ```
+
+## Further References

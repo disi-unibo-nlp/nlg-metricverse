@@ -34,11 +34,14 @@ ChrF(++) outputs a dictionary with the following values:
 - **word_order** (`int`): the selected word n-gram order.
 - **beta** (`int`): the selected recall importance w.r.t. precision.
 
+### Results from popular papers
+
 ## Bounds
 The chrF(++) score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">.
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("chrf"))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
@@ -50,7 +53,14 @@ references = [
 ]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{'total_items': 2, 'empty_items': 0, 'chrf': {'score': 0.44298405744188873, 'char_order': 6, 'word_order': 0, 'beta': 2}}
+{
+  "chrf": {
+    'score': 0.44298405744188873, 
+    'char_order': 6, 
+    'word_order': 0, 
+    'beta': 2
+  }
+}
 ```
 
 ## Limitations and bias

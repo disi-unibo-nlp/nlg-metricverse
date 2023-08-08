@@ -24,21 +24,27 @@ where $g^n(c_i)$ is a vector formed by $g_k(c_i)$ (the TF-IDF weighting) corresp
 -  **score** (`float`): The CIDEr score.
 -  **scores** (`list`): The CIDEr score for each individual prediction-reference pair.
 
-### Examples
+### Results from popular papers
+
+## Bounds
+The CIDEr score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,10]}##gh-light-mode-only">.
+
+## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
 references = ["The cat is playing on the mat.", "Today is a wonderful day"]
 scorer = NLGMetricverse(metrics=load_metric("cider"))
 scores = scorer(predictions=predictions, references=references)
-print((scores, indent=4))
+print(scores)
 {
-  "empty_items": 0,
-  "total_items": 2,
   "cider": {
     "score": 2.2006311045157565
   }
 }
 ```
+
+## Limitations and bias
 
 ## Citation(s)
 ```bibtex
@@ -54,3 +60,4 @@ print((scores, indent=4))
 }
 ```
 
+## Further References

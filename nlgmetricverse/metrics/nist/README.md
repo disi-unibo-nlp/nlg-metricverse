@@ -28,11 +28,14 @@ This also reduces the chance of gaming the metric by producing trivial n-grams.
 NIST outputs a dictionary with the following values:
 - **score** (`float`): the predicted NIST score.
 
+### Results from popular papers
+
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={[0, 1]}">, with 1 being the best.
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("nist", n=5))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
@@ -44,7 +47,11 @@ references = [
 ]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{ ..., "nist": { "score": 0.7240558145830365 ... } }
+{ 
+  "nist": { 
+    'score': 0.7240558145830365
+  }
+}
 ```
 
 ## Limitations and bias

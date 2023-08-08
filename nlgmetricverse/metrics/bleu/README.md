@@ -49,6 +49,7 @@ Scores over 30 generally reflect understandable translations. Scores over 50 gen
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("bleu"))
 predictions = [
   ["the cat is on the mat", "There is cat playing on the mat"],
@@ -60,7 +61,19 @@ references = [
 ]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{'total_items': 2, 'empty_items': 0, 'bleu': {'score': 0.3378703280802838, 'precisions': [0.84, 0.5714285714285714, 0.35294117647058826, 0.07692307692307693], 'brevity_penalty': 1.0, 'length_ratio': 1.1818181818181819, 'translation_length': 13, 'reference_length': 11}}
+{
+  "bleu": {
+    'score': 0.3378703280802838, 
+    'precisions': [
+      0.84, 0.5714285714285714, 
+      0.35294117647058826, 
+      0.07692307692307693], 
+    'brevity_penalty': 1.0, 
+    'length_ratio': 1.1818181818181819, 
+    'translation_length': 13, 
+    'reference_length': 11
+  }
+}
 ```
 
 ## Limitations and bias

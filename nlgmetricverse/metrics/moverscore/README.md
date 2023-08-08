@@ -33,12 +33,15 @@ We consider MOVERScore v2, which is faster than the original implementation (by 
 BERTScore outputs a dictionary with the following values:
 - **score** (`float`): the predicted MoverScore.
 
+### Results from popular papers
+
 ## Bounds
 Intuitively, MoverScore assigns a perfect score to the system text if it conveys the same meaning as the reference text.
 Any deviation from the reference content can then lead to a reduced score, e.g., the system text contains more (or less) content than the reference, or the system produces ill-formed text that fails to deliver the intended meaning. In general, higher scores refer to better performance.
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("moverscore"))
 predictions = [
     ["Evaluating artificial text has never been so simple", "The evaluation of automatically generated text is simple."],
@@ -50,15 +53,9 @@ references = [
 ]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-```
-```json
 {
-    "total_items": 2,
-    "empty_items": 0,
-    "total_time_elapsed": 1.9486117362976074,
     "moverscore": {
         "score": 0.5148001048996513,
-        "time_elapsed": 1.9486117362976074
     }
 }
 ```

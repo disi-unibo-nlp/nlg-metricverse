@@ -29,6 +29,11 @@ Scores can be interpreted as shown in the table below.
 ### Outputs
 - **score** (`float`): the Gunning-Fog index score for the text input in the list.
 
+### Results from popular papers
+
+## Bounds
+The Gunning-Fog index can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,10]}##gh-light-mode-only">.
+
 ## Examples
 ```python
 from nlgmetricverse import NLGMetricverse, load_metric
@@ -37,9 +42,15 @@ references = ["Peace at home, peace in the world.", "The cat is playing on the m
 scorer = NLGMetricverse(metrics=load_metric("gunning_fog"))
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{
-  "gunning_fog": {
-    "score": 2.2 
-  }
+{ 
+  "gunning_fog" : { 
+    'score' : 2.2 
+  } 
 }
 ```
+## Limitations and bias
+
+## Citation(s)
+
+## Further References
+- [Gunning-Fog Index Wikipedia Page](https://en.wikipedia.org/wiki/Gunning_fog_index)

@@ -29,10 +29,9 @@ In this case the algorithm compares the candidate against each of the references
 
 ### Outputs
 METEOR outputs a dictionary with the following values:
-- **score** (`float`): average METEOR score.
+- **meteor** (`float`): average METEOR score.
 
 ### Results from popular papers
-
 The [METEOR paper](https://aclanthology.org/W05-0909.pdf) does not report METEOR score values for different models, but it does report that METEOR gets an R correlation value of 0.347 with human evaluation on the Arabic data and 0.331 on the Chinese data. 
 
 ## Bounds
@@ -41,12 +40,17 @@ The higher score means that the candidate is closer to reference translation (i.
 
 ## Examples
 ```python
+from nlgmetricverse import NLGMetricverse, load_metric
 scorer = NLGMetricverse(metrics=load_metric("meteor"))
 predictions = ["the cat sat on the mat"]
 references = ["on the mat sat the cat"]
 scores = scorer(predictions=predictions, references=references)
 print(scores)
-{ "total_items": 1, "empty_items": 0, "meteor": { "score": 0.5 } }
+{ 
+  "meteor": { 
+    'score': 0.5 
+  } 
+}
 ```
 
 ## Limitations and bias
