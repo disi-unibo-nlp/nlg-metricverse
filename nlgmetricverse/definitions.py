@@ -1,8 +1,6 @@
 DEFAULT_METRICS = [
-    {"path": "bleu", "compute_kwargs": {"max_order": 1}},
-    {"path": "bleu", "compute_kwargs": {"max_order": 2}},
-    {"path": "bleu", "compute_kwargs": {"max_order": 3}},
-    {"path": "bleu", "compute_kwargs": {"max_order": 4}},
+    {"path": "bertscore", "idf": True, "rescale_with_baseline": True, "model_type": "microsoft/deberta-xlarge-mnli"},
+    {"path": "bartscore"},
     {"path": "meteor"},
     {"path": "rouge"}
 ]
