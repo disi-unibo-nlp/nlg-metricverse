@@ -239,6 +239,7 @@ Thanks go to all these wonderful collaborations for their contribution towards t
   <tr>
     <td align="center"><a href="https://giacomofrisoni.github.io/"><img src="https://github.com/giacomofrisoni.png" width="100px;" alt=""/><br /><sub><b>Giacomo Frisoni</b></sub></a></td>
     <td align="center"><a href="https://andreazammarchi3.github.io/"><img src="https://github.com/andreazammarchi3.png" width="100px;" alt=""/><br /><sub><b>Andrea Zammarchi</b></sub></a></td>
+    <td align="center"><a href="https://github.com/ValentinaPieri"><img src="https://github.com/ValentinaPieri.png" width="100px;" alt=""/><br /><sub><b>Valentina Pieri</b></sub></td>
     <td align="center"><img src="https://github.com/marcoavagnano98.png" width="100px;" alt=""/><br /><sub><b>Marco Avagnano</b></sub></td>
 </table>
 
