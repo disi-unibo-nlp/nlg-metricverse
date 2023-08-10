@@ -118,7 +118,30 @@ The **Spaces** edition of NLG Metricverse will be launched soon. Check it out he
 
 ## 🚀 Quickstart
 
-It is only <b>two lines of code</b> to evaluate generated outputs: <b>(i)</b> instantiate your scorer by selecting the desired metric(s) and <b>(ii)</b> apply it!
+### Prepare your environment
+For NLGmetricverse we recommend using a virtual environment. If you are not familiar with virtual environments, you can read more about them [here](https://docs.python.org/3/tutorial/venv.html).
+Using virtual environments within a library that encompasses numerous metrics proves invaluable for seamless development and efficient management. By encapsulating each metric within its isolated environment, potential conflicts between dependencies are mitigated, ensuring consistent and reliable behavior. This approach streamlines dependency management, enabling precise specification of version requirements for each metric. Moreover, venv facilitates rigorous testing and reproducibility, safeguarding the library's integrity across various metric-driven scenarios. As metrics expand, venv simplifies collaboration among team members, reduces the risk of global environment contamination, and eases deployment processes.
+
+Before running any code, you need to create and activate a virtual environment for the desidered metric and install the required dependencies.
+```python
+python -m venv nlgmetricverse\env\rouge
+
+#activate the virtual environment on Command Prompt
+nlgmetricverse\env\rouge\Scripts\activate.bat
+
+#or else on powershell
+nlgmetricverse\env\rouge\Scripts\activate.ps1
+
+!pip install -r ci_requirements.txt
+#if present, install the specific requirements for the metric
+!pip install -r nlgmetricverse\metrics\rouge\requirements.txt
+```
+After that, you can run the code for the metric you want to use. After you are done, you can deactivate the virtual environment.
+```python
+deactivate
+```
+
+Then it is only with <b>two lines of code</b> to evaluate generated outputs: <b>(i)</b> instantiate your scorer by selecting the desired metric(s) and <b>(ii)</b> apply it!
 
 ### Metric Selection
 Specify the metrics you want to use on instantiation,
@@ -139,8 +162,6 @@ bleu = NLGMetricverse.load_metric("bleu")
 # metrics not available in `nlgmetricverse` but in `datasets`
 wer = NLGMetricverse.load_metric("competition_math") # It falls back to `datasets` package with a warning
 ```
-Note: if a selected metric requires specific packages, you'll be invited to install them (e.g., "bertscore" → `pip install bertscore`).
-
 
 ### Metric Usage
 
