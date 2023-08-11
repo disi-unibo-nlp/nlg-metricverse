@@ -23,7 +23,7 @@
     <tr>
         <td align="left">🛰️ Training Program</td>
         <td align="left">
-          <a href=""><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
+          <a href="https://github.com/disi-unibo-nlp/nlg-metricverse/blob/main/notebooks/nlg_metricverse_demo.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
         </td>
     </tr>
     <tr>
