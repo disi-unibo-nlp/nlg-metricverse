@@ -79,6 +79,17 @@ jobs:
         run: |
           gh extension install actions/gh-actions-cache
           
-          gh actions-cache list | tail -n +5 | cut -f1 | xargs -I@ gh actions-cache delete @ --confirm
+          REPO=${{ github.repository }}
+          BRANCH=main
+          echo "Fetching list of cache key"
+          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+
+          set +e
+          echo "Deleting caches..."
+          for cacheKey in $cacheKeysForPR
+          do
+              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+          done
+          echo "Done"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
