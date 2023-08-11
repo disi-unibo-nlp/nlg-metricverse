@@ -80,13 +80,17 @@ jobs:
           gh extension install actions/gh-actions-cache
           
           REPO=${{ github.repository }}
-
+          BRANCH=main
           echo "Fetching list of cache key"
-          cacheKey=${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/setup.py')}}
-
-          cache_delete=$(gh actions-cache delete $cacheKey -R $REPO --confirm | grep "Deleted 1 cache entry with key")
-          echo $cache_delete
-          [[ -z "$cache_delete" ]] && exit 1 || echo "Cache Delete Successful"
+          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
+          echo cacheKeysForPR
+          ## Setting this to not fail the workflow while deleting cache keys. 
+          set +e
+          echo "Deleting caches..."
+          for cacheKey in $cacheKeysForPR
+          do
+              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
+          done
           echo "Done"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
