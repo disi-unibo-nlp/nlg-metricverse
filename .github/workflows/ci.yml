@@ -82,15 +82,11 @@ jobs:
           REPO=${{ github.repository }}
 
           echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh actions-cache list -R $REPO)
+          cacheKey=${{ matrix.os }}-${{ matrix.python-version }}-${{ hashFiles('**/setup.py')}}
 
-          ## Setting this to not fail the workflow while deleting cache keys. 
-          set +e
-          echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
-          do
-              gh actions-cache delete $cacheKey -R $REPO --confirm
-          done
+          cache_delete=$(gh actions-cache delete $cacheKey -R $REPO --confirm | grep "Deleted 1 cache entry with key")
+          echo $cache_delete
+          [[ -z "$cache_delete" ]] && exit 1 || echo "Cache Delete Successful"
           echo "Done"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
