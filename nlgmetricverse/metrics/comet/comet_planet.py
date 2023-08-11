@@ -18,8 +18,9 @@ Comet implementation of evaluate package. See
 https://github.com/huggingface/evaluate/blob/master/metrics/comet/comet.py
 """
 
-from typing import Callable, Union
-from packaging import version
+from pathlib import Path
+from typing import Any, Callable, Dict, Union
+from packaging.version import Version
 
 import evaluate
 
@@ -106,6 +107,19 @@ Examples:
     { "total_items": 2, "empty_items": 0, "comet": { "scores": [ 0.1506408303976059, 0.915494441986084 ], "samples": 0.5330676361918449 } }
 """
 
+# Comet checkpoints, taken from https://github.com/Unbabel/COMET/blob/master/MODELS.md
+COMET_MODELS = {
+    "emnlp20-comet-rank": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt20/emnlp20-comet-rank.tar.gz",
+    "wmt20-comet-qe-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt20/wmt20-comet-qe-da.tar.gz",
+    "wmt21-comet-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-da.tar.gz",
+    "wmt21-comet-mqm": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-mqm.tar.gz",
+    "wmt21-comet-qe-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-qe-da.tar.gz",
+    "wmt21-comet-qe-mqm": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-comet-qe-mqm.tar.gz",
+    "wmt21-cometinho-mqm": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-cometinho-mqm.tar.gz",
+    "wmt21-cometinho-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/wmt21/wmt21-cometinho-da.tar.gz",
+    "eamt22-prune-comet-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/eamt22/eamt22-prune-comet-da.tar.gz",
+    "eamt22-cometinho-da": "https://unbabel-experimental-models.s3.amazonaws.com/comet/eamt22/eamt22-cometinho-da.tar.gz",
+}
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CometPlanet(MetricForLanguageGeneration):
@@ -119,13 +133,17 @@ class CometPlanet(MetricForLanguageGeneration):
             super(CometPlanet, self)._download_and_prepare(dl_manager)
 
         if self.config_name == "default":
-            if version.parse(comet.__version__) >= version.parse("2.0.0"):
+            if Version(comet.__version__) >= Version("2.0.0"):
                 checkpoint_path = comet.download_model("Unbabel/wmt22-comet-da")
             else:
                 checkpoint_path = comet.download_model("wmt20-comet-da")
-            #checkpoint_path = comet.download_model("wmt20-comet-da")
         else:
-            checkpoint_path = comet.download_model(self.config_name)
+            model_url = COMET_MODELS.get(self.config_name)
+            if model_url is not None:
+                model_dir = dl_manager.download_and_extract(model_url)
+                checkpoint_path = (Path(model_dir) / f"{self.config_name}/checkpoints/model.ckpt").as_posix()
+            else:
+                checkpoint_path = comet.download_model(self.config_name)
         self.scorer = comet.load_from_checkpoint(checkpoint_path)
 
     def _info(self):
@@ -143,6 +161,14 @@ class CometPlanet(MetricForLanguageGeneration):
                 "http://www.statmt.org/wmt20/pdf/2020.wmt-1.101.pdf6",
             ],
         )
+    
+    def _handle_comet_outputs(self, outputs) -> Dict[str, Any]:
+        if Version(comet.__version__) >= Version("2.0.0"):
+            scores = outputs.get("scores")
+            system_score = outputs.get("system_score")
+        else:
+            scores, system_score = outputs
+        return {"scores": scores, "system_score": system_score}
 
     def _compute_single_pred_single_ref(
         self,
@@ -160,30 +186,17 @@ class CometPlanet(MetricForLanguageGeneration):
     ):
         data = {"src": sources, "mt": predictions, "ref": references}
         data = [dict(zip(data, t)) for t in zip(*data.values())]
-        if version.parse(comet.__version__) >= version.parse("2.0.0"):
-            output = self.scorer.predict(
-                 data,
-                batch_size=batch_size,
-                gpus=gpus,
-                mc_dropout=mc_dropout,
-                progress_bar=progress_bar,
-                accelerator=accelerator,
-                num_workers=num_workers,
-                length_batching=length_batching,
-            )
-            scores, samples = output.scores, output.system_score
-        else:
-            scores, samples = self.scorer.predict(
-                data,
-                batch_size=batch_size,
-                gpus=gpus,
-                mc_dropout=mc_dropout,
-                progress_bar=progress_bar,
-                accelerator=accelerator,
-                num_workers=num_workers,
-                length_batching=length_batching,
-            )
-        return {"scores": scores, "samples": samples}
+        comet_scores = self.scorer.predict(
+            data,
+            batch_size=batch_size,
+            gpus=gpus,
+            mc_dropout=mc_dropout,
+            progress_bar=progress_bar,
+            accelerator=accelerator,
+            num_workers=num_workers,
+            length_batching=length_batching,
+        )
+        return self._handle_comet_outputs(comet_scores)
 
     def _compute_single_pred_multi_ref(
         self,
@@ -203,7 +216,7 @@ class CometPlanet(MetricForLanguageGeneration):
         for src, pred, refs in zip(sources, predictions, references):
             data = {"src": [src] * len(refs), "mt": [pred] * len(refs), "ref": refs}
             data = [dict(zip(data, t)) for t in zip(*data.values())]
-            pred_scores, _ = self.scorer.predict(
+            comet_scores = self.scorer.predict(
                 data,
                 batch_size=batch_size,
                 gpus=gpus,
@@ -213,9 +226,10 @@ class CometPlanet(MetricForLanguageGeneration):
                 num_workers=num_workers,
                 length_batching=length_batching,
             )
-            scores.append(float(reduce_fn(pred_scores)))
+            pred_scores = self._handle_comet_outputs(comet_scores)
+            scores.append(float(reduce_fn(pred_scores["scores"])))
 
-        return {"scores": scores, "samples": sum(scores) / len(scores)}
+        return {"scores": scores, "system_score": sum(scores) / len(scores)}
 
     def _compute_multi_pred_multi_ref(
         self,
@@ -237,7 +251,7 @@ class CometPlanet(MetricForLanguageGeneration):
             for pred in preds:
                 data = {"src": [src] * len(refs), "mt": [pred] * len(refs), "ref": refs}
                 data = [dict(zip(data, t)) for t in zip(*data.values())]
-                pred_scores, _ = self.scorer.predict(
+                comet_scores = self.scorer.predict(
                     data,
                     batch_size=batch_size,
                     gpus=gpus,
@@ -247,7 +261,8 @@ class CometPlanet(MetricForLanguageGeneration):
                     num_workers=num_workers,
                     length_batching=length_batching,
                 )
-                all_pred_scores.append(float(reduce_fn(pred_scores)))
+                pred_scores = self._handle_comet_outputs(comet_scores)
+                all_pred_scores.append(float(reduce_fn(pred_scores["scores"])))
             scores.append(float(reduce_fn(all_pred_scores)))
 
-        return {"scores": scores, "samples": sum(scores) / len(scores)}
+        return {"scores": scores, "system_score": sum(scores) / len(scores)}
