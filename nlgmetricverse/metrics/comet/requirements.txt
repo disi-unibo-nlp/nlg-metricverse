@@ -1,1 +1,2 @@
-unbabel-comet>=1.1.2,<2
+unbabel-comet>=1.1.2,<2;python_version<"3.8",
+unbabel-comet>=2.0,<2.1;python_version>="3.8"
