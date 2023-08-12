@@ -55,6 +55,7 @@ jobs:
         run: >
           pip install -e .[dev]
           pip install -r ci_requirements.txt
+          pip install -r ci_requirements-dev.txt
           
       - name: Run tests.
         run: |
