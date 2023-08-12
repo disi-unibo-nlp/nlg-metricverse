@@ -25,7 +25,7 @@ To create the package for pypi.
 2. Commit these changes: "git commit -m 'Release: VERSION'"
 
 3. Add a tag in git to mark the release: "git tag VERSION -m 'Add tag VERSION for pypi'"
-   Push the tag to remote: git push --tags origin master
+   Push the tag to remote: git push --tags origin main
 
 4. Build both the sources and the wheel. Do not change anything in setup.py between
    creating the wheel and the source distribution (obviously).
@@ -92,7 +92,6 @@ Mandatory requirements.
 
 requirements = [
     "datasets>=2.9,<2.10",
-    "deepdiff>=5.5.0",
     "fire>=0.4.0",
     "nltk>=3.6.6,<3.7.1",
     "numpy>=1.21.0",
@@ -132,32 +131,17 @@ _DEV_REQUIREMENTS = [
     "pytest-cov>=3.0.0",
     "pytest-timeout>=2.1.0",
     "pytorch-transformers==1.2.0",
-    "math_equivalence @ git+https://github.com/hendrycks/math.git",  # for datasets test metric
-    "fairseq @ git+https://github.com/pytorch/fairseq.git",
     "wget==3.2"
 ]
 
-_PRISM_REQUIREMENTS = [
-    'numpy>=1.23,<1.24;python_version>="3.8"',
-    'numpy==1.21.6;python_version<"3.8"',
-]
-
 _METRIC_REQUIREMENTS = [
-    "sacrebleu>=2.0.0",
-    "jiwer>=2.3.0",
     "seqeval==1.2.2",
-    "sentencepiece==0.1.96",
-    "bleurt @ git+https://github.com/google-research/bleurt.git",
-    'unbabel-comet>=1.1.2,<2;python_version<"3.8"',
-    'unbabel-comet>=2.0,<2.1;python_version>="3.8"',
     "protobuf<3.20.1",
 ]
 
-_METRIC_REQUIREMENTS.extend(_PRISM_REQUIREMENTS)
 add_pywin(_METRIC_REQUIREMENTS)
 
 extras = {
-    "prism": _PRISM_REQUIREMENTS,
     "metrics": _METRIC_REQUIREMENTS,
     "dev": _DEV_REQUIREMENTS + _METRIC_REQUIREMENTS,
 }
