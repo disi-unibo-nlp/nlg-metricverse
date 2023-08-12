@@ -56,6 +56,7 @@ jobs:
           pip install -e .[dev]
           pip install -r ci_requirements.txt
           pip install -r ci_requirements-dev.txt
+          pip install -r nlgmetricverse/metrics/sacrebleu/requirements.txt
           
       - name: Run tests.
         run: |
