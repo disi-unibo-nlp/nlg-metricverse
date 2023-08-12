@@ -133,6 +133,14 @@ nlgmetricverse\env\rouge\Scripts\activate.bat
 nlgmetricverse\env\rouge\Scripts\activate.ps1
 
 !pip install -r ci_requirements.txt
+
+"""Also, you need to install the packages which are available through a git source separately with the following command. 
+For the folks who are curious about "why?"; a short explaination is that PYPI does not allow indexing a package which 
+are directly dependent on non-pypi packages due to security reasons. The file `ci_requirements-dev.txt` includes packages 
+which are currently only available through a git source, or they are PYPI packages with no recent release or 
+incompatible with NLGmetricverse, so that they are added as git sources or pointing to specific commits."""
+!pip install -r ci_requirements-dev.txt
+
 #if present, install the specific requirements for the metric
 !pip install -r nlgmetricverse\metrics\rouge\requirements.txt
 ```
