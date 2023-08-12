@@ -1,5 +1,4 @@
 datasets>=2.9,<2.10
-deepdiff>=5.5.0
 fire>=0.4.0
 numpy>=1.21.0
 pandas>=1.1.5
