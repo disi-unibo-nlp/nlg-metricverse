@@ -310,16 +310,6 @@ metrics_list = [
         "lower_bound": 0
     },
     {
-        "name": "character",
-        "category": "n-gram overlap",
-        "appl_tasks": ["MT"],
-        "trained": False,
-        "unsupervised": True,
-        "quality_dims": [],
-        "upper_bound": 1,
-        "lower_bound": 0
-    },
-    {
         "name": "chrf",
         "category": "n-gram overlap",
         "appl_tasks": ["MT", "IC", "SUM"],
@@ -360,7 +350,17 @@ metrics_list = [
         "lower_bound": 0
     },
     {
-        "name": "eed",
+        "name": "coverage",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "density",
         "category": "",
         "appl_tasks": [],
         "trained": False,
@@ -476,6 +476,16 @@ metrics_list = [
         "trained": False,
         "unsupervised": True,
         "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "recall",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": ["ADE", "FLU"],
         "upper_bound": 1,
         "lower_bound": 0
     },

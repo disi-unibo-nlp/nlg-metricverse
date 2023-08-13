@@ -23,6 +23,8 @@ from nlgmetricverse.metrics.cer import CER
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.cider import Cider
 from nlgmetricverse.metrics.comet import Comet
+from nlgmetricverse.metrics.coverage import Coverage
+from nlgmetricverse.metrics.density import Density
 from nlgmetricverse.metrics.f1 import F1
 from nlgmetricverse.metrics.flesch_kincaid import FleschKincaid
 from nlgmetricverse.metrics.gunning_fog import GunningFog
@@ -34,6 +36,7 @@ from nlgmetricverse.metrics.nubia import Nubia
 from nlgmetricverse.metrics.perplexity import Perplexity
 from nlgmetricverse.metrics.precision import Precision
 from nlgmetricverse.metrics.prism import Prism
+from nlgmetricverse.metrics.recall import Recall
 from nlgmetricverse.metrics.repetitiveness import Repetitiveness
 from nlgmetricverse.metrics.rouge import Rouge
 from nlgmetricverse.metrics.sacrebleu import Sacrebleu
