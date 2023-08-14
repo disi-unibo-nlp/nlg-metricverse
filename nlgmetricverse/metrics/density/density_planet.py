@@ -1,6 +1,6 @@
 # coding=utf-8
 
-""" Abstractness metric. """
+""" Density metric. """
 
 import evaluate
 from typing import Callable
@@ -19,10 +19,26 @@ _CITATION = """
 """
 
 _DESCRIPTION = """
+The Density metric measures the average lenght of the extractive fragments. 
+it is formulated as: \frac{1}{|y|} \sum_{f \in F(x,y)} (|f|_c)^2}
+  
+Where ||_c is the character lenght. When low, it suggest that most summary sentences are not 
+verbatim extractions from the sources (abstractive).
 """
 
 _KWARGS_DESCRIPTION = """
-
+Args:
+    predictions: List of predictions to score. Each prediction should be a string.
+    references: List of references for each prediction. Each reference should be a string.
+Returns:
+    density: The average density of the predictions.
+Examples:
+    >>> scorer = NLGMetricverse(metrics=load_metric("density"))
+    >>> predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+    >>> references = ["Peace at home, peace in th world.", "The cat is playing on the mat."]
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    { "total_items": 2, "empty_items": 0, "density": { "score": 1.97 }}
 """
 
 _LICENSE = """
@@ -58,12 +74,12 @@ class DensityPlanet(MetricForLanguageGeneration):
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None
     ):
         """
-        Computes the coverage score for a single predicted text and a single reference text.
+        Computes the density score for a single predicted text and a single reference text.
 
         Args:
             predictions (EvaluationInstance): An object containing the predicted text.
             references (EvaluationInstance): An object containing the reference text.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the density scores across multiple examples.
         """
         result = self._compute_density(references, predictions)
         return {"score": result}
@@ -72,12 +88,12 @@ class DensityPlanet(MetricForLanguageGeneration):
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None
     ):
         """
-        Computes the abstractness score for a single predicted text and multiple reference texts.
+        Computes the density score for a single predicted text and multiple reference texts.
 
         Args:
             predictions (EvaluationInstance): An object containing the predicted text.
             references (EvaluationInstance): An object containing the reference texts.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the density scores across multiple examples.
         """
         result = self._compute_density(references, predictions)
         return {"score": result}
@@ -86,12 +102,12 @@ class DensityPlanet(MetricForLanguageGeneration):
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None
     ):
         """
-        Computes the abstractness score for multiple predicted texts and multiple reference texts.
+        Computes the density score for multiple predicted texts and multiple reference texts.
 
         Args:
             predictions (EvaluationInstance): An object containing the predicted texts.
             references (EvaluationInstance): An object containing the reference texts.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the density scores across multiple examples.
         """
         predList = []
         refList = []
