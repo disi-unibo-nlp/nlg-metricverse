@@ -1,6 +1,6 @@
 # coding=utf-8
 
-""" Abstractness metric. """
+""" Coverage metric. """
 
 import evaluate
 from typing import Callable
@@ -19,10 +19,26 @@ _CITATION = """
 """
 
 _DESCRIPTION = """
+The Coverage metric measures the percentage of summary words within the source text: 
+\frac{1}{|y|} \sum_{f \in F(x,y)} |f|}
+
+Where F is the set of all fragments, i.e., extractive character sequences. When low, it suggest a 
+high change for unsupported entities and facts.
 """
 
 _KWARGS_DESCRIPTION = """
-
+Args:
+    predictions: List of predictions to score. Each prediction should be a string.
+    references: List of references for each prediction. Each reference should be a string.
+Returns:
+    coverage: The average coverage of the predictions.
+Examples:
+    >>> scorer = NLGMetricverse(metrics=load_metric("coverage"))
+    >>> predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
+    >>> references = ["Peace at home, peace in th world.", "The cat is playing on the mat."]
+    >>> scores = scorer(predictions=predictions, references=references)
+    >>> print(scores)
+    { "total_items": 2, "empty_items": 0, "coverage": { "score": 0.77 }}
 """
 
 _LICENSE = """
@@ -63,7 +79,7 @@ class CoveragePlanet(MetricForLanguageGeneration):
         Args:
             predictions (EvaluationInstance): An object containing the predicted text.
             references (EvaluationInstance): An object containing the reference text.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the coverage scores across multiple examples.
         """
         result = self._compute_coverage(references, predictions)
         return {"score": result}
@@ -72,26 +88,29 @@ class CoveragePlanet(MetricForLanguageGeneration):
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None
     ):
         """
-        Computes the abstractness score for a single predicted text and multiple reference texts.
+        Computes the coverage score for a single predicted text and multiple reference texts.
 
         Args:
             predictions (EvaluationInstance): An object containing the predicted text.
             references (EvaluationInstance): An object containing the reference texts.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the coverage scores across multiple examples.
         """
-        result = self._compute_coverage(references, predictions)
+        refList = []
+        for ref in references:
+            refList += ref
+        result = self._compute_coverage(refList, predictions)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None
     ):
         """
-        Computes the abstractness score for multiple predicted texts and multiple reference texts.
+        Computes the coverage score for multiple predicted texts and multiple reference texts.
 
         Args:
             predictions (EvaluationInstance): An object containing the predicted texts.
             references (EvaluationInstance): An object containing the reference texts.
-            reduce_fn (Callable): A function to use for reducing the abstractness scores across multiple examples.
+            reduce_fn (Callable): A function to use for reducing the coverage scores across multiple examples.
         """
         predList = []
         refList = []
