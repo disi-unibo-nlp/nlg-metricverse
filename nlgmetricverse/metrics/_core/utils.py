@@ -350,6 +350,16 @@ metrics_list = [
         "lower_bound": 0
     },
     {
+        "name": "compression",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
         "name": "coverage",
         "category": "",
         "appl_tasks": [],

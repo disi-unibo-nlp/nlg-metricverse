@@ -23,6 +23,7 @@ from nlgmetricverse.metrics.cer import CER
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.cider import Cider
 from nlgmetricverse.metrics.comet import Comet
+from nlgmetricverse.metrics.compression import Compression
 from nlgmetricverse.metrics.coverage import Coverage
 from nlgmetricverse.metrics.density import Density
 from nlgmetricverse.metrics.f1 import F1
