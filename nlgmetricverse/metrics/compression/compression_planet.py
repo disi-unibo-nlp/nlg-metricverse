@@ -118,11 +118,11 @@ class CompressionPlanet(MetricForLanguageGeneration):
         return {"score": result}
 
     @staticmethod
-    def _compute_compression(sources, targets):
+    def _compute_compression(references, predictions):
         tot_compression = []
-        for i in tqdm(range(len(sources))):
-            words_source = word_tokenize(sources[i])
-            words_target = word_tokenize(targets[i])
+        for i in tqdm(range(len(references))):
+            words_source = word_tokenize(references[i])
+            words_target = word_tokenize(predictions[i])
             if len(words_source) > 0 and len(words_target) > 0:
                 tot_compression.append(len(words_source) / len(words_target))
         avg_compression = round(sum(tot_compression) / len(tot_compression), 2)

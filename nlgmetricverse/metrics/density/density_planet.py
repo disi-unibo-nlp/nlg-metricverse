@@ -151,11 +151,11 @@ class DensityPlanet(MetricForLanguageGeneration):
         return density
 
     @staticmethod
-    def _compute_density(sources, targets):
+    def _compute_density(references, predictions):
         tot_density = []
-        for i in tqdm(range(len(sources))):
-            words_source = word_tokenize(sources[i])
-            words_target = word_tokenize(targets[i])
+        for i in tqdm(range(len(references))):
+            words_source = word_tokenize(references[i])
+            words_target = word_tokenize(predictions[i])
             if len(words_source) > 0 and len(words_target) > 0:
                 words_source_norm = [str(t).lower() for t in words_source]
                 words_target_norm = [str(t).lower() for t in words_target]
