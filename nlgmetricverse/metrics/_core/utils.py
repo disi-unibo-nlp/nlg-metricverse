@@ -300,6 +300,16 @@ metrics_list = [
         "lower_bound": 0
     },
     {
+        "name": "carburacy",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": -1,
+        "lower_bound": -1
+    },
+    {
         "name": "cer",
         "category": "",
         "appl_tasks": [],
@@ -440,6 +450,16 @@ metrics_list = [
         "lower_bound": 0
     },
     {
+        "name": "nid",
+        "category": "",
+        "appl_tasks": [],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
         "name": "nist",
         "category": "n-gram overlap",
         "appl_tasks": ["MT"],
@@ -536,6 +556,16 @@ metrics_list = [
         "trained": False,
         "unsupervised": True,
         "quality_dims": [],
+        "upper_bound": 1,
+        "lower_bound": 0
+    },
+    {
+        "name": "unr",
+        "category": "n-gram overlap",
+        "appl_tasks": ["MT", "IC", "SUM", "D2T"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": ["ADE", "FLU"],
         "upper_bound": 1,
         "lower_bound": 0
     },

@@ -19,6 +19,7 @@ from nlgmetricverse.metrics.bartscore import Bartscore
 from nlgmetricverse.metrics.bertscore import Bertscore
 from nlgmetricverse.metrics.bleu import Bleu
 from nlgmetricverse.metrics.bleurt import Bleurt
+from nlgmetricverse.metrics.carburacy import Carburacy
 from nlgmetricverse.metrics.cer import CER
 from nlgmetricverse.metrics.chrf import CHRF
 from nlgmetricverse.metrics.cider import Cider
@@ -32,6 +33,7 @@ from nlgmetricverse.metrics.gunning_fog import GunningFog
 from nlgmetricverse.metrics.mauve import Mauve
 from nlgmetricverse.metrics.meteor import Meteor
 from nlgmetricverse.metrics.moverscore import Moverscore
+from nlgmetricverse.metrics.nid import NID
 from nlgmetricverse.metrics.nist import Nist
 from nlgmetricverse.metrics.nubia import Nubia
 from nlgmetricverse.metrics.perplexity import Perplexity
@@ -42,5 +44,6 @@ from nlgmetricverse.metrics.repetitiveness import Repetitiveness
 from nlgmetricverse.metrics.rouge import Rouge
 from nlgmetricverse.metrics.sacrebleu import Sacrebleu
 from nlgmetricverse.metrics.ter import TER
+from nlgmetricverse.metrics.unr import UNR
 from nlgmetricverse.metrics.wer import WER
 from nlgmetricverse.metrics.wmd import WMD
