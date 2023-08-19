@@ -10,7 +10,7 @@ Where we take <img src="https://render.githubusercontent.com/render/math?math={n
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **UNR**(`float` or `int`): UNR score. Minimum possible value is 0. Maximum possible value is 1
+- **UNR**(`float` or `int`): UNR score. Minimum possible value is 0. Maximum possible value is 1, the higher the score it means the more unique the summary is.
 
 ### Results from popular papers
 

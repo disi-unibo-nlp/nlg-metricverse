@@ -8,7 +8,7 @@ The Compression metric calculates the documention-summary word ration: <br><img 
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **compression**(`float` or `int`): Compression score. Minimum possible value is 0. Maximum possible value is |x|
+- **compression**(`float` or `int`): Compression score. Minimum possible value is 0. Maximum possible value is |x|, where the higher the score, means the more compression the summary is.
 
 ### Results from popular papers
 

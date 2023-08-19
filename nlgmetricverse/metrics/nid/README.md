@@ -8,7 +8,7 @@ The NID metric reckons redundancy by inverting the entropy of summary unigrams a
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **nid**(`float` or `int`): NID score. Minimum possible value is 0. Maximum possible value is 1
+- **nid**(`float` or `int`): NID score. The lower score means a lesser redundancy.
 
 ### Results from popular papers
 

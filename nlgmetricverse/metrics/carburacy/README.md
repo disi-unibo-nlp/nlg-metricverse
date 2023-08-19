@@ -34,5 +34,17 @@ print(scores)
 ## Limitations and Bias
 
 ## Citation
+```bibtex
+@inproceedings{
+  title = {Carburacy: summarization models tuning and comparison in eco-sustainable 
+           regimes with a novel carbon-aware accuracy},
+  author = {Gianluca Moro, Luca Ragazzi, Lorenzo Valgimigli},
+  month = june,
+  year = {2023},
+  publisher = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  url = {https://scholar.google.com/citations?view_op=view_citation&hl=it&user=h6jngsQAAAAJ&citation_for_view=h6jngsQAAAAJ:UeHWp8X0CEIC},
+  pages = {14417-14425},
+}
+```
 
 ## Further References

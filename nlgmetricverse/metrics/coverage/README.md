@@ -10,7 +10,7 @@ Where <img src="https://render.githubusercontent.com/render/math?math={F}##gh-li
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **coverage**(`float` or `int`): Coverage score. Minimum possible value is 0. Maximum possible value is 1.0. 
+- **coverage**(`float` or `int`): Coverage score. Minimum possible value is 0. Maximum possible value is 1. The higher the score, the higher percentage of summary words within the source text.
 
 ### Results from popular papers
 

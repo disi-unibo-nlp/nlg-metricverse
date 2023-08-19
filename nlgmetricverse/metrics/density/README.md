@@ -10,7 +10,7 @@ Where <img src="https://render.githubusercontent.com/render/math?math={||_c}"> i
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **density**(`float` or `int`): Density score. Minimum possible value is 0. Maximum possible value is <img src="https://render.githubusercontent.com/render/math?math={|x|_c}">
+- **density**(`float` or `int`): Density score. Minimum possible value is 0. Maximum possible value is <img src="https://render.githubusercontent.com/render/math?math={|x|_c}">. The lower is the score, the more abstractive the summary is.
 
 ### Results from popular papers
 
