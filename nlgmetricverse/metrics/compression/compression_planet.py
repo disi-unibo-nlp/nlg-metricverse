@@ -119,6 +119,17 @@ class CompressionPlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _compute_compression(references, predictions):
+        """
+        The function computes the compression ratio between the reference and predicted texts. Firstly it is initialized an empty 
+        list tot_compression. It then iterates over the indices of the references list using the range function and the len 
+        function. For each index i, the function tokenizes the references[i] and predictions[i] strings using the
+        word_tokenize function from the nltk library. If both the words_source and words_target lists have a length 
+        greater than 0, the function computes the compression ratio by dividing the length of words_source by the length 
+        of words_target. The resulting value is appended to the tot_compression list.
+        Finally, the function computes the average compression ratio by dividing the sum of the values in tot_compression 
+        by the length of tot_compression. The resulting value is rounded to two decimal places using the round function and 
+        returned as the output of the function.
+        """
         tot_compression = []
         for i in tqdm(range(len(references))):
             words_source = word_tokenize(references[i])
