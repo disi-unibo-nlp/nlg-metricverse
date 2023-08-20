@@ -11,7 +11,6 @@ from typing import Callable
 from nlgmetricverse.metrics import EvaluationInstance
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
-
 _CITATION = """
 @inproceedings{
   title = {Carburacy: summarization models tuning and comparison in eco-sustainable 
@@ -84,8 +83,27 @@ class CarburacyPlanet(MetricForLanguageGeneration):
         labels = ["\n".join(nltk.sent_tokenize(label)) for label in labels]
         return preds, labels
 
-    def get_rouge_scores(rouge, predictions, references):
-        predictions, references = CarburacyPlanet.postprocess_text(predictions, references)
+    def postprocess_text_refs_pred(predictions, references):
+        if all(isinstance(ref, str) for ref in references):
+            references = [references]
+        preds = [pred.strip() for pred in predictions]
+        labels = []
+        for ref_list in references:
+            ref_labels = []
+            for label in ref_list:
+                if isinstance(label, str):
+                    ref_labels.append(label.strip())
+            ref_labels = ["\n".join(nltk.sent_tokenize(label)) for label in ref_labels]
+            labels.append(ref_labels)
+        # rougeLSum expects newline after each sentence
+        preds = ["\n".join(nltk.sent_tokenize(pred)) for pred in preds]
+        return preds, labels
+
+    def get_rouge_scores(rouge, predictions, references, refs_pred):
+        if refs_pred:
+            predictions, references = CarburacyPlanet.postprocess_text_refs_pred(predictions, references)
+        else:
+            predictions, references = CarburacyPlanet.postprocess_text(predictions, references)
         result_rouge = rouge.compute(predictions=predictions, references=references, use_stemmer=True)
         result = {k: round(v * 100, 2) for k, v in result_rouge.items()}
         return result
@@ -101,8 +119,9 @@ class CarburacyPlanet(MetricForLanguageGeneration):
             references: A parameter containing a single text sample for reference.
             reduce_fn (Callable): A function to use for reducing the carburacy scores across multiple examples.
         """
+        refs_pred = False
         rouge = evaluate.load("rouge")
-        score = CarburacyPlanet.get_rouge_scores(rouge, predictions, references)
+        score = CarburacyPlanet.get_rouge_scores(rouge, predictions, references, refs_pred)
         rouge_1 = score['rouge1']
         rouge_2 = score['rouge2']
         rouge_3 = score['rougeLsum']
@@ -110,9 +129,8 @@ class CarburacyPlanet(MetricForLanguageGeneration):
         co2_val = kwargs.get("co2_val")
         if co2_val is not np.nan:
             _,result,_ = self._compute_carburacy(r_val, None, co2_val)
-        print(result)
         return {"score": round(result * 100, 2)}
-    
+
     def _compute_single_pred_multi_ref(
             self, predictions: EvaluationInstance, references: EvaluationInstance, reduce_fn: Callable = None, **kwargs
     ):
@@ -124,22 +142,19 @@ class CarburacyPlanet(MetricForLanguageGeneration):
             references: A parameter containing multiple text sample for reference.
             reduce_fn (Callable): A function to use for reducing the carburacy scores across multiple examples.
         """
+        refs_pred = True
         rouge = evaluate.load("rouge")
-        scores = []
-        for i, pred in enumerate(predictions):
-            pred = str(pred)
-            refs = [str(ref).strip() for ref in references[i]]
-            pred, refs = CarburacyPlanet.postprocess_text([pred], refs)
-            result_rouge = rouge.compute(predictions=pred, references=refs, use_stemmer=True)
-            result = {k: round(v * 100, 2) for k, v in result_rouge.items()}
-            scores.append(result)
-        rouge_1 = np.mean([score['rouge1'] for score in scores])
-        rouge_2 = np.mean([score['rouge2'] for score in scores])
-        rouge_3 = np.mean([score['rougeLsum'] for score in scores])
+        if all(isinstance(ref, str) for ref in references):
+            references = [[ref] for ref in references]
+        score = CarburacyPlanet.get_rouge_scores(rouge, predictions, references, refs_pred)
+        rouge_1 = score['rouge1']
+        rouge_2 = score['rouge2']
+        rouge_3 = score['rougeLsum']
         r_val = np.mean([rouge_1, rouge_2, rouge_3]) / (1 + (np.var(np.array([rouge_1/100, rouge_2/100, rouge_3/100]),dtype=np.float64)))
         co2_val = kwargs.get("co2_val")
         if co2_val is not np.nan:
             _,result,_ = self._compute_carburacy(r_val, None, co2_val)
+        refs_pred = False
         return {"score": round(result * 100, 2)}
 
     def _compute_multi_pred_multi_ref(
@@ -153,10 +168,11 @@ class CarburacyPlanet(MetricForLanguageGeneration):
             references: A parameter containing multiple text sample for reference.
             reduce_fn (Callable): A function to use for reducing the carburacy scores across multiple examples.
         """
+        refs_pred = False
         rouge = evaluate.load("rouge")
         predictions = [pred for sublist in predictions for pred in sublist]
         references = [ref for sublist in references for ref in sublist]
-        score = CarburacyPlanet.get_rouge_scores(rouge, predictions, references)
+        score = CarburacyPlanet.get_rouge_scores(rouge, predictions, references, refs_pred)
         rouge_1 = score['rouge1']
         rouge_2 = score['rouge2']
         rouge_3 = score['rougeLsum']

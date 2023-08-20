@@ -90,10 +90,9 @@ class CompressionPlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference texts.
             reduce_fn (Callable): A function to use for reducing the compression scores across multiple examples.
         """
-        refList = []
         predList = [str(pred) for pred in predictions]
-        for ref in references:
-            refList += ref
+        refList = [ref for refs in references for ref in refs]
+
         result = self._compute_compression(refList, predList)
         return {"score": result}
 
@@ -131,7 +130,7 @@ class CompressionPlanet(MetricForLanguageGeneration):
         returned as the output of the function.
         """
         tot_compression = []
-        for i in tqdm(range(len(references))):
+        for i in tqdm(range(min(len(references), len(predictions)))):
             words_source = word_tokenize(references[i])
             words_target = word_tokenize(predictions[i])
             if len(words_source) > 0 and len(words_target) > 0:

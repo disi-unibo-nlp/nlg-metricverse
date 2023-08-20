@@ -94,7 +94,10 @@ class DensityPlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference texts.
             reduce_fn (Callable): A function to use for reducing the density scores across multiple examples.
         """
-        result = self._compute_density(references, predictions)
+        predList = [str(pred) for pred in predictions]
+        refList = [ref for refs in references for ref in refs]
+
+        result = self._compute_density(refList, predList)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
@@ -160,13 +163,14 @@ class DensityPlanet(MetricForLanguageGeneration):
         number of pairs. The resulting average density is rounded to two decimal places and returned by the function.
         """
         tot_density = []
-        for i in tqdm(range(len(references))):
+        tot_fragments = []
+        for i in tqdm(range(min(len(references), len(predictions)))):
             words_source = word_tokenize(references[i])
             words_target = word_tokenize(predictions[i])
             if len(words_source) > 0 and len(words_target) > 0:
                 words_source_norm = [str(t).lower() for t in words_source]
                 words_target_norm = [str(t).lower() for t in words_target]
-                density = DensityPlanet.match_texts(words_source_norm, words_target_norm)
+                density = DensityPlanet.match_texts(words_target_norm, words_source_norm)
                 tot_density.append(density)
         avg_density = round(sum(tot_density) / len(tot_density), 2)
         return avg_density

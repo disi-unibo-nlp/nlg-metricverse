@@ -3,6 +3,7 @@
 """ Coverage metric. """
 
 import evaluate
+import numpy as np
 from typing import Callable
 from nltk import word_tokenize
 from collections import namedtuple as _namedtuple
@@ -94,10 +95,10 @@ class CoveragePlanet(MetricForLanguageGeneration):
             references (EvaluationInstance): An object containing the reference texts.
             reduce_fn (Callable): A function to use for reducing the coverage scores across multiple examples.
         """
-        refList = []
-        for ref in references:
-            refList += ref
-        result = self._compute_coverage(refList, predictions)
+        predList = [str(pred) for pred in predictions]
+        refList = [ref for refs in references for ref in refs]
+
+        result = self._compute_coverage(refList, predList)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
@@ -167,7 +168,7 @@ class CoveragePlanet(MetricForLanguageGeneration):
         method yields the computed average coverage as its output.
         """
         tot_coverage = []
-        for i in tqdm(range(len(references))):
+        for i in tqdm(range(min(len(references), len(predictions)))):
             words_source = word_tokenize(references[i])
             words_target = word_tokenize(predictions[i])
             if len(words_source) > 0 and len(words_target) > 0:
