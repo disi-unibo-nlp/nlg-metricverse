@@ -4,7 +4,6 @@
 
 import evaluate
 from typing import Callable
-from nltk import ngrams
 from nltk import word_tokenize
 from collections import namedtuple as _namedtuple
 from tqdm import tqdm
@@ -152,6 +151,14 @@ class DensityPlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _compute_density(references, predictions):
+        """
+        The method that calculates a density metric for sets of text references and predictions. 
+        It processes each reference-prediction pair, tokenizes the words in both sets, and ensures that they 
+        are non-empty. The words are then normalized to lowercase. The normalized word lists are used to compute 
+        a density score through the `DensityPlanet.match_texts` function. The density scores for all pairs 
+        are collected, and an average density is computed by summing these scores and dividing by the total
+        number of pairs. The resulting average density is rounded to two decimal places and returned by the function.
+        """
         tot_density = []
         for i in tqdm(range(len(references))):
             words_source = word_tokenize(references[i])

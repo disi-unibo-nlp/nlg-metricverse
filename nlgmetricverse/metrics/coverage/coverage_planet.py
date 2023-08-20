@@ -4,7 +4,6 @@
 
 import evaluate
 from typing import Callable
-from nltk import ngrams
 from nltk import word_tokenize
 from collections import namedtuple as _namedtuple
 from tqdm import tqdm
@@ -155,6 +154,18 @@ class CoveragePlanet(MetricForLanguageGeneration):
 
     @staticmethod
     def _compute_coverage(references, predictions):
+        """
+        The method processes two sets of text references and predictions to compute a coverage metric. 
+        It begins by initializing an empty list named `tot_coverage` to hold coverage values for each 
+        reference-prediction pair. Utilizing the `tqdm` library for progress tracking, the method iterates 
+        through these pairs. It tokenizes the reference and prediction texts into words, verifying non-empty 
+        word counts before proceeding to lowercase normalization. Using the `CoveragePlanet.match_texts` function, 
+        it calculates a coverage score by comparing normalized word lists. This score signifies the alignment 
+        between prediction and reference words. The coverage score is accumulated within the `tot_coverage` list. 
+        After iterating through all pairs, the method determines average coverage by summing coverage values and 
+        dividing by the total pair count. The average coverage is then rounded to two decimals. Ultimately, the
+        method yields the computed average coverage as its output.
+        """
         tot_coverage = []
         for i in tqdm(range(len(references))):
             words_source = word_tokenize(references[i])

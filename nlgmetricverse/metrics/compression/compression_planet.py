@@ -4,7 +4,6 @@
 
 import evaluate
 from typing import Callable
-from nltk import ngrams
 from nltk import word_tokenize
 from collections import namedtuple as _namedtuple
 from tqdm import tqdm
@@ -92,9 +91,10 @@ class CompressionPlanet(MetricForLanguageGeneration):
             reduce_fn (Callable): A function to use for reducing the compression scores across multiple examples.
         """
         refList = []
+        predList = [str(pred) for pred in predictions]
         for ref in references:
             refList += ref
-        result = self._compute_compression(refList, predictions)
+        result = self._compute_compression(refList, predList)
         return {"score": result}
 
     def _compute_multi_pred_multi_ref(
