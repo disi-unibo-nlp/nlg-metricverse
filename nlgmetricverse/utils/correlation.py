@@ -98,7 +98,8 @@ class CorrelationMeasures(Enum):
 
 
 class Benchmarks(Enum):
-    WMT17 = 1
+    WMT17 = 1,
+    WMT16 = 2
 
 
 def compute_correlation(x, y, correlation_measure):
