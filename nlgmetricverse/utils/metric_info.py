@@ -10,9 +10,9 @@ class MetricInfo:
     description: str
     citation: str
     features: Union[Features, List[Features]]
-    inputs_description: str = field(default_factory=str)
     upper_bound: int
     lower_bound: int
+    inputs_description: str = field(default_factory=str)
     homepage: str = field(default_factory=str)
     license: str = field(default_factory=str)
     codebase_urls: List[str] = field(default_factory=list)
