@@ -10,7 +10,7 @@ def metrics_correlation(
         predictions,
         references,
         metrics,
-        correlation_measures=CorrelationMeasures.Pearson
+        correlation_measures=[CorrelationMeasures.Pearson]
 ):
     """
     Calculates the correlation between different metrics, with the possibility of choosing
