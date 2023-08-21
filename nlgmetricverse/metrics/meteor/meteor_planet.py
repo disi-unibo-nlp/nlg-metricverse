@@ -128,7 +128,7 @@ class MeteorPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            upper_buond=_UPPER_BOUND,
+            upper_bound=_UPPER_BOUND,
             lower_bound=_LOWER_BOUND,
             features=self._default_features,
             codebase_urls=["https://github.com/nltk/nltk/blob/develop/nltk/translate/meteor_score.py"],
