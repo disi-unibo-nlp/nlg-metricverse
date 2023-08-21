@@ -27,7 +27,7 @@ where
 -  **predictions** (`list` of `str`): list of transcriptions to score.
 -  **references** (`list` of `str`): list of references for each speech input.
 
-### Output values
+### Outputs
 -  **wer**: a float representing the word error rate. This value indicates the average number of errors per reference word. 
 
 The **lower** the value, the **better** the performance of the ASR system, with a WER of 0 being a perfect score.

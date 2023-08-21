@@ -19,7 +19,7 @@ Where:
 - **normalize** (`boolean`): If set to False, returns the number of correctly classified samples. Otherwise, returns the fraction of correctly classified samples. Defaults to True.
 - **sample_weight** (`list` of `float`): Sample weights Defaults to None.
 
-### Output Values
+### Outputs
 - **accuracy**(`float` or `int`): Accuracy score. Minimum possible value is 0. Maximum possible value is 1.0, or the number of examples input, if `normalize` is set to `True`.. A higher score means higher accuracy.
 
 ### Results from popular papers

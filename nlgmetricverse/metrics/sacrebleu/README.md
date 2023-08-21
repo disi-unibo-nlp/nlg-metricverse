@@ -25,7 +25,7 @@ See the [README.md] file at https://github.com/mjpost/sacreBLEU for more informa
 - **force** (`bool`): If `True`, insists that your tokenized input is actually detokenized. Defaults to `False`.
 - **use_effective_order** (`bool`): If `True`, stops including n-gram orders for which precision is 0. This should be `True`, if sentence-level BLEU will be computed. Defaults to `False`.
 
-### Output Values
+### Outputs
 - **score**: BLEU score
 - **counts**: Counts
 - **totals**: Totals

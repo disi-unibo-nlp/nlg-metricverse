@@ -16,7 +16,7 @@ This metric takes the following as input:
 - **`support_zh_ja_chars`** (`boolean`): If `True`, tokenization/normalization supports processing of Chinese characters, as well as Japanese Kanji, Hiragana, Katakana, and Phonetic Extensions of Katakana. Only applies if `normalized = True`. Defaults to `False`.
 - **`case_sensitive`** (`boolean`): If `False`, makes all predictions and references lowercase to ignore differences in case. Defaults to `False`.
 
-### Output Values
+### Outputs
 This metric returns the following:
 - **`score`** (`float`): TER score (num_edits / sum_ref_lengths * 100)
 - **`num_edits`** (`int`): The cumulative number of edits

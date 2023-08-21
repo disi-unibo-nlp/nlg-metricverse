@@ -17,7 +17,7 @@ F1 = 2 * (precision * recall) / (precision + recall)
     - 'samples': Calculate metrics for each instance, and find their average (only meaningful for multilabel classification).
 - **sample_weight** (`list` of `float`): Sample weights Defaults to None.
 
-### Output Values
+### Outputs
 - **f1**(`float` or `array` of `float`): F1 score or list of f1 scores, depending on the value passed to `average`. Minimum possible value  is 0. Maximum possible value is 1. Higher f1 scores are better.
 This metric outputs a dictionary, with either a single f1 score, of type `float`, or an array of f1 scores, with entries of type `float`.
 
