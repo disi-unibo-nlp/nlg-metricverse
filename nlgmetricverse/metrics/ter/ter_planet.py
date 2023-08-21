@@ -22,6 +22,7 @@ from typing import Callable, Dict, Sequence
 import evaluate
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -95,21 +96,15 @@ Examples:
     {'ter': {'score': 0.5307692307692308, 'avg_num_edits': 2.75, 'avg_ref_length': 5.75}}
 """
 
-_UPPER_BOUND = """\
-inf
-"""
-
-_LOWER_BOUND = """\
-0
-"""
-
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class TERPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=300,
+            lower_bound=0,
             homepage="https://www.cs.umd.edu/~snover/tercom/",
             features=self._default_features,
             codebase_urls=["https://github.com/mjpost/sacreBLEU#ter"],
