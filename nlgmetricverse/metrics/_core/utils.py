@@ -214,16 +214,12 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
     root = os.getcwd()
-    os.chdir(os.path.join(METRICS_ROOT, metric))
-    # inside the metric folder is metric_planet.py where is present the upper and lower bound
-    with open("metric_planet.py") as f:
-        lines = f.readlines()
-        for line in lines:
-            if "upper_bound" in line:
-                upper_bound = float(line.split("=")[1].strip())
-            if "lower_bound" in line:
-                lower_bound = float(line.split("=")[1].strip())
-    f.close()
+    # inside the metric folder is metric_planet.py where is present the upper bound as _UPPER_BOUND and  lower bound as _LOWER_BOUND
+    spec = importlib.util.spec_from_file_location(metric, os.path.join(METRICS_ROOT, metric, f"{metric}.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    upper_bound = module._UPPER_BOUND
+    lower_bound = module._LOWER_BOUND
     os.chdir(root)
     return upper_bound, lower_bound
 
