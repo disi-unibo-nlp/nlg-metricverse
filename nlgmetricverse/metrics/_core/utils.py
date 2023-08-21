@@ -214,7 +214,8 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
     root = os.getcwd()
-    os.chdir(os.path.join(METRICS_ROOT, metric, "_core"))
+    #file path to the metric _core
+    os.chdir(os.path.join(METRICS_ROOT, "_core"))
     f = open('list_metrics.json')
     data = json.load(f)
     upper_bound = 0
