@@ -31,6 +31,7 @@ if Version(NLTK_VERSION) < Version("3.6.6"):
     )
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.tokenizer import DefaultTokenizer, TokenizerWrapper
 
