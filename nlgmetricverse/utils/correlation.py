@@ -62,6 +62,34 @@ class CorrelationMeasures(Enum):
     rescaling, since the values are converted to ranks. This also makes it less sensitive to outliers than Pearson.
     Of course, these strengths become weaknesses in domains where the raw differences do matter. That said, in most NLU contexts,
     Spearman will be a good conservative choice for system assessment.
+
+    The Kendall rank correlation coefficient between two vectors $y$ and $\widehat{y}$ of dimension $N$ is the number of
+    concordant pairs minus the number of discordant pairs, divided by the total number of pairs. A pair is concordant if the
+    ranks of $y$ and $\widehat{y}$ agree, and discordant if they do not. The Kendall coefficient is equivalent to the probability
+    that the two vectors are in the same order.
+
+    BOUNDS
+    [-1, 1], where -1 is a complete negative linear correlation, +1 is a complete positive linear correlation, and 0 is no linear
+    correlation at all.
+
+    WEAKNESSES
+    Kendall is less sensitive to outliers than Pearson, but more sensitive than Spearman. It is also less sensitive to monotonic
+    transformations than Spearman. It is a good choice when you want to measure the ordinal association between two measured
+    quantities.
+
+    The daRR correlation coefficient between two vectors $y$ and $\widehat{y}$ of dimension $N$ is the number of concordant
+    pairs minus the number of discordant pairs, divided by the total number of pairs. A pair is concordant if the ranks of $y$ and
+    $\widehat{y}$ agree, and discordant if they do not. The daRR coefficient is equivalent to the probability that the two vectors
+    are in the same order.
+
+    BOUNDS
+    [-1, 1], where -1 is a complete negative linear correlation, +1 is a complete positive linear correlation, and 0 is no linear
+    correlation at all.
+
+    WEAKNESSES
+    daRR being a variant of Kendall, like Kendall it is less sensitive to outliers than Pearson, but more sensitive than Spearman.
+    However it is more sensitive to monotonic transformations than Spearman. It is a good choice when you want to measure the ordinal
+    association between two measured quantities.
     """
     Pearson = 1
     Spearman = 2
