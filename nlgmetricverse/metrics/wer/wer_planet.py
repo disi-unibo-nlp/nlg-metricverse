@@ -22,6 +22,7 @@ from typing import Callable, List, Tuple, Union
 import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
+from nlgmetricverse.utils import metric_info
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import jiwer` placeholder
@@ -127,20 +128,15 @@ Examples:
     }
 """
 
-_UPPER_BOUND = """\
-1
-"""
-_LOWER_BOUND = """\
-0
-"""
-
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class WERPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return metric_info(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/jitsi/jiwer/"],
             reference_urls=[
