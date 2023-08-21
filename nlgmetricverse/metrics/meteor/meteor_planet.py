@@ -116,7 +116,7 @@ class MeteorPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
