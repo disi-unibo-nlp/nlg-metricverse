@@ -213,8 +213,7 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
 
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
-    root = os.getcwd()
-    path = os.path.join(root, "nlgmetricverse", "metrics", metric, metric + "_planet.py")
+    path = os.path.join(METRICS_ROOT, metric, metric + "_planet.py")
     upper_bound = 0
     lower_bound = 0
     with open(path) as f:
