@@ -12,7 +12,7 @@ def metric_human_correlation(
         references,
         metrics,
         human_scores=Benchmarks.WMT17,
-        correlation_measures=CorrelationMeasures.Pearson,
+        correlation_measures=None,
 ):
     """
     Calculates the correlation between human scores and those of the metrics, with the possibility of choosing
@@ -24,6 +24,8 @@ def metric_human_correlation(
     :param human_scores: Can be a list of personal scores or can choose a public benchmark, WMT17 by default
     :param correlation_measures: The correlation technique to apply
     """
+    if correlation_measures is None:
+        correlation_measures = [CorrelationMeasures.Pearson]
     if not isinstance(human_scores, list):
         if human_scores == Benchmarks.WMT17:
             # Generate ad DB with human scores from WMT
