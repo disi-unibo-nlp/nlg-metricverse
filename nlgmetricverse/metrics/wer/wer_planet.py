@@ -22,7 +22,7 @@ from typing import Callable, List, Tuple, Union
 import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
-from nlgmetricverse.utils import metric_info
+from nlgmetricverse.utils import MetricInfo
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import jiwer` placeholder
@@ -131,7 +131,7 @@ Examples:
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class WERPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return metric_info(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,

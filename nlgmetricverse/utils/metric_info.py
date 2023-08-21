@@ -5,7 +5,7 @@ from typing import List, Optional, Union
 from datasets.features import Features, Value
 
 @dataclass
-class metric_info:
+class MetricInfo:
 
     description: str
     citation: str
