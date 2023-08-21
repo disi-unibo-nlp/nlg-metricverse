@@ -113,7 +113,6 @@ class TERPlanet(MetricForLanguageGeneration):
             upper_bound=_UPPER_BOUND,
             lower_bound=_LOWER_BOUND,
             homepage="https://www.cs.umd.edu/~snover/tercom/",
-            inputs_description=_KWARGS_DESCRIPTION,
             features=self._default_features,
             codebase_urls=["https://github.com/mjpost/sacreBLEU#ter"],
             reference_urls=[
