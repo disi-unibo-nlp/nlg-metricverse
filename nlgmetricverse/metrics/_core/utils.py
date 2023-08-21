@@ -219,9 +219,11 @@ def get_metric_bounds(metric):
     with open(path) as f:
         for line in f:
             if "upper_bound" in line:
-                upper_bound = float(line.split("=")[1].strip().replace(',', ''))
+                upper_bound_str = line.split("=")[1].strip()
+                upper_bound = float(upper_bound_str.replace(",", ""))
             if "lower_bound" in line:
-                lower_bound = float(line.split("=")[1].strip().replace(',', ''))
+                lower_bound_str = line.split("=")[1].strip()
+                lower_bound = float(lower_bound_str.replace(",", ""))
     return upper_bound, lower_bound
 
 
