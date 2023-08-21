@@ -141,8 +141,6 @@ class WERPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            upper_bound=_UPPER_BOUND,
-            lower_bound=_LOWER_BOUND,
             features=self._default_features,
             codebase_urls=["https://github.com/jitsi/jiwer/"],
             reference_urls=[
