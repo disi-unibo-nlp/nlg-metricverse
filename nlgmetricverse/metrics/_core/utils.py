@@ -214,7 +214,7 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
     root = os.getcwd()
-    os.chdir('nlgmetricverse/metrics/_core/')
+    os.chdir(os.path.join(METRICS_ROOT, metric, "_core"))
     f = open('list_metrics.json')
     data = json.load(f)
     upper_bound = 0
