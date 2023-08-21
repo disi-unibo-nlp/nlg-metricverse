@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from nlgmetricverse.utils.correlation import *
-from nlgmetricverse.utils.benchmarks.get_wmt17_sys_results import *
 from nlgmetricverse import NLGMetricverse, load_metric
 
 
