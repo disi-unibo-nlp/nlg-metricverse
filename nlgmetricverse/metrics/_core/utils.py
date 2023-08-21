@@ -214,16 +214,15 @@ def filter_metrics(category: Categories = None, appl_task: ApplTasks = None,
 def get_metric_bounds(metric):
     assert isinstance(metric, str)
     root = os.getcwd()
-    #file path to the metric _core
-    os.chdir(os.path.join(METRICS_ROOT, "_core"))
-    f = open('list_metrics.json')
-    data = json.load(f)
-    upper_bound = 0
-    lower_bound = 0
-    for metric_object in data['metrics']:
-        if metric_object['name'] == metric:
-            upper_bound = metric_object['upper_bound']
-            lower_bound = metric_object['lower_bound']
+    os.chdir(os.path.join(METRICS_ROOT, metric))
+    # inside the metric folder is metric_planet.py where is present the upper and lower bound
+    with open("metric_planet.py") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "upper_bound" in line:
+                upper_bound = float(line.split("=")[1].strip())
+            if "lower_bound" in line:
+                lower_bound = float(line.split("=")[1].strip())
     f.close()
     os.chdir(root)
     return upper_bound, lower_bound
