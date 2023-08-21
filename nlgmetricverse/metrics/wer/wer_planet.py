@@ -22,7 +22,7 @@ from typing import Callable, List, Tuple, Union
 import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
-from nlgmetricverse.utils import MetricInfo
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
 # `import jiwer` placeholder
