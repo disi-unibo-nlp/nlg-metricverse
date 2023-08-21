@@ -108,6 +108,13 @@ Examples:
     { "total_items": 1, "empty_items": 0, "meteor": { "score": 0.5 } }
 """
 
+_UPPER_BOUND = """\
+1
+"""
+
+_LOWER_BOUND = """\
+0
+"""
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class MeteorPlanet(MetricForLanguageGeneration):
@@ -121,6 +128,8 @@ class MeteorPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_buond=_UPPER_BOUND,
+            lower_bound=_LOWER_BOUND,
             features=self._default_features,
             codebase_urls=["https://github.com/nltk/nltk/blob/develop/nltk/translate/meteor_score.py"],
             reference_urls=[

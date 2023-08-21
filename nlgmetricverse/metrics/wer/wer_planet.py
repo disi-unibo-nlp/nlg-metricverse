@@ -127,6 +127,12 @@ Examples:
     }
 """
 
+_UPPER_BOUND = """\
+1
+"""
+_LOWER_BOUND = """\
+0
+"""
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class WERPlanet(MetricForLanguageGeneration):
@@ -135,6 +141,8 @@ class WERPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=_UPPER_BOUND,
+            lower_bound=_LOWER_BOUND,
             features=self._default_features,
             codebase_urls=["https://github.com/jitsi/jiwer/"],
             reference_urls=[

@@ -95,6 +95,13 @@ Examples:
     {'ter': {'score': 0.5307692307692308, 'avg_num_edits': 2.75, 'avg_ref_length': 5.75}}
 """
 
+_UPPER_BOUND = """\
+inf
+"""
+
+_LOWER_BOUND = """\
+0
+"""
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class TERPlanet(MetricForLanguageGeneration):
@@ -102,6 +109,9 @@ class TERPlanet(MetricForLanguageGeneration):
         return evaluate.MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
+            inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=_UPPER_BOUND,
+            lower_bound=_LOWER_BOUND,
             homepage="https://www.cs.umd.edu/~snover/tercom/",
             inputs_description=_KWARGS_DESCRIPTION,
             features=self._default_features,
