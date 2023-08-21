@@ -10,7 +10,7 @@ def metrics_correlation(
         predictions,
         references,
         metrics,
-        correlation_measures=None
+        correlation_measures=CorrelationMeasures.Pearson
 ):
     """
     Calculates the correlation between different metrics, with the possibility of choosing
@@ -21,8 +21,6 @@ def metrics_correlation(
     :param metrics: List of metrics
     :param correlation_measures: The correlation technique to apply
     """
-    if correlation_measures is None:
-        correlation_measures = [CorrelationMeasures.Pearson]
     if len(metrics) < 2:
         raise ValueError("'metric' length must be at least 2")
     if not isinstance(predictions, list) and not isinstance(references, list):
