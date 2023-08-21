@@ -115,17 +115,7 @@ Examples:
     >>> wer = nlgmetricverse.load_metric("wer")
     >>> wer_score = wer.compute(predictions=predictions, references=references)
     >>> print(wer_score)
-    {
-      "wer": {
-        "score": 1.0,
-        "overall": {
-          "substitutions": 2.8333333333333335,
-          "deletions": 0.5,
-          "insertions": 0.16666666666666666,
-          "hits": 2.6666666666666665
-        }
-      }
-    }
+    { "wer": { "score": 1.0, "overall": { "substitutions": 2.8333333333333335, "deletions": 0.5, "insertions": 0.16666666666666666, "hits": 2.6666666666666665 }}}
 """
 
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
@@ -135,7 +125,7 @@ class WERPlanet(MetricForLanguageGeneration):
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
-            upper_bound=1,
+            upper_bound=300,
             lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/jitsi/jiwer/"],

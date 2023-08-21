@@ -304,8 +304,8 @@ metrics_list = [
         "trained": False,
         "unsupervised": True,
         "quality_dims": [],
-        "upper_bound": -1,
-        "lower_bound": -1
+        "upper_bound": 1,
+        "lower_bound": 0
     },
     {
         "name": "cer",

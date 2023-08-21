@@ -39,7 +39,7 @@ For example, datasets such as [LibriSpeech](https://huggingface.co/datasets/libr
 See the leaderboards for [LibriSpeech](https://paperswithcode.com/sota/speech-recognition-on-librispeech-test-clean) and [Timit](https://paperswithcode.com/sota/speech-recognition-on-timit) for the most recent values.
 
 ## Bounds
-The WER score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">.
+The WER score can be any value in <img src="https://render.githubusercontent.com/render/math?math={[0, \infty]}##gh-light-mode-only">.
 
 ## Examples
 Perfect match between prediction and reference:
