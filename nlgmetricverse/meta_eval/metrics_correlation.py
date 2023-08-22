@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
+from tqdm import tqdm
+
 from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.utils.correlation import *
 
