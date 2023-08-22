@@ -61,7 +61,7 @@ def metric_human_correlation(
         results = []
         for metric in metrics:
             metric_scores = []
-            for correlation_measure in correlation_measures:
+            for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation"):
                 statistic, pvalue = compute_correlation(scores[metric], human_scores, correlation_measure)
                 statistic = map_range(statistic, -1, 1, 0, 1)
                 metric_scores.append(statistic)

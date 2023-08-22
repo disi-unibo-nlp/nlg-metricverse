@@ -29,11 +29,11 @@ def metrics_correlation(
         raise Exception("predictions and references must be of type list")
     matrix_res = np.zeros((len(metrics), len(metrics)))
     scores = {}
-    for metric in tqdm(metrics, desc="Calculating metric scores"):
+    for metric in metrics:
         single_metric_scores = []
         res = []
         single_metric_scorer = NLGMetricverse(metrics=load_metric(metric))
-        for i, pred in enumerate(tqdm(predictions, desc=f"Calculating scores for {metric}")):
+        for i, pred in enumerate(predictions):
             single_metric_score = single_metric_scorer(predictions=[pred], references=[references[i]])
             single_metric_scores.append(single_metric_score)
             for single_score in single_metric_score:
