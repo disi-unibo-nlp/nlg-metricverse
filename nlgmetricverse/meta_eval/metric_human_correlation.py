@@ -1,10 +1,8 @@
-import random
-
-import matplotlib.pyplot as plt
 import numpy as np
 
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse import NLGMetricverse, load_metric
+from nlgmetricverse.visualization.correlation_visualization import mhc_visual
 
 
 def metric_human_correlation(
@@ -35,7 +33,6 @@ def metric_human_correlation(
             # print("Evaluation completed, you can see the results in the 'wmt17' folder")
             return data
     else:
-        # Using personal scores
         scores = {}
         for metric in metrics:
             if not isinstance(predictions, list) and not isinstance(references, list):
@@ -61,25 +58,12 @@ def metric_human_correlation(
         results = []
         for metric in metrics:
             metric_scores = []
-            for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation"):
+            for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation" + metric):
                 statistic, pvalue = compute_correlation(scores[metric], human_scores, correlation_measure)
                 statistic = map_range(statistic, -1, 1, 0, 1)
                 metric_scores.append(statistic)
             results.append(np.mean(metric_scores))
 
-        bar_list = plt.bar(metrics, results)
+        mhc_visual(metrics, results)
 
-        for bar in bar_list:
-            r = random.random()
-            b = random.random()
-            g = random.random()
-            color = (r, g, b)
-            bar.set_color(color)
-
-        plt.xticks(np.arange(len(metrics)), metrics)
-        plt.xlabel("Metrics")
-        plt.ylabel("Scores")
-        plt.title("Metric-human correlation")
-        plt.legend()
-        # plt.show()'''
         return results
