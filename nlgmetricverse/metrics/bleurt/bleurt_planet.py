@@ -23,6 +23,7 @@ from typing import Callable
 
 import evaluate
 
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 from nlgmetricverse.utils.sys import log
@@ -117,11 +118,13 @@ CHECKPOINT_URLS = {
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class BleurtPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/google-research/bleurt",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/google-research/bleurt"],
             reference_urls=["https://github.com/google-research/bleurt", "https://arxiv.org/abs/2004.04696"],

@@ -20,6 +20,8 @@ import evaluate
 import numpy as np
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
+from nlgmetricverse.metrics._core.utils import requirement_message
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """\
@@ -106,11 +108,13 @@ class NubiaPlanet(MetricForLanguageGeneration):
 
     # Method to provide information about the Nubia metric.
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/wl-research/nubia",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/wl-research/nubia"],
             reference_urls=[

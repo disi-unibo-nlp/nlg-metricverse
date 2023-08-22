@@ -7,6 +7,7 @@ from typing import Callable
 from nltk import ngrams
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """\
@@ -63,10 +64,12 @@ class AbstractnessPlanet(MetricForLanguageGeneration):
         Returns:
             MetricInfo: An object containing metadata about the metric.
         """
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=[""],
             reference_urls=[

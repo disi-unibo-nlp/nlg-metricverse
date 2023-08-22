@@ -4,6 +4,7 @@ from nltk.translate import nist_score as nist
 import numpy as np
 
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core.utils import requirement_message
 
 _CITATION = """\
@@ -56,10 +57,12 @@ Returns:
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class NistPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/nltk/nltk/blob/develop/nltk/translate/nist_score.py"],
             reference_urls=[

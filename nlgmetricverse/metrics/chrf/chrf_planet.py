@@ -23,6 +23,7 @@ import evaluate
 from packaging import version
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -131,11 +132,13 @@ class CHRFPlanet(MetricForLanguageGeneration):
                 "To use `sacrebleu`, the module `sacrebleu>=1.4.12` is required, and the current version of "
                 "`sacrebleu` doesn't match this condition.\nYou can install it with `pip install sacrebleu>=1.4.12`."
             )
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/mjpost/sacreBLEU#chrf--chrf",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/mjpost/sacreBLEU#chrf--chrf"],
             reference_urls=[

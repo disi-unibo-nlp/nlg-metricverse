@@ -26,6 +26,7 @@ import pandas as pd
 from packaging import version
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -131,11 +132,13 @@ class BertscorePlanet(MetricForLanguageGeneration):
             super(BertscorePlanet, self)._download_and_prepare(dl_manager)
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/Tiiiger/bert_score",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/Tiiiger/bert_score"],
             reference_urls=[

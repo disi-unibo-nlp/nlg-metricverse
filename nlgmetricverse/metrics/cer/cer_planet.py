@@ -21,6 +21,7 @@ from typing import Callable, List, Tuple, Union
 
 import evaluate
 
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics import EvaluationInstance, MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -87,10 +88,12 @@ Examples:
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class CERPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/jitsi/jiwer/"],
             reference_urls=[

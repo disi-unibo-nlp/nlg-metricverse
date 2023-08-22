@@ -6,6 +6,7 @@ from collections.abc import Callable
 import evaluate
 import numpy as np
 
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -77,10 +78,12 @@ Returns:
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class MoverscorePlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/AIPHES/emnlp19-moverscore"],
             reference_urls=[

@@ -7,6 +7,7 @@ from typing import Callable
 from nltk import ngrams
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.utils.data_structure import remove_duplicates
 
@@ -68,10 +69,12 @@ CHECKPOINT_URLS = {
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class AUNPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=[""],
             reference_urls=[

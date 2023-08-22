@@ -8,6 +8,7 @@ from typing import Callable
 from collections import Counter
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """\
@@ -56,12 +57,14 @@ class RepetitivenessPlanet(MetricForLanguageGeneration):
         input parameters description, default features, codebase URLs, and reference URLs.
 
         Returns:
-            evaluate.MetricInfo: An object containing information about the metric.
+            MetricInfo: An object containing information about the metric.
         """
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=[""],
             reference_urls=[

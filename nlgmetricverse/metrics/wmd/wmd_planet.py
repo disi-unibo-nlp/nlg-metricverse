@@ -5,6 +5,7 @@ import evaluate
 import numpy as np
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
 try:
@@ -78,11 +79,13 @@ class WMDPlanet(MetricForLanguageGeneration):
                     download('stopwords')  # Download stopwords list.
                 self.stop_words = stopwords.words('english') 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/mkusner/wmd",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://radimrehurek.com/gensim/auto_examples/tutorials/run_wmd.html"],
             reference_urls=[

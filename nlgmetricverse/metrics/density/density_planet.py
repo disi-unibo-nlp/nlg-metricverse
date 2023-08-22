@@ -9,6 +9,7 @@ from collections import namedtuple as _namedtuple
 from tqdm import tqdm
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 Match = _namedtuple("Match", ("summary", "text", "length"))
@@ -58,10 +59,12 @@ class DensityPlanet(MetricForLanguageGeneration):
         Returns:
             MetricInfo: An object containing metadata about the metric.
         """
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=10,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=[""],
             reference_urls=[

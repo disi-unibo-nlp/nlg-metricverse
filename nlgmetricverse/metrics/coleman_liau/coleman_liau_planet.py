@@ -9,6 +9,7 @@ import numpy as np
 from textstat import textstat
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """
@@ -48,10 +49,12 @@ CHECKPOINT_URLS = {
 @evaluate.utils.file_utils.add_start_docstrings(_DESCRIPTION, _KWARGS_DESCRIPTION)
 class ColemanLiauPlanet(MetricForLanguageGeneration):
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=10,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=[""],
             reference_urls=[

@@ -25,6 +25,7 @@ import datasets
 import evaluate
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import get_token_lengths
 from nlgmetricverse.tokenizer import DefaultTokenizer, TokenizerWrapper
@@ -130,10 +131,12 @@ class BleuPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=datasets.Features(
                 {
                     "predictions": datasets.Sequence(datasets.Value("string", id="tokens"), id="sequence"),

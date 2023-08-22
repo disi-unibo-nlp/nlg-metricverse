@@ -25,6 +25,7 @@ from packaging.version import Version
 import evaluate
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, requirement_message
 
@@ -147,11 +148,13 @@ class CometPlanet(MetricForLanguageGeneration):
         self.scorer = comet.load_from_checkpoint(checkpoint_path)
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://unbabel.github.io/COMET/html/index.html",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/Unbabel/COMET"],
             reference_urls=[

@@ -25,6 +25,7 @@ import evaluate
 from packaging import version
 
 from nlgmetricverse.collator import Collator
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import PackagePlaceholder, get_token_lengths, requirement_message
 from nlgmetricverse.tokenizer import DefaultTokenizer
@@ -146,11 +147,13 @@ class SacrebleuPlanet(MetricForLanguageGeneration):
                 "doesn't match this condition.\n"
                 'You can install it with `pip install "sacrebleu>=1.4.12"`.'
             )
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/mjpost/sacreBLEU",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/mjpost/sacreBLEU"],
             reference_urls=[

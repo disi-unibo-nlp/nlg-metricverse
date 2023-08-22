@@ -21,6 +21,7 @@ import evaluate
 import numpy as np
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """
@@ -186,11 +187,13 @@ class BartscorePlanet(MetricForLanguageGeneration):
             self.scorer.load(path=model_dest)
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/neulab/BARTScore",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=0,
+            lower_bound=-300,
             features=self._default_features,
             codebase_urls=["https://github.com/neulab/BARTScore"],
             reference_urls=[

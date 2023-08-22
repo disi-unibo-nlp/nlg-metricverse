@@ -44,7 +44,7 @@ The [Attention is All you Need paper](https://proceedings.neurips.cc/paper/2017/
 
 ## Bounds
 <img src="https://render.githubusercontent.com/render/math?math={[0,1]}##gh-light-mode-only">,<br>
-with 1 being the best, though with no expectation that any system will achieve 1, since even sets of human-created translations do not reach this level. Specifically, this value indicates how similar the candidate text is to  the reference texts, with values closer to 1 representing more similar texts. Few human translations will attain a  score of 1, since this would indicate that the candidate is identical to one of the reference translations. For this  reason, it is not necessary to attain a score of 1.
+with 1 being the best, though with no expectation that any system will achieve 1, since even sets of human-created translations do not reach this level. Specifically, this value indicates how similar the candidate text is to the reference texts, with values closer to 1 representing more similar texts. Few human translations will attain a  score of 1, since this would indicate that the candidate is identical to one of the reference translations. For this  reason, it is not necessary to attain a score of 1.
 Scores over 30 generally reflect understandable translations. Scores over 50 generally reflect good and fluent translations.
 
 ## Examples

@@ -24,6 +24,7 @@ import evaluate
 import validators
 
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 
 _CITATION = """
@@ -187,11 +188,13 @@ class PrismPlanet(MetricForLanguageGeneration):
         )
 
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/thompsonb/prism",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=0,
+            lower_bound=-300,
             features=self._default_features,
             codebase_urls=["https://github.com/thompsonb/prism"],
             reference_urls=[

@@ -7,10 +7,12 @@ import evaluate
 from collections import defaultdict
 import numpy as np
 import math
+
 from typing import Callable, Dict
+
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
-from nlgmetricverse.metrics._core.utils import requirement_message
 try:
     from itertools import izip as zip
 except ImportError:
@@ -77,11 +79,13 @@ class CiderPlanet(MetricForLanguageGeneration):
         super().__init__(resulting_name=resulting_name, compute_kwargs=compute_kwargs, **kwargs)
         
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/vrama91/cider",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=10,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/vrama91/cider/blob/master/pyciderevalcap/cider/cider_scorer.py"],
             reference_urls=[

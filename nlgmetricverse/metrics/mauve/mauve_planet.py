@@ -1,7 +1,9 @@
 import evaluate
 import numpy as np
+
 from typing import Callable, Dict
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
 from nlgmetricverse.metrics._core.utils import requirement_message
 try:
@@ -121,11 +123,13 @@ class MauvePlanet(MetricForLanguageGeneration):
           
         
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/krishnap25/mauve",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=1,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/krishnap25/mauve"],
             reference_urls=[

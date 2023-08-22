@@ -16,16 +16,17 @@
 of evaluate package. See
 https://github.com/huggingface/evaluate/blob/main/metrics/perplexity/perplexity.py """
 
-import numpy as np
 import torch
+import evaluate
+import numpy as np
 from torch.nn import CrossEntropyLoss
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from typing import Callable, Dict
-import evaluate
+
 from evaluate import logging
 from nlgmetricverse.metrics import EvaluationInstance
+from nlgmetricverse.utils.metric_info import MetricInfo
 from nlgmetricverse.metrics._core import MetricForLanguageGeneration
-from nlgmetricverse.metrics._core.utils import requirement_message
 
 _CITATION = """\
 @article{jelinek1977perplexity,
@@ -111,11 +112,13 @@ class PerplexityPlanet(MetricForLanguageGeneration):
         self.tokenizer =  AutoTokenizer.from_pretrained(self.model_id)
         
     def _info(self):
-        return evaluate.MetricInfo(
+        return MetricInfo(
             description=_DESCRIPTION,
             citation=_CITATION,
             homepage="https://github.com/huggingface/evaluate/blob/main/metrics/perplexity",
             inputs_description=_KWARGS_DESCRIPTION,
+            upper_bound=300,
+            lower_bound=0,
             features=self._default_features,
             codebase_urls=["https://github.com/huggingface/evaluate/blob/main/metrics/perplexity"],
             reference_urls=[
