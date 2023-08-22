@@ -9,5 +9,3 @@ def bert_neuron_factors(reference):
     nmf_1 = output.run_nmf(n_components=10)
     nmf_1.explore()
     return output
-
-
