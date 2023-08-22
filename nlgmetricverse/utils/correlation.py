@@ -22,6 +22,19 @@ wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh
 wmt17_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
 
 def map_range(value, left_min, left_max, right_min, right_max):
+    """
+    This method, scales a given input value from one range to another. 
+    The method calculates the spans of both the source and target ranges and 
+    then scales the input value accordingly. The scaled value within the target 
+    range is returned as the output. This function effectively transforms a value 
+    from one range to another while maintaining its proportional position.
+    
+    :param value: The value to scale
+    :param left_min: The minimum value of the source range
+    :param left_max: The maximum value of the source range
+    :param right_min: The minimum value of the target range
+    :param right_max: The maximum value of the target range
+    """
     left_span = left_max - left_min
     right_span = right_max - right_min
     value_scaled = float(value - left_min) / float(left_span)
@@ -29,6 +42,20 @@ def map_range(value, left_min, left_max, right_min, right_max):
 
 
 def map_score_with_metric_bounds(metric, score):
+    """
+    This method, maps a list of scores for a specific metric to a normalized scale 
+    between 0 and 1, considering metric-specific upper and lower bounds. 
+    The method iterates through each score and retrieves the upper and lower bounds 
+    for the given metric using the `get_metric_bounds()` function. If the bounds are 
+    not the default values (1 for upper and 0 for lower), the method scales the score 
+    using the `map_range()` function. If the bounds are the default values, the score 
+    remains unchanged. The normalized and mapped scores are then returned as a list. 
+    This process allows scores to be transformed into a consistent range for comparison 
+    while respecting metric-specific constraints.
+
+    :param metric: The metric to map the scores for
+    :param score: The scores to map
+    """
     mapped_score = []
     for i, single_score in enumerate(score):
         upper_bound, lower_bound = get_metric_bounds(metric)
@@ -120,6 +147,20 @@ class Benchmarks(Enum):
 
 
 def compute_correlation(x, y, correlation_measure):
+    """
+    This method, calculates a correlation statistic and p-value between two input 
+    arrays, `x` and `y`, using a specified correlation measure. The correlation measure 
+    is chosen from a set of options enumerated by the `CorrelationMeasures` enum. 
+    Depending on the selected measure, the method employs different correlation functions 
+    (e.g., Pearson, Spearman, Kendall's Tau) to compute the correlation statistic and 
+    associated p-value. The method then returns the calculated statistic and p-value, 
+    allowing for the assessment of the correlation strength and significance between the 
+    two arrays according to the chosen correlation measure.
+
+    :param x: The first array to calculate correlation for
+    :param y: The second array to calculate correlation for
+    :param correlation_measure: The correlation measure to use
+    """
     if correlation_measure == CorrelationMeasures.Pearson:
         statistic, pvalue = pearsonr(x, y)
     elif correlation_measure == CorrelationMeasures.Spearman:
@@ -133,6 +174,17 @@ def compute_correlation(x, y, correlation_measure):
     return statistic, pvalue
 
 def get_wmt17_sys_data(lang_pair):
+    """
+    This method, retrieves data necessary for evaluating translation system outputs 
+    on the WMT17 metrics task for a given language pair. It takes the language pair 
+    as input and proceeds to extract human scores from a CSV file, reference 
+    translations from a text file, and gold scores from the extracted data. 
+    The method gathers a list of systems participating in the task and creates 
+    corresponding candidate translations. It then organizes and returns the references, 
+    candidates, gold scores, and system names for further evaluation.
+
+    :param lang_pair: The language pair to retrieve data for
+    """
     first, second = lang_pair.split("-")
 
     human_scores = pd.read_csv(
@@ -165,6 +217,20 @@ def get_wmt17_sys_data(lang_pair):
 
 
 def get_wmt17_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch_size=64):
+    """
+    This method, calculates BERT-based scores for translation system outputs on the WMT17 metrics
+    task for a given language pair and scorer. The method constructs cache filenames based on the 
+    scorer's model type and the provided language pair. It checks if the scores are cached and if so, 
+    it loads and returns the cached scores. If not, it retrieves reference, candidate, and gold scores 
+    data, computes IDF if necessary, and then calculates the scores. Finally, it stores the calculated 
+    scores and gold scores in cache files and returns the results.
+
+    :param lang_pair: The language pair to calculate scores for
+    :param scorer: The scorer to use for calculating scores
+    :param cache: Whether to cache the scores or not
+    :param from_en: Whether to calculate scores from English or to English
+    :param batch_size: The batch size to use for calculating scores
+    """
     filename = ''
     if from_en:
         if scorer.idf:
@@ -204,7 +270,21 @@ def get_wmt17_sys_results(
         batch_size=64,
         lang_pairs=None
 ):
+    """
+    This method, calculates BERT-based scores for translation system outputs
+    on the WMT17 metrics task. If no model or language pairs are provided, 
+    default values are used. The method initializes BERTScorer and computes 
+    scores for precision, recall, and F1 for each language pair. It then 
+    calculates average scores and logs the results into a CSV file. The method 
+    iterates through different model types and language pairs, generating and 
+    recording BERT-based evaluation scores.
 
+    :param model: The model to use for calculating scores
+    :param log_file: The file to log the results from
+    :param idf: Whether to use IDF or not
+    :param batch_size: The batch size to use for calculating scores
+    :param lang_pairs: The language pairs to calculate scores for
+    """
     if model is None:
         model = ["roberta-large"]
     if lang_pairs is None:
@@ -246,6 +326,15 @@ def get_wmt17_sys_results(
 
 
 def wmt17_download_data():
+    """
+    This method, downloads and extracts data for the WMT17 metrics task. 
+    It begins by setting up the necessary directory structure and navigating 
+    to the appropriate paths. Then, it checks if the required files and 
+    directories exist, and if not, it proceeds to download the necessary 
+    data from a specified URL. The method handles the downloading and extraction 
+    of both the main archive and a sub-archive. Finally, it returns to the initial 
+    directory after completing the data retrieval process.
+    """
     starting_dir = os.getcwd()
     directory = "wmt17"
     parent_dir = os.path.curdir
