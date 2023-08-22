@@ -51,7 +51,8 @@ def metrics_correlation(
     results = []
     pvalues = []
     pvalue_results = np.zeros((len(metrics), len(metrics)))
-    for correlation_measure in correlation_measures:
+    # add a progress bar for the correlation measures
+    for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation"):
         for i, metricA in enumerate(metrics):
             for j, metricB in enumerate(metrics):
                 matrix_res[i][j], pvalue_results[i][j] = compute_correlation(scores[metricA], scores[metricB], correlation_measure)
