@@ -29,6 +29,16 @@ def metrics_correlation(
         raise Exception("predictions and references must be of type list")
     matrix_res = np.zeros((len(metrics), len(metrics)))
     scores = {}
+    """
+    This for loop iterates through each metric in the list of metrics and calculates 
+    the metric score for each prediction-reference pair. The metric score is then
+    stored in the list of individual metric scores, single_metric_scores. The list 
+    of individual metric scores is then iterated through and the individual scores 
+    are stored in the list of aggregated metric scores, res. If the metric is "rouge", 
+    the mean of rouge1, rouge2, and rougeL scores is calculated and stored in the 
+    aggregated scores list. The aggregated metric scores are then mapped to the 
+    metric bounds and stored in the scores dictionary.
+    """
     for metric in metrics:
         single_metric_scores = []
         res = []
