@@ -72,20 +72,6 @@ def metric_human_correlation(
                 metric_scores.append(statistic)
             results.append(np.mean(metric_scores))
 
-        bar_list = plt.bar(metrics, results)
-
-        for bar in bar_list:
-            r = random.random()
-            b = random.random()
-            g = random.random()
-            color = (r, g, b)
-            bar.set_color(color)
         mhc_visual(metrics, results)
-
-        plt.xticks(np.arange(len(metrics)), metrics)
-        plt.xlabel("Metrics")
-        plt.ylabel("Scores")
-        plt.title("Metric-human correlation")
-        plt.legend()
 
         return results
