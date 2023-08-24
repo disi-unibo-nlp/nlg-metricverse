@@ -303,7 +303,7 @@ def get_wmt17_sys_results(
     :param lang_pairs: The language pairs to calculate scores for
     """
     if model is None:
-        model = ["roberta-large"]
+        model = ["microsoft/deberta-xlarge-mnli"]
     if lang_pairs is None:
         lang_pairs = wmt17_sys_from_lang_pairs
     torch.set_grad_enabled(False)
@@ -491,7 +491,7 @@ def get_wmt16_sys_results(
     :param lang_pairs: The language pairs to calculate scores for
     """
     if model is None:
-        model = ["roberta-large"]
+        model = ["microsoft/deberta-xlarge-mnli"]
     torch.set_grad_enabled(False)
 
     header = 'model_type'
