@@ -17,4 +17,3 @@ def mhc_visual(metrics, results):
     plt.xlabel("Metrics")
     plt.ylabel("Scores")
     plt.title("Metric-human correlation")
-    plt.legend()
