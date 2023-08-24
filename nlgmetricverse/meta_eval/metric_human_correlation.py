@@ -37,36 +37,7 @@ def metric_human_correlation(
             data = get_wmt18_sys_results()
             return data
     else:
-        scores = {}
-        """
-        This for loop iterates through each metric in the list of metrics and calculates 
-        the metric score for each prediction-reference pair. The metric score is then
-        stored in the list of individual metric scores, single_metric_scores. The list 
-        of individual metric scores is then iterated through and the individual scores 
-        are stored in the list of aggregated metric scores, res. If the metric is "rouge", 
-        the mean of rouge1, rouge2, and rougeL scores is calculated and stored in the 
-        aggregated scores list. The aggregated metric scores are then mapped to the 
-        metric bounds and stored in the scores dictionary.
-        """
-        for metric in metrics:
-            if not isinstance(predictions, list) and not isinstance(references, list):
-                raise Exception("predictions and references must be of type list")
-            single_metric_scores = []
-            res = []
-            single_metric_scorer = NLGMetricverse(metrics=load_metric(metric))
-            for i, pred in enumerate(predictions):
-                single_metric_score = single_metric_scorer(predictions=[pred], references=[references[i]])
-                single_metric_scores.append(single_metric_score)
-                for single_score in single_metric_score:
-                    if isinstance(single_metric_score[single_score], dict):
-                        if metric == "rouge":
-                            mean = single_metric_score[single_score]["rouge1"] + \
-                                single_metric_score[single_score]["rouge2"] + single_metric_score[single_score]["rougeL"]
-                            mean = mean / 3
-                            res.append(mean)
-                        else:
-                            res.append(single_metric_score[single_score]["score"])
-            scores[metric] = map_score_with_metric_bounds(metric, res)
+        scores = calculate_scores(predictions, references, metrics, human_flag=True)
 
         results = []
         for metric in metrics:
