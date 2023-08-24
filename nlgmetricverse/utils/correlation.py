@@ -9,8 +9,8 @@ translations. We are looking for automatic metric scores for translations at the
 and segment-level. We will calculate the system-level, and segment-level correlations of 
 your scores with human judgements."
 
-Link for the WMT16 Metrics Task is: https://www.statmt.org/wmt16/ and https://www.statmt.org/wmt16/metrics-task/
 Link for the WMT17 Metrics Task is: https://www.statmt.org/wmt17/ and https://www.statmt.org/wmt17/metrics-task.html
+Link for the WMT18 Metrics Task is: https://www.statmt.org/wmt18/ and https://www.statmt.org/wmt18/metrics-task/
 """
 import bert_score
 import numpy as np
@@ -34,9 +34,9 @@ from nlgmetricverse.metrics._core.utils import get_metric_bounds
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
 wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh']
 wmt17_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
-wmt16_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'ro-en', 'ru-en', 'tr-en']
-wmt16_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ro', 'en-ru', 'en-tr']
-wmt16_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
+wmt18_sys_to_lang_pairs = ['cs-en', 'de-en', 'et-en', 'fi-en', 'ru-en', 'tr-en', 'zh-en']
+wmt18_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-et', 'en-fi', 'en-ru', 'en-tr', 'en-zh']
+wmt18_sys_lang_pairs = wmt18_sys_to_lang_pairs + wmt18_sys_from_lang_pairs
 
 def map_range(value, left_min, left_max, right_min, right_max):
     """
@@ -160,7 +160,7 @@ class CorrelationMeasures(Enum):
 
 class Benchmarks(Enum):
     WMT17 = 1,
-    WMT16 = 2
+    WMT18 = 2
 
 
 def compute_correlation(x, y, correlation_measure):
@@ -380,40 +380,42 @@ def wmt17_download_data():
     os.chdir(starting_dir)
 
 
-def get_wmt16_sys_data(lang):
+def get_wmt18_sys_data(lang_pair):
     """
     This method, retrieves data necessary for evaluating translation system outputs 
-    on the WMT16 metrics task for a given language pair. It takes the language pair 
+    on the WMT18 metrics task for a given language pair. It takes the language pair 
     as input and proceeds to extract human scores from a CSV file, reference 
     translations from a text file, and gold scores from the extracted data. 
     The method gathers a list of systems participating in the task and creates 
     corresponding candidate translations. It then organizes and returns the references, 
     candidates, gold scores, and system names for further evaluation.
 
-    :param lang: The language pair to retrieve data for
+    :param lang_pair: The language pair to retrieve data for
     """
-    first, second = lang.split("-")
+    first, second = lang_pair.split("-")
 
     human_scores = pd.read_csv(
-        "wmt17/manual-evaluation/DA-syslevel.csv", delimiter=" ")
+        "wmt18/manual-evaluation/DA-syslevel.csv", delimiter=" ")
 
-    with open("wmt16/wmt16-metrics-inputs-for-{}/newstest2016-{}{}-ref.{}".format(lang, first, second, second),
+    with open("wmt18/input/wmt18-metrics-task-nohybrids/"
+              "references/newstest2018-{}{}-ref.{}".format(first, second, second),
               encoding = "utf-8") as f:
         refs = f.read().strip().split("\n")
 
-    gold_dict = dict(zip(human_scores[human_scores['LP'] == lang]['SYSTEM'],
-                         human_scores[human_scores['LP'] == lang]['HUMAN']))
+    gold_dict = dict(zip(human_scores[human_scores['LP'] == lang_pair]['SYSTEM'],
+                         human_scores[human_scores['LP'] == lang_pair]['HUMAN']))
     gold_scores = []
 
-    lang_dir = "wmt16/wmt16-metrics-inputs-for-{}".format(lang)
-
-    systems = ["online", "uedin-nmt.4360"]
+    lang_dir = "wmt18/input/" \
+               "wmt18-metrics-task-nohybrids/wmt17-submitted-data/" \
+               "system-outputs/newstest2017/{}".format(lang_pair)
+    systems = [system[13:-6] for system in os.listdir(lang_dir)]
 
     refs *= len(systems)
     cands = []
 
     for system in systems:
-        with open(os.path.join(lang_dir, "newstest2016.{}.{}".format(system, lang)), encoding="utf-8") as f:
+        with open(os.path.join(lang_dir, "newstest2018.{}.{}".format(system, lang_pair)), encoding="utf-8") as f:
             cand_sys = f.read().strip().split("\n")
         gold_scores.append(gold_dict[system])
 
@@ -421,16 +423,16 @@ def get_wmt16_sys_data(lang):
     return refs, cands, gold_scores, systems
 
 
-def get_wmt16_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch_size=64):
+def get_wmt18_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch_size=64):
     """
-    This method, calculates BERT-based scores for translation system outputs on the WMT16 metrics
+    This method, calculates BERT-based scores for translation system outputs on the WMT18 metrics
     task for a given language pair and scorer. The method constructs cache filenames based on the 
     scorer's model type and the provided language pair. It checks if the scores are cached and if so, 
     it loads and returns the cached scores. If not, it retrieves reference, candidate, and gold scores 
     data, computes IDF if necessary, and then calculates the scores. Finally, it stores the calculated 
     scores and gold scores in cache files and returns the results.
 
-    :param lang: The language pair to calculate scores for
+    :param lang_pair: The language pair to calculate scores for
     :param scorer: The scorer to use for calculating scores
     :param cache: Whether to cache the scores or not
     :param from_en: Whether to calculate scores from English or to English
@@ -439,23 +441,23 @@ def get_wmt16_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch
     filename = ''
     if from_en:
         if scorer.idf:
-            filename = "cache_score/from_en/16/{}/wmt16_seg_from_{}_{}_idf.pkl".format(scorer.model_type,
+            filename = "cache_score/from_en/18/{}/wmt18_seg_from_{}_{}_idf.pkl".format(scorer.model_type,
                                                                                        *lang_pair.split('-'))
         else:
-            filename = "cache_score/from_en/16/{}/wmt16_seg_from_{}_{}.pkl".format(scorer.model_type,
+            filename = "cache_score/from_en/18/{}/wmt18_seg_from_{}_{}.pkl".format(scorer.model_type,
                                                                                    *lang_pair.split('-'))
     else:
         if scorer.idf:
-            filename = "cache_score/to_en/16/{}/wmt16_seg_to_{}_{}_idf.pkl".format(scorer.model_type,
+            filename = "cache_score/to_en/18/{}/wmt18_seg_to_{}_{}_idf.pkl".format(scorer.model_type,
                                                                                    *lang_pair.split('-'))
         else:
-            filename = "cache_score/to_en/16/{}/wmt16_seg_to_{}_{}.pkl".format(scorer.model_type, *lang_pair.split('-'))
+            filename = "cache_score/to_en/18/{}/wmt18_seg_to_{}_{}.pkl".format(scorer.model_type, *lang_pair.split('-'))
 
     if os.path.exists(filename):
         with open(filename, "rb", encoding="utf-8") as f:
             return pkl.load(f)
     else:
-        refs, cands, gold_scores, systems = get_wmt16_sys_data(lang_pair)
+        refs, cands, gold_scores, systems = get_wmt18_sys_data(lang_pair)
         if scorer.idf:
             scorer.compute_idf(refs)
         raw_scores = scorer.score(cands, refs, batch_size=batch_size)
@@ -468,16 +470,16 @@ def get_wmt16_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch
     return scores, gold_scores
 
 
-def get_wmt16_sys_results(
+def get_wmt18_sys_results(
         model=None,
-        log_file="wmt16_log.csv",
+        log_file="wmt18_log.csv",
         idf=False,
         batch_size=64,
-        lang=["en-cs", "en-de"]
+        lang_pairs=None
 ):
     """
     This method, calculates BERT-based scores for translation system outputs
-    on the WMT16 metrics task. If no model or language pairs are provided, 
+    on the WMT18 metrics task. If no model or language pairs are provided, 
     default values are used. The method initializes BERTScorer and computes 
     scores for precision, recall, and F1 for each language pair. It then 
     calculates average scores and logs the results into a CSV file. The method 
@@ -492,12 +494,13 @@ def get_wmt16_sys_results(
     """
     if model is None:
         model = ["microsoft/deberta-xlarge-mnli"]
+    if lang_pairs is None:
+        lang_pairs = wmt18_sys_from_lang_pairs
     torch.set_grad_enabled(False)
 
     header = 'model_type'
-    
-    for lang in lang:
-        header += f',{lang}'
+    for lang_pair in lang_pairs + ['avg']:
+        header += f',{lang_pair}'
     log(header)
     if not os.path.exists(log_file):
         with open(log_file, 'w', encoding="utf-8") as f:
@@ -507,21 +510,21 @@ def get_wmt16_sys_results(
     for model_type in model:
         scorer = bert_score.scorer.BERTScorer(model_type=model_type, idf=idf)
         results = defaultdict(dict)
-        for lang in tqdm(lang):
-            scores, gold_scores = get_wmt16_sys_bert_score(lang, scorer, batch_size=batch_size, cache=True,
+        for lang_pair in tqdm(lang_pairs):
+            scores, gold_scores = get_wmt18_sys_bert_score(lang_pair, scorer, batch_size=batch_size, cache=True,
                                                            from_en=False)
             for s, name in zip(scores, ["P", "R", "F"]):
-                results[lang][f"{model_type} {name}"] = np.mean(pearsonr(gold_scores, s)[0])
+                results[lang_pair][f"{model_type} {name}"] = np.mean(pearsonr(gold_scores, s)[0])
 
         for name in ["P", "R", "F"]:
             temp = []
-            for lang in lang:
-                temp.append(results[lang][f"{model_type} {name}"])
+            for lang_pair in lang_pairs:
+                temp.append(results[lang_pair][f"{model_type} {name}"])
             results["avg"][f"{model_type} {name}"] = np.mean(temp)
 
             msg = f"{model_type} {name} (idf)" if idf else f"{model_type} {name}"
-            for lang in lang + ['avg']:
-                msg += f",{results[lang][f'{model_type} {name}']}"
+            for lang_pair in lang_pairs + ['avg']:
+                msg += f",{results[lang_pair][f'{model_type} {name}']}"
             log(msg)
             with open(log_file, "a", encoding="utf-8") as f:
                 log(msg, file=f)
@@ -529,73 +532,44 @@ def get_wmt16_sys_results(
         del scorer
 
 
-def wmt16_download_data(lang):
+def wmt18_download_data():
     """
-    This method, downloads and extracts data for the WMT16 metrics task. 
+    This method, downloads and extracts data for the WMT18 metrics task. 
     It begins by setting up the necessary directory structure and navigating 
     to the appropriate paths. Then, it checks if the required files and 
     directories exist, and if not, it proceeds to download the necessary 
     data from a specified URL. The method handles the downloading and extraction 
     of both the main archive and a sub-archive. Finally, it returns to the initial 
     directory after completing the data retrieval process.
-
-    :param f_lang: The language to translate from
-    :param t_lang: The language to translate to
     """
     starting_dir = os.getcwd()
-    directory = "wmt17"
+    directory = "wmt18"
     parent_dir = os.path.curdir
     path = os.path.join(parent_dir, directory)
-    if not os.path.isdir('./wmt17'):
-        directory = "wmt17"
+    if not os.path.isdir('./wmt18'):
+        directory = "wmt18"
         parent_dir = os.path.curdir
         path = os.path.join(parent_dir, directory)
         os.mkdir(path)
     os.chdir(path)
-    if not os.path.isfile('./wmt17.tgz'):
-        url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt17-metrics-task-package.tgz'
+    if not os.path.isfile('./wmt18.tgz'):
+        url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt18-metrics-task-package.tgz'
         r = requests.get(url, allow_redirects=True)
-        open('wmt17.tgz', 'wb', encoding="utf-8").write(r.content)
+        open('wmt18.tgz', 'wb', encoding="utf-8").write(r.content)
     if not os.path.isdir('input'):
-        tar = tarfile.open("wmt17.tgz", encoding="utf-8")
+        tar = tarfile.open("wmt18.tgz", encoding="utf-8")
         tar.extractall()
         tar.close()
     directory = "input"
     parent_dir = os.path.curdir
     path = os.path.join(parent_dir, directory)
     os.chdir(path)
-    if not os.path.isdir('wmt17-metrics-task'):
-        tar = tarfile.open("wmt17-metrics-task.tgz", encoding="utf-8")
+    if not os.path.isfile('./wmt18-metrics-task-nohybrids.tgz'):
+        url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt18/wmt18-metrics-task-nohybrids.tgz'
+        r = requests.get(url, allow_redirects=True)
+        open('wmt18-metrics-task-nohybrids.tgz', 'wb', encoding="utf-8").write(r.content)
+    if not os.path.isdir('wmt18-metrics-task-nohybrids'):
+        tar = tarfile.open("wmt18-metrics-task-nohybrids.tgz", encoding="utf-8")
         tar.extractall()
         tar.close()
-    os.chdir(starting_dir)
-
-    starting_dir = os.getcwd()
-    directory = "wmt16"
-    parent_dir = os.path.curdir
-    path = os.path.join(parent_dir, directory)
-    if not os.path.isdir('./wmt16'):
-        directory = "wmt16"
-        parent_dir = os.path.curdir
-        path = os.path.join(parent_dir, directory)
-        os.mkdir(path)
-    os.chdir(path)
-    if not os.path.isfile('./wmt16.tgz'):
-        for lang in lang:
-            url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt16-metrics-task-data/wmt16-metrics-inputs-for-'+lang+'.tar.bz2'
-            r = requests.get(url, allow_redirects=True)
-        open('wmt16.tgz', 'wb', encoding="utf-8").write(r.content)
-    if not os.path.isdir('input'):
-        tar = tarfile.open("wmt16.tgz", encoding="utf-8")
-        tar.extractall()
-        tar.close()
-    directory = "input"
-    parent_dir = os.path.curdir
-    path = os.path.join(parent_dir, directory)
-    os.chdir(path)
-    for lang in lang:
-        if not os.path.isdir('wmt16-metrics-inputs-for-'+lang):
-            tar = tarfile.open("wmt16-metrics-inputs-for-"+lang+".tar.bz2", encoding="utf-8")
-            tar.extractall()
-            tar.close()
     os.chdir(starting_dir)

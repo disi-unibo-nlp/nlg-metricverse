@@ -10,8 +10,7 @@ def metric_human_correlation(
         references,
         metrics,
         human_scores,
-        correlation_measures=[CorrelationMeasures.Pearson],
-        lang=["en-cs", "en-de"]
+        correlation_measures=[CorrelationMeasures.Pearson]
 ):
     """
     Calculates the correlation between human scores and those of the metrics, with the possibility of choosing
@@ -20,7 +19,7 @@ def metric_human_correlation(
     :param predictions: List of predictions
     :param references: List of references
     :param metrics: List of metrics
-    :param human_scores: Can be a list of personal scores or can choose a public benchmark, WMT17 by default
+    :param human_scores: Can be a list of personal scores or can choose a public benchmark, WMT17 or WMT18
     :param correlation_measures: The correlation technique to apply
     """
     if not isinstance(human_scores, list):
@@ -33,13 +32,22 @@ def metric_human_correlation(
             data = get_wmt17_sys_results()
             # print("Evaluation completed, you can see the results in the 'wmt17' folder")
             return data
-        elif human_scores == Benchmarks.WMT16:
-            # print("Downloading wmt17 data, first time might take a bit...")            
-            wmt16_download_data(lang)
-            data = get_wmt16_sys_results(lang)
+        elif human_scores == Benchmarks.WMT18:
+            wmt18_download_data()
+            data = get_wmt18_sys_results()
             return data
     else:
         scores = {}
+        """
+        This for loop iterates through each metric in the list of metrics and calculates 
+        the metric score for each prediction-reference pair. The metric score is then
+        stored in the list of individual metric scores, single_metric_scores. The list 
+        of individual metric scores is then iterated through and the individual scores 
+        are stored in the list of aggregated metric scores, res. If the metric is "rouge", 
+        the mean of rouge1, rouge2, and rougeL scores is calculated and stored in the 
+        aggregated scores list. The aggregated metric scores are then mapped to the 
+        metric bounds and stored in the scores dictionary.
+        """
         for metric in metrics:
             if not isinstance(predictions, list) and not isinstance(references, list):
                 raise Exception("predictions and references must be of type list")
@@ -53,8 +61,7 @@ def metric_human_correlation(
                     if isinstance(single_metric_score[single_score], dict):
                         if metric == "rouge":
                             mean = single_metric_score[single_score]["rouge1"] + \
-                                   single_metric_score[single_score]["rouge2"] + single_metric_score[single_score][
-                                       "rougeL"]
+                                single_metric_score[single_score]["rouge2"] + single_metric_score[single_score]["rougeL"]
                             mean = mean / 3
                             res.append(mean)
                         else:
@@ -64,6 +71,13 @@ def metric_human_correlation(
         results = []
         for metric in metrics:
             metric_scores = []
+            """
+            This for loop iterates through each correlation measure in the list of correlation
+            measures. The correlation statistic and p-value are calculated between the metric
+            scores and human scores using the compute_correlation function. The correlation
+            statistic is then mapped to a range between 0 and 1 and appended to the results
+            list. The mean of the metric scores is calculated and appended to the results list.
+            """
             for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation " + metric):
                 statistic, pvalue = compute_correlation(scores[metric], human_scores, correlation_measure)
                 statistic = map_range(statistic, -1, 1, 0, 1)
