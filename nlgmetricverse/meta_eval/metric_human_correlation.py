@@ -1,5 +1,7 @@
 import numpy as np
+import random
 
+import matplotlib.pyplot as plt
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.visualization.correlation_visualization import mhc_visual
@@ -9,8 +11,9 @@ def metric_human_correlation(
         predictions,
         references,
         metrics,
-        human_scores=Benchmarks.WMT17,
+        human_scores,
         correlation_measures=[CorrelationMeasures.Pearson],
+        lang=["en-cs", "en-de"]
 ):
     """
     Calculates the correlation between human scores and those of the metrics, with the possibility of choosing
@@ -31,6 +34,11 @@ def metric_human_correlation(
             # print("Evaluating...")
             data = get_wmt17_sys_results()
             # print("Evaluation completed, you can see the results in the 'wmt17' folder")
+            return data
+        elif human_scores == Benchmarks.WMT16:
+            # print("Downloading wmt17 data, first time might take a bit...")            
+            wmt16_download_data(lang)
+            data = get_wmt16_sys_results(lang)
             return data
     else:
         scores = {}
@@ -58,12 +66,26 @@ def metric_human_correlation(
         results = []
         for metric in metrics:
             metric_scores = []
-            for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation" + metric):
+            for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation " + metric):
                 statistic, pvalue = compute_correlation(scores[metric], human_scores, correlation_measure)
                 statistic = map_range(statistic, -1, 1, 0, 1)
                 metric_scores.append(statistic)
             results.append(np.mean(metric_scores))
 
+        bar_list = plt.bar(metrics, results)
+
+        for bar in bar_list:
+            r = random.random()
+            b = random.random()
+            g = random.random()
+            color = (r, g, b)
+            bar.set_color(color)
         mhc_visual(metrics, results)
+
+        plt.xticks(np.arange(len(metrics)), metrics)
+        plt.xlabel("Metrics")
+        plt.ylabel("Scores")
+        plt.title("Metric-human correlation")
+        plt.legend()
 
         return results

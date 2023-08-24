@@ -1,3 +1,17 @@
+"""
+Benchmarks: WMT17 and WMT16, are the product of the Workshop on Statistical Machine 
+Translation (WMT) and the Conference on Machine Translation (WMT) of 2016 and 2017.
+As from the Wmt Metrics Task site, https://wmt-metrics-task.github.io/:
+
+"This shared task will examine automatic evaluation metrics for machine translation. 
+We will provide you with MT system outputs along with source text and the human reference 
+translations. We are looking for automatic metric scores for translations at the system-level, 
+and segment-level. We will calculate the system-level, and segment-level correlations of 
+your scores with human judgements."
+
+Link for the WMT16 Metrics Task is: https://www.statmt.org/wmt16/ and https://www.statmt.org/wmt16/metrics-task/
+Link for the WMT17 Metrics Task is: https://www.statmt.org/wmt17/ and https://www.statmt.org/wmt17/metrics-task.html
+"""
 import bert_score
 import numpy as np
 import pandas as pd
@@ -20,6 +34,9 @@ from nlgmetricverse.metrics._core.utils import get_metric_bounds
 wmt17_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'lv-en', 'ru-en', 'tr-en', 'zh-en']
 wmt17_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ru', 'en-tr', 'en-zh']
 wmt17_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
+wmt16_sys_to_lang_pairs = ['cs-en', 'de-en', 'fi-en', 'ro-en', 'ru-en', 'tr-en']
+wmt16_sys_from_lang_pairs = ['en-cs', 'en-de', 'en-lv', 'en-ro', 'en-ru', 'en-tr']
+wmt16_sys_lang_pairs = wmt17_sys_to_lang_pairs + wmt17_sys_from_lang_pairs
 
 def map_range(value, left_min, left_max, right_min, right_max):
     """
@@ -28,7 +45,7 @@ def map_range(value, left_min, left_max, right_min, right_max):
     then scales the input value accordingly. The scaled value within the target 
     range is returned as the output. This function effectively transforms a value 
     from one range to another while maintaining its proportional position.
-    
+
     :param value: The value to scale
     :param left_min: The minimum value of the source range
     :param left_max: The maximum value of the source range
@@ -332,8 +349,7 @@ def wmt17_download_data():
     to the appropriate paths. Then, it checks if the required files and 
     directories exist, and if not, it proceeds to download the necessary 
     data from a specified URL. The method handles the downloading and extraction 
-    of both the main archive and a sub-archive. Finally, it returns to the initial 
-    directory after completing the data retrieval process.
+    of both the main archive and a sub-archive.
     """
     starting_dir = os.getcwd()
     directory = "wmt17"
@@ -363,3 +379,223 @@ def wmt17_download_data():
         tar.close()
     os.chdir(starting_dir)
 
+
+def get_wmt16_sys_data(lang):
+    """
+    This method, retrieves data necessary for evaluating translation system outputs 
+    on the WMT16 metrics task for a given language pair. It takes the language pair 
+    as input and proceeds to extract human scores from a CSV file, reference 
+    translations from a text file, and gold scores from the extracted data. 
+    The method gathers a list of systems participating in the task and creates 
+    corresponding candidate translations. It then organizes and returns the references, 
+    candidates, gold scores, and system names for further evaluation.
+
+    :param lang: The language pair to retrieve data for
+    """
+    first, second = lang.split("-")
+
+    human_scores = pd.read_csv(
+        "wmt17/manual-evaluation/DA-syslevel.csv", delimiter=" ")
+
+    with open("wmt16/wmt16-metrics-inputs-for-{}/newstest2016-{}{}-ref.{}".format(lang, first, second, second),
+              encoding = "utf-8") as f:
+        refs = f.read().strip().split("\n")
+
+    gold_dict = dict(zip(human_scores[human_scores['LP'] == lang]['SYSTEM'],
+                         human_scores[human_scores['LP'] == lang]['HUMAN']))
+    gold_scores = []
+
+    lang_dir = "wmt16/wmt16-metrics-inputs-for-{}".format(lang)
+
+    systems = ["online", "uedin-nmt.4360"]
+
+    refs *= len(systems)
+    cands = []
+
+    for system in systems:
+        with open(os.path.join(lang_dir, "newstest2016.{}.{}".format(system, lang)), encoding="utf-8") as f:
+            cand_sys = f.read().strip().split("\n")
+        gold_scores.append(gold_dict[system])
+
+        cands += cand_sys
+    return refs, cands, gold_scores, systems
+
+
+def get_wmt16_sys_bert_score(lang_pair, scorer, cache=False, from_en=True, batch_size=64):
+    """
+    This method, calculates BERT-based scores for translation system outputs on the WMT16 metrics
+    task for a given language pair and scorer. The method constructs cache filenames based on the 
+    scorer's model type and the provided language pair. It checks if the scores are cached and if so, 
+    it loads and returns the cached scores. If not, it retrieves reference, candidate, and gold scores 
+    data, computes IDF if necessary, and then calculates the scores. Finally, it stores the calculated 
+    scores and gold scores in cache files and returns the results.
+
+    :param lang: The language pair to calculate scores for
+    :param scorer: The scorer to use for calculating scores
+    :param cache: Whether to cache the scores or not
+    :param from_en: Whether to calculate scores from English or to English
+    :param batch_size: The batch size to use for calculating scores
+    """
+    filename = ''
+    if from_en:
+        if scorer.idf:
+            filename = "cache_score/from_en/16/{}/wmt16_seg_from_{}_{}_idf.pkl".format(scorer.model_type,
+                                                                                       *lang_pair.split('-'))
+        else:
+            filename = "cache_score/from_en/16/{}/wmt16_seg_from_{}_{}.pkl".format(scorer.model_type,
+                                                                                   *lang_pair.split('-'))
+    else:
+        if scorer.idf:
+            filename = "cache_score/to_en/16/{}/wmt16_seg_to_{}_{}_idf.pkl".format(scorer.model_type,
+                                                                                   *lang_pair.split('-'))
+        else:
+            filename = "cache_score/to_en/16/{}/wmt16_seg_to_{}_{}.pkl".format(scorer.model_type, *lang_pair.split('-'))
+
+    if os.path.exists(filename):
+        with open(filename, "rb", encoding="utf-8") as f:
+            return pkl.load(f)
+    else:
+        refs, cands, gold_scores, systems = get_wmt16_sys_data(lang_pair)
+        if scorer.idf:
+            scorer.compute_idf(refs)
+        raw_scores = scorer.score(cands, refs, batch_size=batch_size)
+        scores = [s.view(len(systems), -1).mean(dim=-1) for s in raw_scores]
+
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "wb", encoding="utf-8") as f:
+            pkl.dump((scores, gold_scores), f)
+
+    return scores, gold_scores
+
+
+def get_wmt16_sys_results(
+        model=None,
+        log_file="wmt16_log.csv",
+        idf=False,
+        batch_size=64,
+        lang=["en-cs", "en-de"]
+):
+    """
+    This method, calculates BERT-based scores for translation system outputs
+    on the WMT16 metrics task. If no model or language pairs are provided, 
+    default values are used. The method initializes BERTScorer and computes 
+    scores for precision, recall, and F1 for each language pair. It then 
+    calculates average scores and logs the results into a CSV file. The method 
+    iterates through different model types and language pairs, generating and 
+    recording BERT-based evaluation scores.
+
+    :param model: The model to use for calculating scores
+    :param log_file: The file to log the results from
+    :param idf: Whether to use IDF or not
+    :param batch_size: The batch size to use for calculating scores
+    :param lang_pairs: The language pairs to calculate scores for
+    """
+    if model is None:
+        model = ["roberta-large"]
+    torch.set_grad_enabled(False)
+
+    header = 'model_type'
+    
+    for lang in lang:
+        header += f',{lang}'
+    log(header)
+    if not os.path.exists(log_file):
+        with open(log_file, 'w', encoding="utf-8") as f:
+            log(header, file=f)
+
+    log(model)
+    for model_type in model:
+        scorer = bert_score.scorer.BERTScorer(model_type=model_type, idf=idf)
+        results = defaultdict(dict)
+        for lang in tqdm(lang):
+            scores, gold_scores = get_wmt16_sys_bert_score(lang, scorer, batch_size=batch_size, cache=True,
+                                                           from_en=False)
+            for s, name in zip(scores, ["P", "R", "F"]):
+                results[lang][f"{model_type} {name}"] = np.mean(pearsonr(gold_scores, s)[0])
+
+        for name in ["P", "R", "F"]:
+            temp = []
+            for lang in lang:
+                temp.append(results[lang][f"{model_type} {name}"])
+            results["avg"][f"{model_type} {name}"] = np.mean(temp)
+
+            msg = f"{model_type} {name} (idf)" if idf else f"{model_type} {name}"
+            for lang in lang + ['avg']:
+                msg += f",{results[lang][f'{model_type} {name}']}"
+            log(msg)
+            with open(log_file, "a", encoding="utf-8") as f:
+                log(msg, file=f)
+
+        del scorer
+
+
+def wmt16_download_data(lang):
+    """
+    This method, downloads and extracts data for the WMT16 metrics task. 
+    It begins by setting up the necessary directory structure and navigating 
+    to the appropriate paths. Then, it checks if the required files and 
+    directories exist, and if not, it proceeds to download the necessary 
+    data from a specified URL. The method handles the downloading and extraction 
+    of both the main archive and a sub-archive. Finally, it returns to the initial 
+    directory after completing the data retrieval process.
+
+    :param f_lang: The language to translate from
+    :param t_lang: The language to translate to
+    """
+    starting_dir = os.getcwd()
+    directory = "wmt17"
+    parent_dir = os.path.curdir
+    path = os.path.join(parent_dir, directory)
+    if not os.path.isdir('./wmt17'):
+        directory = "wmt17"
+        parent_dir = os.path.curdir
+        path = os.path.join(parent_dir, directory)
+        os.mkdir(path)
+    os.chdir(path)
+    if not os.path.isfile('./wmt17.tgz'):
+        url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt17-metrics-task-package.tgz'
+        r = requests.get(url, allow_redirects=True)
+        open('wmt17.tgz', 'wb', encoding="utf-8").write(r.content)
+    if not os.path.isdir('input'):
+        tar = tarfile.open("wmt17.tgz", encoding="utf-8")
+        tar.extractall()
+        tar.close()
+    directory = "input"
+    parent_dir = os.path.curdir
+    path = os.path.join(parent_dir, directory)
+    os.chdir(path)
+    if not os.path.isdir('wmt17-metrics-task'):
+        tar = tarfile.open("wmt17-metrics-task.tgz", encoding="utf-8")
+        tar.extractall()
+        tar.close()
+    os.chdir(starting_dir)
+
+    starting_dir = os.getcwd()
+    directory = "wmt16"
+    parent_dir = os.path.curdir
+    path = os.path.join(parent_dir, directory)
+    if not os.path.isdir('./wmt16'):
+        directory = "wmt16"
+        parent_dir = os.path.curdir
+        path = os.path.join(parent_dir, directory)
+        os.mkdir(path)
+    os.chdir(path)
+    if not os.path.isfile('./wmt16.tgz'):
+        for lang in lang:
+            url = 'http://ufallab.ms.mff.cuni.cz/~bojar/wmt16-metrics-task-data/wmt16-metrics-inputs-for-'+lang+'.tar.bz2'
+            r = requests.get(url, allow_redirects=True)
+        open('wmt16.tgz', 'wb', encoding="utf-8").write(r.content)
+    if not os.path.isdir('input'):
+        tar = tarfile.open("wmt16.tgz", encoding="utf-8")
+        tar.extractall()
+        tar.close()
+    directory = "input"
+    parent_dir = os.path.curdir
+    path = os.path.join(parent_dir, directory)
+    os.chdir(path)
+    for lang in lang:
+        if not os.path.isdir('wmt16-metrics-inputs-for-'+lang):
+            tar = tarfile.open("wmt16-metrics-inputs-for-"+lang+".tar.bz2", encoding="utf-8")
+            tar.extractall()
+            tar.close()
+    os.chdir(starting_dir)
