@@ -1,7 +1,5 @@
 import numpy as np
-import random
 
-import matplotlib.pyplot as plt
 from nlgmetricverse.utils.correlation import *
 from nlgmetricverse import NLGMetricverse, load_metric
 from nlgmetricverse.visualization.correlation_visualization import mhc_visual
