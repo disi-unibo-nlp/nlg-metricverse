@@ -236,6 +236,32 @@ You can use custom metrics by inheriting `nlgmetricverse.metrics.Metric`.
 You can see current metrics implemented on NLG Metricverse from [nlgmetricverse/metrics](https://github.com/disi-unibo-nlp/nlg-metricverse/tree/main/nlgmetricverse/metrics).
 NLG Metricverse itself uses `datasets.Metric` as a base class to drive its own base class as `nlgmetricverse.metrics.Metric`. The interface is similar; however, NLG Metricverse makes the metrics to take a unified input type by handling metric-specific inputs and allowing multiple cardinalities (1:1, 1:M, K:M).
 For implementing custom metrics, both base classes can be used but we strongly recommend using `nlgmetricverse.metrics.Metric` for its advantages.
+When using a custom metric, you need to:
+1. Create a folder inside `nlgmetricverse/metrics` with the name of your metric.
+2. Create inside the folder `__init__.py`, `*metric*.py` and `*metric*_planet.py`.
+3. Inside `__init__.py`, add the following code:
+```python
+from nlgmetricverse.metrics.*metric*.*metric* import *Metric*
+```
+
+4. Inside `*metric*.py`, add the following code:
+```python
+"""
+*Metric* metric super class.
+"""
+from nlgmetricverse.metrics._core import MetricAlias
+from nlgmetricverse.metrics.*metric*.*metric* import *CustomMetric*
+
+__main_class__ = "*Metric*"
+
+
+class *Metric*(MetricAlias):
+    """
+    *Metric* metric superclass.
+    """
+    _SUBCLASS = *CustomMetric*
+```
+5. Inside `*metric*_planet.py`, add the following code:
 ```python
 from nlgmetricverse.metrics import MetricForLanguageGeneration
 
@@ -256,6 +282,12 @@ class CustomMetric(MetricForLanguageGeneration):
         raise NotImplementedError
 ```
 For more details, have a look at base metric implementation [nlgmetricverse.metrics.Metric](./nlgmetricverse/metrics/_core/base.py)
+
+6. Inside your metric folder add a README.md file, following the [metric card guidelines](./metric_card_guidelines.md).
+7. Add your metric to the [comparison table](./comparison.md) and to the [README.md](./README.md) file.
+8. Add your metric to [nlgmetricverse/metrics/\_\_init\_\_.py](./nlgmetricverse/metrics/__init__.py) file.
+9. Add your metric to metrics_list inside [nlgmetricverse/metrics/\_core/utils.py](./nlgmetricverse/metrics/_core/utils.py) file.
+10. Add test cases for your metric inside [tests/nlgmetricverse/metrics](./tests/nlgmetricverse/metrics) folder, with its respective expected outputs, inside [tests/test_data/expected\_outputs/metrics](./tests/test_data/expected_outputs/metrics) folder.
 
 ## 🙌 Contributing
 Thanks go to all these wonderful collaborations for their contribution towards the NLG Metricverse library:
