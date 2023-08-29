@@ -1,7 +1,7 @@
 # Metric card for Compression
 
 ## Metric description
-The Compression metric calculates the documention-summary word ration: <br><img src="https://render.githubusercontent.com/render/math?math={\frac{|x|}{|y|}}"><br>
+The Compression metric calculates the documention-summary word ration: $$\frac{|\bm{x}|}{|\bm{y}|}$$
 
 ### Inputs
 - **predictions** (istance of EvaluationInstance): An object containing the predicted text.
@@ -13,7 +13,7 @@ The Compression metric calculates the documention-summary word ration: <br><img 
 ### Results from popular papers
 
 ## Bounds
-The `compression` score has a <img src="https://render.githubusercontent.com/render/math?math={[0,|x|]}"> range.
+The `compression` score has a $$[0,|\bm{x}|],\uparrow$$ range.
 
 ## Examples
 ```python
@@ -32,6 +32,17 @@ print(scores)
 
 ## Limitations and Bias
 
-## Citation(s)
+## Citation
+```bibtex
+@article{grusky2018newsroom,
+  title={Newsroom: A dataset of 1.3 million summaries with diverse extractive strategies},
+  author={Grusky, Max and Naaman, Mor and Artzi, Yoav},
+  journal={arXiv preprint arXiv:1804.11283},
+  year={2018}
+}
+```
 
 ## Further References
+
+## Contributions
+Thanks to @ValentinaPieri for contributing to this metric!
