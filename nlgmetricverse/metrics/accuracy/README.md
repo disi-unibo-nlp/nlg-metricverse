@@ -72,7 +72,7 @@ print(scores)
 This metric can be easily misleading, especially in the case of unbalanced classes. For example, a high accuracy might be because a model is doing well, but if the data is unbalanced, it might also be because the model is only accurately labeling the high-frequency class. In such cases, a more detailed analysis of the model's behavior, or the use of a different metric entirely, is necessary to determine how well the model is actually performing.
 
 
-## Citation(s)
+## Citation
 ```bibtex
 @article{scikit-learn,
   title={Scikit-learn: Machine Learning in {P}ython},

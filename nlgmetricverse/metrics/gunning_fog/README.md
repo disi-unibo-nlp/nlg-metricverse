@@ -50,7 +50,7 @@ print(scores)
 ```
 ## Limitations and bias
 
-## Citation(s)
+## Citation
 
 ## Further References
 - [Gunning-Fog Index Wikipedia Page](https://en.wikipedia.org/wiki/Gunning_fog_index)

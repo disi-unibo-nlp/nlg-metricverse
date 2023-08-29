@@ -46,7 +46,7 @@ print(scores)
 
 ## Limitations and bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @inproceedings{DBLP:conf/cvpr/VedantamZP15,
   author    = {Ramakrishna Vedantam and

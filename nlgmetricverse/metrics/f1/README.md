@@ -84,7 +84,7 @@ print(scores)
 
 ## Limitations and Bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @article{scikit-learn,
     title={Scikit-learn: Machine Learning in {P}ython},

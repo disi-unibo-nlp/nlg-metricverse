@@ -42,7 +42,7 @@ print(scores)
 ## Limitations and bias
 The Coleman-Liau index is based on the number of characters per word and per sentence, and thus does not take into account the complexity of the words used. As a result, it is not a good metric for evaluating the complexity of texts in languages such as Chinese, where a single character can represent a whole word.
 
-## Citation(s)
+## Citation
 ```bibtex
 @article{coleman1975computer,
   title={Computer readability studies},

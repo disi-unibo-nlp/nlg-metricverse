@@ -41,7 +41,7 @@ print(scores)
 
 ## Limitations and bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @inproceedings{xiao-carenini-2020-systematically,
     title = "Systematically Exploring Redundancy Reduction in Summarizing Long Documents",

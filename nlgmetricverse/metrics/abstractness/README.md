@@ -36,7 +36,7 @@ print(scores)
 
 ## Limitations and Bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @inproceedings{durmus-etal-2020-feqa,
     title = "{FEQA}: A Question Answering Evaluation Framework for Faithfulness Assessment in Abstractive Summarization",

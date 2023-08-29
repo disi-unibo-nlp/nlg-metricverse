@@ -105,7 +105,7 @@ print([round(res, 2) for res in scores['precision']])
 ## Limitations and Bias
 [Precision](https://huggingface.co/metrics/precision) and [recall](https://huggingface.co/metrics/recall) are complementary and can be used to measure different aspects of model performance -- using both of them (or an averaged measure like [F1 score](https://huggingface.co/metrics/F1) to better represent different aspects of performance. See [Wikipedia](https://en.wikipedia.org/wiki/Precision_and_recall) for more information.
 
-## Citation(s)
+## Citation
 ```bibtex
 @article{scikit-learn,
     title={Scikit-learn: Machine Learning in {P}ython},

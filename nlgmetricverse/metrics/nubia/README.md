@@ -52,7 +52,7 @@ print(scores)
 
 ## Limitations and bias
 
-## Citation(s)
+## Citation
 ```bibtex
 @misc{kane2020nubia,
     title={NUBIA: NeUral Based Interchangeability Assessor for Text Generation},
