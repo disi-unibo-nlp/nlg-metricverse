@@ -52,6 +52,9 @@ print(scores)
     pages = "74--81",
 }
 ```
-## References
+## Further References
 *List any relevant references for documentation writing*
 - [*name of paper*](link to paper)
+
+## Contributions
+Thanks to @github-username for contributing to this metric!
