@@ -1,20 +1,27 @@
 # Metric card for Carburacy
 
 ## Metric description
-The Carbon-aware accuracy modeling both th AS model effectiveness and eco-sustainability: <br><img src="https://render.githubusercontent.com/render/math?math={ }">
-Where <img src="https://render.githubusercontent.com/render/math?math={C}"> is the kg of CO2 emissions produced by the model to process a single instance <img src="https://render.githubusercontent.com/render/math?math={x}"> at inference time, <img src="https://render.githubusercontent.com/render/math?math={\alpha}"> and <img src="https://render.githubusercontent.com/render/math?math={\beta}"> are trade-off hyperparameters.
+The Carbon-aware accuracy modeling both th AS model effectiveness and eco-sustainability: $$\Upsilon = \frac{\left(\exp^{\log_{\alpha}\mathcal{R}}\right)}{1 + \mathcal{C}\cdot\beta}$$
+Where $\mathcal{R}$ is defined in: $$\mathcal{R} = \frac{\text{avg}(r_1, r_2, r_{L\text{Sum}})}{1 + \sigma^2_r}$$
+and where $C$ is the kg of CO2 emissions produced by the model to process a single instance $x$ at inference time, $\alpha$ and $\beta$ are trade-off hyperparameters.
+
+<p align="center">
+  <img src="../../../figures/metrics/carburacy/fig1.png" width="80%" title="Analysis of Carburacy variation due to its variables" alt="">
+</p>
 
 ### Inputs
 - **predictions** (istance of EvaluationInstance): An object containing the predicted text.
 - **references** (istance of EvaluationInstance): An object containing the reference text.
+-  **score**: The R value of the prediction.
+-  **co2_val**: The CO2 value of the prediction.
 
 ### Outputs
-- **carburacy**(`float` or `int`): Carburacy score. Minimum possible value is 0. Maximum possible value is 1
+- **carburacy**(`float` or `int`): Carburacy score. Minimum possible value is 0. Maximum possible value is 1.
 
 ### Results from popular papers
 
 ## Bounds
-The `carburacy` score has a <img src="https://render.githubusercontent.com/render/math?math={[0,1]}"> range.
+The `carburacy` score has a $$[0,1],\uparrow$$ range.
 
 ## Examples
 ```python
@@ -48,3 +55,6 @@ print(scores)
 ```
 
 ## Further References
+
+## Contributions
+Thanks to @ValentinaPieri for contributing to this metric!
