@@ -40,7 +40,7 @@ Args:
 Returns:
     carburacy: The average carburacy of the predictions.
 Examples:
-    >>> scorer = NLGMetricverse(metrics=load_metric("carburacy"))
+    >>> scorer = NLGMetricverse(metrics=load_metric(base_path + "carburacy", compute_kwargs={"co2_val": "0.5"}))
     >>> predictions = ["Peace in the dormitory, peace in the world.", "There is a cat on the mat."]
     >>> references = ["Peace at home, peace in th world.", "The cat is playing on the mat."]
     >>> scores = scorer(predictions=predictions, references=references)
