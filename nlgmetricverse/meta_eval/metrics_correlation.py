@@ -33,6 +33,13 @@ def metrics_correlation(
     results = []
     pvalues = []
     pvalue_results = np.zeros((len(metrics), len(metrics)))
+    """
+    Creates a matrix to store correlation coefficients and p-values, with a for 
+    loop iterates through different correlation measures and through pairs of metrics.
+    Computes then correlation and store in the matrix, creates a mask to visualize the 
+    lower triangle of the correlation matrix and a heatmap to visualize the correlation matrix.
+    Lastly, appends the correlation matrix and the p-value matrix to the results and pvalues lists.
+    """
     for correlation_measure in tqdm(correlation_measures, desc="Calculating correlation"):
         for i, metricA in enumerate(metrics):
             for j, metricB in enumerate(metrics):
