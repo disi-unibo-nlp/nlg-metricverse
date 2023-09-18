@@ -18,6 +18,7 @@ pyemd>=0.5.1
 ipython>=7.16.1
 ecco>=0.1.2
 sacrebleu>=2.0.0
+bleurt @ git+https://github.com/google-research/bleurt.git
 jiwer>=2.3.0
 unbabel-comet>=1.1.2,<2;python_version<"3.8"
 unbabel-comet>=2.0,<2.1;python_version>="3.8"
