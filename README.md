@@ -91,7 +91,7 @@ The following table summarizes the discrepancies between NLG Metricverse and rel
 
 | | NLG-Metricverse | NLGEval | Datasets | Evaluate | TorchMetrics | Jury |
 | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
-| #NLG-specific metrics | 38 + Datasets | 8 | 22 | 22 | 13 | 19 + Datasets |
+| #NLG-specific metrics | 43 + Datasets | 8 | 22 | 53 | 13 | 19 + Datasets |
 | More metrics at once | :white_check_mark: | :x: | :x: | :white_check_mark: | :x: | :white_check_mark: |
 | Multiple refs/preds | :white_check_mark: | :white_check_mark: | :x: | :x: | :x: | :white_check_mark: |
 | Meta-evaluation | :white_check_mark: | :x: | :x: | :x: | :x: | :x: |
