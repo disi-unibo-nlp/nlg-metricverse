@@ -153,7 +153,7 @@ _METRIC_REQUIREMENTS = [
     "jiwer>=2.3.0",
     "seqeval==1.2.2",
     "sentencepiece==0.1.96",
-    "bleurt @ git+https://github.com/google-research/bleurt.git",
+    "bleurt @ git+ssh://github.com/google-research/bleurt.git",
     'unbabel-comet>=1.1.2,<2;python_version<"3.8"',
     'unbabel-comet>=2.0,<2.1;python_version>="3.8"',
     "protobuf<3.20.1",
