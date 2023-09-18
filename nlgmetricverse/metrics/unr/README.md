@@ -1,7 +1,7 @@
 # Metric card for UNR
 
 ## Metric description
-The UNR metric measures the summary of n-grams uniqueness: $$\frac{\text{count}(\text{uniq\_n\_gram}(\bm{y}))}{\text{count}(\text{n\_gram}(\bm{y}))}$$
+The UNR metric measures the summary of n-grams uniqueness: $$UNR = \frac{\text{count(uniq\_n\_gram(y))}}{\text{count(n\_gram(y)}}$$
   
 Where we take $n \in [1,3]$ and divide the average by variance.
 
@@ -19,7 +19,7 @@ Where we take $n \in [1,3]$ and divide the average by variance.
 ### Results from popular papers
 
 ## Bounds
-The `UNR` score has a $$[0,1],\uparrow$$ range.
+The `UNR` score has a $[0,1],\uparrow$ range.
 
 ## Examples
 ```python

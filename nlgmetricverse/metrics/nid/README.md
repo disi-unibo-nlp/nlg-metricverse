@@ -4,7 +4,7 @@
 The NID metric captures redundancy, as the inverse of a diversity metric with length normalization. Diversity is defined as the entropy of summary unigrams. Because longer documents are more
 likely to have a higher entropy, we normalize the
 diversity with the maximum possible entropy for
-the document $log(|\bm{y}|)$. So, we have: $$1 - \frac{entropy(\bm{y})}{log(|\bm{y}|)}$$
+the document $log(|y|)$. So, we have: $$1 - \frac{entropy(y)}{log(|y|)}$$
 
 <p align="center">
   <img src="../../../figures/metrics/nid/nid.png" width="80%" title="Longer documents are more redundant" alt="">
@@ -20,7 +20,7 @@ the document $log(|\bm{y}|)$. So, we have: $$1 - \frac{entropy(\bm{y})}{log(|\bm
 ### Results from popular papers
 
 ## Bounds
-The `nid` score has a $$[0,1],\downarrow$$ range.
+The `nid` score has a $[0,1],\downarrow$ range.
 
 ## Examples
 ```python

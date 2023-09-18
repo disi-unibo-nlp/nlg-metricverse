@@ -1,7 +1,9 @@
 # Metric card for Compression
 
 ## Metric description
-The Compression metric calculates the documention-summary word ration: $$\frac{|\bm{x}|}{|\bm{y}|}$$
+The Compression metric calculates the documention-summary word ration: $$\frac{|x|}{|y|}$$
+
+Summarizing with higher compression is challenging as it requires capturing more precisely the critical aspects of the article text. It has been observed that publications with lower compression ratios exhibit higher diversity along both dimensions of extractiveness. However, as the median compression ratio increases, the distributions become more concentrated, indicating that summarization strategies become more rigid.
 
 ### Inputs
 - **predictions** (istance of EvaluationInstance): An object containing the predicted text.
@@ -13,7 +15,7 @@ The Compression metric calculates the documention-summary word ration: $$\frac{|
 ### Results from popular papers
 
 ## Bounds
-The `compression` score has a $$[0,|\bm{x}|],\uparrow$$ range.
+The `compression` score has a $[0,|x|],\uparrow$ range.
 
 ## Examples
 ```python

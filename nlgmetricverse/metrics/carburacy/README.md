@@ -1,7 +1,7 @@
 # Metric card for Carburacy
 
 ## Metric description
-The Carbon-aware accuracy modeling both th AS model effectiveness and eco-sustainability: $$\Upsilon = \frac{\left(\exp^{\log_{\alpha}\mathcal{R}}\right)}{1 + \mathcal{C}\cdot\beta}$$
+The Carbon-aware accuracy modeling both th AS model effectiveness and eco-sustainability:  $$\Upsilon = \frac{\left(\exp^{\log_{\alpha}\mathcal{R}}\right)}{1 + \mathcal{C}\cdot\beta}$$
 Where $\mathcal{R}$ is defined in: $$\mathcal{R} = \frac{\text{avg}(r_1, r_2, r_{L\text{Sum}})}{1 + \sigma^2_r}$$
 and where $C$ is the kg of CO2 emissions produced by the model to process a single instance $x$ at inference time, $\alpha$ and $\beta$ are trade-off hyperparameters.
 
@@ -21,14 +21,18 @@ and where $C$ is the kg of CO2 emissions produced by the model to process a sing
 ### Results from popular papers
 
 ## Bounds
-The `carburacy` score has a $$[0,1],\uparrow$$ range.
+The `carburacy` score has a $[0,1],\uparrow$ range.
 
 ## Examples
 ```python
 from nlgmetricverse import NLGMetricverse, load_metric
 predictions = ["There is a cat on the mat.", "Look! a wonderful day."]
 references = ["The cat is playing on the mat.", "Today is a wonderful day"]
-scorer = NLGMetricverse(metrics=load_metric("carburacy"))
+scorer = NLGMetricverse(metrics=load_metric(
+                                base_path + "carburacy",
+                                compute_kwargs={"co2_val": "0.5"}
+                              )
+                        )
 scores = scorer(predictions=predictions, references=references)
 print(scores)
 { 

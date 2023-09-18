@@ -1,20 +1,20 @@
 # Metric card for Density
 
 ## Metric description
-The Density metric measures the average lenght of the extractive fragments. The density measure quantifies how well the word sequence of a summary can be described as a series of extractions. It is formulated as: $$\frac{1}{|\bm{y}|_c}\sum_{\bm{f} \in \mathcal{F}(\bm{x},\bm{y})} |\bm{f}|_c^2$$
-Where $$||_c$$ is the character lenght. When low, it suggest that most summary sentences are not verbatim extractions from the sources (abstractive).
+The Density metric measures the average lenght of the extractive fragments. The density measure quantifies how well the word sequence of a summary can be described as a series of extractions. It is formulated as: $$ \frac{1}{|y|c}\sum{f \in \mathcal{F}(x,y)} |f|_c^2 $$
+Where $||_c$ is the character lenght. When low, it suggest that most summary sentences are not verbatim extractions from the sources (abstractive).
 
 ### Inputs
 - **predictions** (istance of EvaluationInstance): An object containing the predicted text.
 - **references** (istance of EvaluationInstance): An object containing the reference text.
 
 ### Outputs
-- **density**(`float` or `int`): Density score. Minimum possible value is 0. Maximum possible value is $$|\bm{c}|_c$$. The lower is the score, the more abstractive the summary is.
+- **density**(`float` or `int`): Density score. Minimum possible value is 0. Maximum possible value is $|c|_c$. The lower is the score, the more abstractive the summary is.
 
 ### Results from popular papers
 
 ## Bounds
-The `density` score has a $$[0,|\bm{c}|],\downarrow$$ range.
+The `density` score has a $[0,|c|],\downarrow$ range.
 
 ## Examples
 ```python

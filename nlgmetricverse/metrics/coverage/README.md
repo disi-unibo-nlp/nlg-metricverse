@@ -2,9 +2,9 @@
 
 ## Metric description
 Coverage measure quantifies the extent to which a summary is derivative of a text.
-The Coverage metric measures the percentage of summary words within the source text: $$\frac{1}{|\bm{y}|}\sum_{\bm{f} \in \mathcal{F}(\bm{x},\bm{y})} |\bm{f}|$$
+The Coverage metric measures the percentage of summary words within the source text: $$\frac{1}{|y|}\sum_{f \in \mathcal{F}(x,y)} |f|$$
 
-Where $$\mathcal{F}$$ is the set of all fragments, i.e., extractive character sequences. When low, it suggest a high change for unsupported entities and facts.
+Where $\mathcal{F}$ is the set of all fragments, i.e., extractive character sequences. When low, it suggest a high change for unsupported entities and facts.
 
 <p align="center">
   <img src="../../../figures/metrics/coverage/coverage.png" width="80%" title="Coverage distributions across the different domains and existing datasets" alt="">
@@ -20,7 +20,7 @@ Where $$\mathcal{F}$$ is the set of all fragments, i.e., extractive character se
 ### Results from popular papers
 
 ## Bounds
-The `coverage` score has a $$[0,1],\uparrow$$ range.
+The `coverage` score has a $[0,1],\uparrow$ range.
 
 ## Examples
 ```python
