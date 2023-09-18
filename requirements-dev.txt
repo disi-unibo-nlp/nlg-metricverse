@@ -1,2 +1,6 @@
+# NLG-Metricverse metrics
+# Falling back to fork for Windows related issue: https://github.com/google-research/bleurt/issues/49
+bleurt @ git+https://github.com/devrimcavusoglu/bleurt.git
+
 # for evaluate metric test
 math_equivalence @ git+https://github.com/hendrycks/math.git  # for datasets test metric

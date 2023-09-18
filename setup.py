@@ -109,6 +109,14 @@ requirements = [
     "codecarbon==2.1.4",
     "validators>=0.20.0",
     "seaborn>=0.12.0",
+    "torch>=1.12.0",
+    "transformers>=4.24.0",
+    "bert_score>=0.3.11",
+    "tqdm>=4.64.1",
+    "evaluate>=0.2.2,<=0.5",
+    "pyemd>=0.5.1",
+    "ipython>=7.16.1",
+    "ecco>=0.1.2"
 ]
 
 
@@ -134,14 +142,28 @@ _DEV_REQUIREMENTS = [
     "wget==3.2"
 ]
 
+_PRISM_REQUIREMENTS = [
+    "fairseq==0.9.0",
+    'numpy>=1.23,<1.24;python_version>="3.8"',
+    'numpy==1.21.6;python_version<"3.8"',
+]
+
 _METRIC_REQUIREMENTS = [
+    "sacrebleu>=2.0.0",
+    "jiwer>=2.3.0",
     "seqeval==1.2.2",
+    "sentencepiece==0.1.96",
+    "bleurt @ git+https://github.com/google-research/bleurt.git",
+    'unbabel-comet>=1.1.2,<2;python_version<"3.8"',
+    'unbabel-comet>=2.0,<2.1;python_version>="3.8"',
     "protobuf<3.20.1",
 ]
 
+_METRIC_REQUIREMENTS.extend(_PRISM_REQUIREMENTS)
 add_pywin(_METRIC_REQUIREMENTS)
 
 extras = {
+    "prism": _PRISM_REQUIREMENTS,
     "metrics": _METRIC_REQUIREMENTS,
     "dev": _DEV_REQUIREMENTS + _METRIC_REQUIREMENTS,
 }
