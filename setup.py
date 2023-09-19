@@ -113,7 +113,7 @@ requirements = [
     "transformers>=4.24.0",
     "bert_score>=0.3.11",
     "tqdm>=4.64.1",
-    "evaluate>=0.2.2,<=0.5",
+    "evaluate>=0.4",
     "pyemd>=0.5.1",
     "ipython>=7.16.1",
     "ecco>=0.1.2"
