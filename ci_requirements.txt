@@ -16,7 +16,7 @@ tqdm>=4.64.1
 evaluate>=0.4
 pyemd>=0.5.1
 ipython>=7.16.1
-ecco>=0.1.2
+scikit-learn
 sacrebleu>=2.0.0
 bleurt @ git+https://github.com/google-research/bleurt.git
 jiwer>=2.3.0

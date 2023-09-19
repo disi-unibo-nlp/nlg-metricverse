@@ -116,7 +116,7 @@ requirements = [
     "evaluate>=0.4",
     "pyemd>=0.5.1",
     "ipython>=7.16.1",
-    "ecco>=0.1.2"
+    "scikit-learn"
 ]
 
 
