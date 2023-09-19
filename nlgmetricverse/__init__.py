@@ -10,4 +10,4 @@ from nlgmetricverse.visualization.n_gram_distance import n_gram_distance_visuali
 from nlgmetricverse.meta_eval.performance_comparison import times_correlation
 from nlgmetricverse.visualization.similarity_word_matching import similarity_word_matching
 
-__version__ = "0.9.8"
+__version__ = "0.9.9"
