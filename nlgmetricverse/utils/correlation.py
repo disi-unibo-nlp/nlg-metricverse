@@ -1,6 +1,6 @@
 """
-Benchmarks: WMT17 and WMT16, are the product of the Workshop on Statistical Machine 
-Translation (WMT) and the Conference on Machine Translation (WMT) of 2016 and 2017.
+Benchmarks: WMT17 and WMT18, are the product of the Workshop on Statistical Machine 
+Translation (WMT) and the Conference on Machine Translation (WMT) of 2017 and 2018.
 As from the Wmt Metrics Task site, https://wmt-metrics-task.github.io/:
 
 "This shared task will examine automatic evaluation metrics for machine translation. 
@@ -10,7 +10,7 @@ and segment-level. We will calculate the system-level, and segment-level correla
 your scores with human judgements."
 
 Link for the WMT17 Metrics Task is: https://www.statmt.org/wmt17/ and https://www.statmt.org/wmt17/metrics-task.html
-Link for the WMT18 Metrics Task is: https://www.statmt.org/wmt18/ and https://www.statmt.org/wmt18/metrics-task/
+Link for the WMT18 Metrics Task is: https://www.statmt.org/wmt18/ and https://www.statmt.org/wmt18/metrics-task.html
 """
 import bert_score
 import numpy as np
