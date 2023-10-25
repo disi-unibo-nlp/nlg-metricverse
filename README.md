@@ -116,6 +116,10 @@ pip install -v .
 The **Spaces** edition of NLG Metricverse will be launched soon. Check it out here:
 [![](./figures/spaces.png)](https://huggingface.co/spaces/disi-unibo-nlp/nlg-metricverse)
 
+We decided to create the app with the purpose of giving the users the possibility to try a demo of the library before installing it. We chose Hugging Face Spaces because, because it offers a simple way to host machine learning demo apps directly on a profile.
+
+In the data app Home, there is a brief descriction of the library and its contents. On the left side of the screen is located the retractable sidebar, which contains all the metrics available in the data app. On a metric's page is the description of the metric and an input box for both prediction and reference text. After putting the texts and having pressed the Submit button, through the use of the NLG-Metricverse library, the prediction and reference are used to calculate the desidered score.
+
 ## 🚀 Quickstart
 
 ### Prepare your environment
