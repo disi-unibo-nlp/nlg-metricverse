@@ -321,6 +321,10 @@ This research work has been conducted within the Department of Computer Science 
 
 The code is released under the [MIT License](LICENSE). It should not be used to promote or profit from violence, hate, and division, environmental destruction, abuse of human rights, or the destruction of people's physical and mental health.
 
+## Acknowledgments
+
+In 2021, as we initiated the project development, we constructed our contributions above [Jury](https://github.com/obss/jury) and HuggingFace Evaluate, for which we express our gratitude. The project files explicitly state license details.
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=disi-unibo-nlp/nlg-metricverse&type=Date)](https://star-history.com/#disi-unibo-nlp/nlg-metricverse&Date)
