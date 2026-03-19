@@ -101,7 +101,6 @@ requirements = [
     "requests>=2.27.1",
     "click==8.1.3",
     "syllables>=1.0.3",
-    "typing>=3.7.4.3",
     "packaging>=21.3",
     "scipy>=1.9",
     "matplotlib>=3.5.1",
