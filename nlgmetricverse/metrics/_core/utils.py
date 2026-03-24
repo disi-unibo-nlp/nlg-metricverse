@@ -449,6 +449,16 @@ metrics_list = [
         "lower_bound": 0
     },
     {
+        "name": "narrative_score",
+        "category": "n-gram overlap",
+        "appl_tasks": ["DG", "RG"],
+        "trained": False,
+        "unsupervised": True,
+        "quality_dims": ["INFO", "COH"],
+        "upper_bound": 100,
+        "lower_bound": 0
+    },
+    {
         "name": "nid",
         "category": "",
         "appl_tasks": [],
