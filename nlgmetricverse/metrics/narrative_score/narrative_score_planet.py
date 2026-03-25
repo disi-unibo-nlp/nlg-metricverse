@@ -28,6 +28,7 @@ Designed for evaluating AI-generated reminiscence therapy narratives, life story
 books, and autobiographical memory elicitation outputs in Chinese.
 """
 
+import math
 import re
 from typing import Callable, Dict, List, Optional, Tuple
 
@@ -44,7 +45,7 @@ _CITATION = """\
   title     = {Narrative Scorer: Six-Dimensional Chinese Autobiographical Narrative Quality Assessment},
   year      = {2026},
   url       = {https://github.com/CittaVerse/narrative-scorer},
-  version   = {0.6.0},
+  version   = {0.6.2},
   note      = {Rule-based scoring for event richness, temporal/causal coherence, emotional depth, identity integration, and information density}
 }
 """
@@ -341,20 +342,32 @@ def _score_text(text: str) -> Dict:
     peripheral_count = len(events) - central_count
     central_ratio = central_count / len(events) if events else 0.0
 
-    # Dimension 1: Event Richness
+    # Dimension 1: Event Richness (v0.6.2 calibrated)
     if events and text_length > 0:
-        events_per_100 = (len(events) / text_length) * 100
-        event_richness = min(events_per_100 * 10, 100.0)
+        n_central = central_count
+        n_peripheral = peripheral_count
+        weighted_events = n_central * 1.0 + n_peripheral * 0.4
+        effective_length = max(text_length, 50)
+        events_per_100 = (weighted_events / effective_length) * 100
+        density_score = min(events_per_100 * 10, 70.0)
+        count_bonus = min(max(0, len(events) - 1) * 5, 20.0)
+        central_bonus = min(n_central * 2, 10.0)
+        event_richness = min(density_score + count_bonus + central_bonus, 100.0)
     else:
         event_richness = 0.0
 
-    # Dimension 2: Temporal Coherence
+    # Dimension 2: Temporal Coherence (v0.6.2 calibrated)
     if events and text_length > 0:
-        marker_density = (time_markers_count / text_length) * 100
-        events_with_time = sum(1 for e in events if e["time_marker"])
-        time_coverage = (events_with_time / len(events)) * 100
-        temporal_coherence = min(marker_density * 20, 50) + time_coverage * 0.5
-        temporal_coherence = min(temporal_coherence, 100.0)
+        n_events = len(events)
+        if n_events <= 1:
+            temporal_coherence = min(25.0, 25.0) if time_markers_count > 0 else 0.0
+        else:
+            effective_length_tc = max(text_length, 80)
+            abs_marker_score = min(22.0 * math.log(1 + time_markers_count * 0.8), 50.0)
+            events_with_time = sum(1 for e in events if e["time_marker"])
+            time_coverage = (events_with_time / n_events) * 100
+            coverage_score = time_coverage * 0.5
+            temporal_coherence = min(abs_marker_score + coverage_score, 100.0)
     else:
         temporal_coherence = 0.0
 
@@ -365,17 +378,20 @@ def _score_text(text: str) -> Dict:
     else:
         causal_coherence = 0.0
 
-    # Dimension 4: Emotional Depth
-    if text_length > 0:
-        emotion_density = (emotion_words_count / text_length) * 100
-        emotional_depth = min(emotion_density * 33, 100.0)
+    # Dimension 4: Emotional Depth (v0.6.2 calibrated)
+    if emotion_words_count > 0 and text_length > 0:
+        effective_length_ed = max(text_length, 60)
+        emotion_density = (emotion_words_count / effective_length_ed) * 100
+        density_score_ed = min(35.0 * math.log(1 + emotion_density * 0.7), 80.0)
+        count_bonus_ed = min(emotion_words_count * 5, 20.0)
+        emotional_depth = min(density_score_ed + count_bonus_ed, 100.0)
     else:
         emotional_depth = 0.0
 
-    # Dimension 5: Identity Integration
-    if text_length > 0:
-        self_density = (self_references_count / text_length) * 100
-        identity_integration = min(self_density * 50, 100.0)
+    # Dimension 5: Identity Integration (v0.6.1 calibrated)
+    if self_references_count > 0 and text_length > 0:
+        self_density = (self_references_count / max(text_length, 1)) * 100
+        identity_integration = min(38.0 * math.log(1 + self_density * 0.9), 100.0)
     else:
         identity_integration = 0.0
 
