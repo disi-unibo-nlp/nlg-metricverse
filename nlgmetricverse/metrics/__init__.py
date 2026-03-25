@@ -33,6 +33,7 @@ from nlgmetricverse.metrics.gunning_fog import GunningFog
 from nlgmetricverse.metrics.mauve import Mauve
 from nlgmetricverse.metrics.meteor import Meteor
 from nlgmetricverse.metrics.moverscore import Moverscore
+from nlgmetricverse.metrics.narrative_score import NarrativeScore
 from nlgmetricverse.metrics.nid import NID
 from nlgmetricverse.metrics.nist import Nist
 from nlgmetricverse.metrics.nubia import Nubia
